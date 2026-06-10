@@ -1,11 +1,21 @@
-url: https://r-heller.github.io/libscanR/
+url: https://cttir.github.io/libscanR/
 
 template:
   bootstrap: 5
+  light-switch: true
+  theme: gruvbox-light
+  theme-dark: gruvbox-dark
   bslib:
-    primary: "#2E86AB"
-    border-radius: 0.3rem
-
+    # Hugo Coder colour theme — light mode
+    bg: "#fafafa"
+    fg: "#212121"
+    primary: "#1565c0"
+    navbar-light-bg: "#fafafa"
+    # Hugo Coder colour theme — dark mode (Bootstrap 5 light-switch)
+    navbar-dark-bg: "#212121"
+    base_font: {google: "Inter"}
+    heading_font: {google: "Inter"}
+    code_font: {google: "JetBrains Mono"}
 navbar:
   structure:
     left:  [home, reference, articles, news]
@@ -13,7 +23,7 @@ navbar:
   components:
     github:
       icon: fa-github
-      href: https://github.com/r-heller/libscanR
+      href: https://github.com/cttir/libscanR
 
 reference:
   - title: "Package"

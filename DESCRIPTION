@@ -17,9 +17,9 @@ Description: Provides a vendor-agnostic pipeline for importing, preprocessing,
     for spectral exploration. Designed for biomedical tissue analysis,
     environmental monitoring, and materials characterization workflows.
 License: MIT + file LICENSE
-URL: https://github.com/r-heller/libscanR,
-    https://r-heller.github.io/libscanR/
-BugReports: https://github.com/r-heller/libscanR/issues
+URL: https://github.com/cttir/libscanR,
+    https://cttir.github.io/libscanR/
+BugReports: https://github.com/cttir/libscanR/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
