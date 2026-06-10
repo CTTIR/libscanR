@@ -22,7 +22,7 @@ plot(x, y, ...)
 - ...:
 
   Passed to
-  [`ls_plot_overlay()`](https://r-heller.github.io/libscanR/reference/ls_plot_overlay.md).
+  [`ls_plot_overlay()`](https://cttir.github.io/libscanR/reference/ls_plot_overlay.md).
 
 ## Value
 

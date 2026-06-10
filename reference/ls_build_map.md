@@ -14,7 +14,7 @@ ls_build_map(dataset, element, line_nm, calibration = NULL, window_nm = 1)
 - dataset:
 
   A
-  [`ls_dataset()`](https://r-heller.github.io/libscanR/reference/ls_dataset.md)
+  [`ls_dataset()`](https://cttir.github.io/libscanR/reference/ls_dataset.md)
   object with spatial coordinates.
 
 - element:
@@ -28,7 +28,7 @@ ls_build_map(dataset, element, line_nm, calibration = NULL, window_nm = 1)
 - calibration:
 
   Optional
-  [`ls_calibration()`](https://r-heller.github.io/libscanR/reference/ls_calibration.md).
+  [`ls_calibration()`](https://cttir.github.io/libscanR/reference/ls_calibration.md).
   If provided, intensities are converted to concentration. Default
   `NULL`.
 

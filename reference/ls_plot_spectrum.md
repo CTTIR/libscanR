@@ -20,7 +20,7 @@ ls_plot_spectrum(
 - x:
 
   A
-  [`ls_spectrum()`](https://r-heller.github.io/libscanR/reference/ls_spectrum.md)
+  [`ls_spectrum()`](https://cttir.github.io/libscanR/reference/ls_spectrum.md)
   object.
 
 - show_peaks:

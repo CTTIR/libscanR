@@ -14,7 +14,7 @@ ls_gate_optimize(spectra, element, line_nm, window_nm = 1)
 - spectra:
 
   List of
-  [`ls_spectrum()`](https://r-heller.github.io/libscanR/reference/ls_spectrum.md)
+  [`ls_spectrum()`](https://cttir.github.io/libscanR/reference/ls_spectrum.md)
   objects. Each spectrum's metadata should contain `gate_delay_us`.
 
 - element:

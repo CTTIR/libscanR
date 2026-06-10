@@ -13,7 +13,7 @@ ls_plot_plsda(plsda, type = "scores")
 - plsda:
 
   A `libs_plsda` object from
-  [`ls_plsda()`](https://r-heller.github.io/libscanR/reference/ls_plsda.md).
+  [`ls_plsda()`](https://cttir.github.io/libscanR/reference/ls_plsda.md).
 
 - type:
 

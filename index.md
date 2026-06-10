@@ -25,12 +25,12 @@ applications.
 - **Spatial mapping**: Single-element and multi-element 2-D maps from
   raster-scan datasets.
 - **Visualization**: Publication-ready ggplot2 plots; custom
-  [`theme_libs()`](https://r-heller.github.io/libscanR/reference/theme_libs.md)
+  [`theme_libs()`](https://cttir.github.io/libscanR/reference/theme_libs.md)
   and wavelength color scale.
 - **Shiny app**: Six-tab interactive explorer
-  ([`ls_run_app()`](https://r-heller.github.io/libscanR/reference/ls_run_app.md)).
+  ([`ls_run_app()`](https://cttir.github.io/libscanR/reference/ls_run_app.md)).
 - **Reproducible examples**:
-  [`ls_example_data()`](https://r-heller.github.io/libscanR/reference/ls_example_data.md)
+  [`ls_example_data()`](https://cttir.github.io/libscanR/reference/ls_example_data.md)
   provides synthetic tissue, calibration, and spatial datasets — no
   instrument data required.
 
@@ -39,7 +39,7 @@ applications.
 ``` r
 
 # install.packages("remotes")
-remotes::install_github("r-heller/libscanR")
+remotes::install_github("cttir/libscanR")
 ```
 
 ## Quick start
@@ -73,11 +73,11 @@ ls_run_app(data = ls_example_data("tissue"))
 
 ## Workflow vignettes
 
-- [`vignette("getting-started", package = "libscanR")`](https://r-heller.github.io/libscanR/articles/getting-started.md)
-- [`vignette("preprocessing-workflow", package = "libscanR")`](https://r-heller.github.io/libscanR/articles/preprocessing-workflow.md)
-- [`vignette("calibration-quantification", package = "libscanR")`](https://r-heller.github.io/libscanR/articles/calibration-quantification.md)
-- [`vignette("tissue-classification", package = "libscanR")`](https://r-heller.github.io/libscanR/articles/tissue-classification.md)
-- [`vignette("spatial-mapping", package = "libscanR")`](https://r-heller.github.io/libscanR/articles/spatial-mapping.md)
+- [`vignette("getting-started", package = "libscanR")`](https://cttir.github.io/libscanR/articles/getting-started.md)
+- [`vignette("preprocessing-workflow", package = "libscanR")`](https://cttir.github.io/libscanR/articles/preprocessing-workflow.md)
+- [`vignette("calibration-quantification", package = "libscanR")`](https://cttir.github.io/libscanR/articles/calibration-quantification.md)
+- [`vignette("tissue-classification", package = "libscanR")`](https://cttir.github.io/libscanR/articles/tissue-classification.md)
+- [`vignette("spatial-mapping", package = "libscanR")`](https://cttir.github.io/libscanR/articles/spatial-mapping.md)
 
 ## Citation
 
@@ -85,6 +85,24 @@ ls_run_app(data = ls_example_data("tissue"))
 
 citation("libscanR")
 ```
+
+## Use of LLM tools
+
+Portions of this package were prepared with assistance from large
+language model tooling for narrowly defined, non-authorial tasks:
+copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
+boilerplate files (CI configs, build scripts), code refactoring. The
+tools used were [Chat
+AI](https://kisski.gwdg.de/leistungen/2-02-llm-service/), the LLM
+service of KISSKI (GWDG), and a self-hosted **Mistral Small (24B,
+Apache-2.0)** run locally via [Ollama](https://ollama.com/) and the
+`ollamar` R package — local inference only, with no data sent to third
+parties for the self-hosted model.
+
+All scientific claims, methodological choices, analyses,
+interpretations, and conclusions are the author’s own. No LLM-generated
+text was incorporated without review and revision, and every reference
+was verified against its DOI, arXiv ID, or ISBN.
 
 ## License
 

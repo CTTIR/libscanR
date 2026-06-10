@@ -13,13 +13,13 @@ ls_loq(calibration, blank = NULL, window_nm = 1)
 - calibration:
 
   A
-  [`ls_calibration()`](https://r-heller.github.io/libscanR/reference/ls_calibration.md)
+  [`ls_calibration()`](https://cttir.github.io/libscanR/reference/ls_calibration.md)
   object.
 
 - blank:
 
   Optional
-  [`ls_spectrum()`](https://r-heller.github.io/libscanR/reference/ls_spectrum.md)
+  [`ls_spectrum()`](https://cttir.github.io/libscanR/reference/ls_spectrum.md)
   of a blank sample.
 
 - window_nm:

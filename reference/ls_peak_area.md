@@ -14,7 +14,7 @@ ls_peak_area(x, center_nm, window_nm = 1, method = "trapezoidal")
 - x:
 
   A
-  [`ls_spectrum()`](https://r-heller.github.io/libscanR/reference/ls_spectrum.md)
+  [`ls_spectrum()`](https://cttir.github.io/libscanR/reference/ls_spectrum.md)
   object.
 
 - center_nm:

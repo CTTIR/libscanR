@@ -19,7 +19,7 @@ ls_map_elements(
 - dataset:
 
   A
-  [`ls_dataset()`](https://r-heller.github.io/libscanR/reference/ls_dataset.md)
+  [`ls_dataset()`](https://cttir.github.io/libscanR/reference/ls_dataset.md)
   object with spatial coordinates.
 
 - elements:
@@ -34,7 +34,7 @@ ls_map_elements(
 - calibrations:
 
   Named list of
-  [`ls_calibration()`](https://r-heller.github.io/libscanR/reference/ls_calibration.md)
+  [`ls_calibration()`](https://cttir.github.io/libscanR/reference/ls_calibration.md)
   objects. Default `NULL`.
 
 - window_nm:

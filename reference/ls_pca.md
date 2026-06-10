@@ -1,7 +1,7 @@
 # Principal Component Analysis of LIBS Spectra
 
 Performs PCA on the intensity matrix of a
-[`ls_dataset()`](https://r-heller.github.io/libscanR/reference/ls_dataset.md).
+[`ls_dataset()`](https://cttir.github.io/libscanR/reference/ls_dataset.md).
 
 ## Usage
 
@@ -14,7 +14,7 @@ ls_pca(dataset, n_components = 10, scale = TRUE, center = TRUE)
 - dataset:
 
   A
-  [`ls_dataset()`](https://r-heller.github.io/libscanR/reference/ls_dataset.md)
+  [`ls_dataset()`](https://cttir.github.io/libscanR/reference/ls_dataset.md)
   object.
 
 - n_components:

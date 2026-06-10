@@ -1,9 +1,9 @@
 # Classify Unknown Spectra
 
 Applies a trained classifier (from
-[`ls_plsda()`](https://r-heller.github.io/libscanR/reference/ls_plsda.md)
+[`ls_plsda()`](https://cttir.github.io/libscanR/reference/ls_plsda.md)
 or
-[`ls_train_classifier()`](https://r-heller.github.io/libscanR/reference/ls_train_classifier.md))
+[`ls_train_classifier()`](https://cttir.github.io/libscanR/reference/ls_train_classifier.md))
 to new spectra.
 
 ## Usage
@@ -21,7 +21,7 @@ ls_classify(model, new_data)
 - new_data:
 
   A
-  [`ls_dataset()`](https://r-heller.github.io/libscanR/reference/ls_dataset.md)
+  [`ls_dataset()`](https://cttir.github.io/libscanR/reference/ls_dataset.md)
   of unknown spectra.
 
 ## Value

@@ -11,9 +11,11 @@
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Inter-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting Started with libscanR">
 </head>
@@ -21,7 +23,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="../index.html">libscanR</a>
 
@@ -42,7 +44,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/r-heller/libscanR"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/cttir/libscanR"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -58,17 +60,17 @@
       <img src="../logo.svg" class="logo" alt=""><h1>Getting Started with libscanR</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/r-heller/libscanR/blob/main/vignettes/getting-started.Rmd" class="external-link"><code>vignettes/getting-started.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/cttir/libscanR/blob/main/vignettes/getting-started.Rmd" class="external-link"><code>vignettes/getting-started.Rmd</code></a></small>
       <div class="d-none name"><code>getting-started.Rmd</code></div>
     </div>
 
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-heller/libscanR" class="external-link">libscanR</a></span><span class="op">)</span></span></code></pre></div>
-<div class="section level2">
-<h2 id="what-is-libscanr">What is libscanR?<a class="anchor" aria-label="anchor" href="#what-is-libscanr"></a>
-</h2>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/cttir/libscanR" class="external-link">libscanR</a></span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="what-is-libscanr">What is libscanR?<a class="anchor" aria-label="anchor" href="#what-is-libscanr"></a>
+</h3>
 <p><code>libscanR</code> provides a vendor-agnostic pipeline for
 Laser-Induced Breakdown Spectroscopy (LIBS) data, including import,
 preprocessing, peak detection, calibration, quantification,
@@ -76,9 +78,9 @@ chemometrics, spatial mapping, and visualization. It ships with a
 curated NIST emission line database and example datasets so every
 feature is runnable without real instrument data.</p>
 </div>
-<div class="section level2">
-<h2 id="core-data-structures">Core data structures<a class="anchor" aria-label="anchor" href="#core-data-structures"></a>
-</h2>
+<div class="section level3">
+<h3 id="core-data-structures">Core data structures<a class="anchor" aria-label="anchor" href="#core-data-structures"></a>
+</h3>
 <p><code>libscanR</code> defines three S3 classes:</p>
 <ul>
 <li>
@@ -91,12 +93,12 @@ wavelength axis.</li>
 <code>libs_calibration</code> — a fitted calibration model.</li>
 </ul>
 </div>
-<div class="section level2">
-<h2 id="a-5-minute-tour">A 5-minute tour<a class="anchor" aria-label="anchor" href="#a-5-minute-tour"></a>
-</h2>
 <div class="section level3">
-<h3 id="simulate-a-spectrum">Simulate a spectrum<a class="anchor" aria-label="anchor" href="#simulate-a-spectrum"></a>
+<h3 id="a-5-minute-tour">A 5-minute tour<a class="anchor" aria-label="anchor" href="#a-5-minute-tour"></a>
 </h3>
+<div class="section level4">
+<h4 id="simulate-a-spectrum">Simulate a spectrum<a class="anchor" aria-label="anchor" href="#simulate-a-spectrum"></a>
+</h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ls_simulate_spectrum.html">ls_simulate_spectrum</a></span><span class="op">(</span></span>
 <span>  elements <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Ca <span class="op">=</span> <span class="fl">5000</span>, Na <span class="op">=</span> <span class="fl">1000</span>, Fe <span class="op">=</span> <span class="fl">200</span><span class="op">)</span>,</span>
@@ -110,16 +112,16 @@ wavelength axis.</li>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Sample: <span style="color: #0000BB;">"simulated"</span> (synthetic)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Baseline corrected: <span style="color: #0000BB;">FALSE</span></span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="plot-it">Plot it<a class="anchor" aria-label="anchor" href="#plot-it"></a>
-</h3>
+<div class="section level4">
+<h4 id="plot-it">Plot it<a class="anchor" aria-label="anchor" href="#plot-it"></a>
+</h4>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ls_plot_spectrum.html">ls_plot_spectrum</a></span><span class="op">(</span><span class="va">spec</span>, show_elements <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ca"</span>, <span class="st">"Na"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="getting-started_files/figure-html/plot-raw-1.png" class="r-plt" alt="" width="672"></p>
 </div>
-<div class="section level3">
-<h3 id="preprocess-baseline-smooth-normalize">Preprocess: baseline, smooth, normalize<a class="anchor" aria-label="anchor" href="#preprocess-baseline-smooth-normalize"></a>
-</h3>
+<div class="section level4">
+<h4 id="preprocess-baseline-smooth-normalize">Preprocess: baseline, smooth, normalize<a class="anchor" aria-label="anchor" href="#preprocess-baseline-smooth-normalize"></a>
+</h4>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spec_proc</span> <span class="op">&lt;-</span> <span class="va">spec</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/ls_baseline.html">ls_baseline</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"snip"</span>, iterations <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -128,9 +130,9 @@ wavelength axis.</li>
 <span><span class="fu"><a href="../reference/ls_plot_spectrum.html">ls_plot_spectrum</a></span><span class="op">(</span><span class="va">spec_proc</span><span class="op">)</span></span></code></pre></div>
 <p><img src="getting-started_files/figure-html/preprocess-1.png" class="r-plt" alt="" width="672"></p>
 </div>
-<div class="section level3">
-<h3 id="detect-and-identify-peaks">Detect and identify peaks<a class="anchor" aria-label="anchor" href="#detect-and-identify-peaks"></a>
-</h3>
+<div class="section level4">
+<h4 id="detect-and-identify-peaks">Detect and identify peaks<a class="anchor" aria-label="anchor" href="#detect-and-identify-peaks"></a>
+</h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">peaks</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ls_find_peaks.html">ls_find_peaks</a></span><span class="op">(</span><span class="va">spec_proc</span>, snr_threshold <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ls_identify_peaks.html">ls_identify_peaks</a></span><span class="op">(</span><span class="va">peaks</span>, elements <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ca"</span>, <span class="st">"Na"</span>, <span class="st">"Fe"</span><span class="op">)</span><span class="op">)</span></span>
@@ -145,9 +147,9 @@ wavelength axis.</li>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>          223. <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>          231. <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="read-from-a-file">Read from a file<a class="anchor" aria-label="anchor" href="#read-from-a-file"></a>
-</h3>
+<div class="section level4">
+<h4 id="read-from-a-file">Read from a file<a class="anchor" aria-label="anchor" href="#read-from-a-file"></a>
+</h4>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".csv"</span><span class="op">)</span></span>
 <span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span></span>
@@ -161,12 +163,12 @@ wavelength axis.</li>
 <span><span class="co">#&gt; <span style="color: #0000BB;">&lt;libs_spectrum&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Range: <span style="color: #0000BB;">200</span>-<span style="color: #0000BB;">900</span> nm (1024 channels)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Shots: 1</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Sample: <span style="color: #0000BB;">"file201c2c1954c6"</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Sample: <span style="color: #0000BB;">"file207f110922da"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Baseline corrected: <span style="color: #0000BB;">FALSE</span></span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="use-example-datasets">Use example datasets<a class="anchor" aria-label="anchor" href="#use-example-datasets"></a>
-</h3>
+<div class="section level4">
+<h4 id="use-example-datasets">Use example datasets<a class="anchor" aria-label="anchor" href="#use-example-datasets"></a>
+</h4>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ls_example_data.html">ls_example_data</a></span><span class="op">(</span><span class="st">"tissue"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">ds</span><span class="op">)</span></span>
@@ -185,15 +187,32 @@ wavelength axis.</li>
 <span><span class="co">#&gt; <span style="color: #0000BB;">94.1</span>-<span style="color: #0000BB;">643.47</span></span></span></code></pre></div>
 </div>
 </div>
-<div class="section level2">
-<h2 id="next-steps">Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
-</h2>
+<div class="section level3">
+<h3 id="next-steps">Next steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
+</h3>
 <ul>
 <li><code><a href="../articles/preprocessing-workflow.html">vignette("preprocessing-workflow", package = "libscanR")</a></code></li>
 <li><code><a href="../articles/calibration-quantification.html">vignette("calibration-quantification", package = "libscanR")</a></code></li>
 <li><code><a href="../articles/tissue-classification.html">vignette("tissue-classification", package = "libscanR")</a></code></li>
 <li><code><a href="../articles/spatial-mapping.html">vignette("spatial-mapping", package = "libscanR")</a></code></li>
 </ul>
+</div>
+<div class="section level2">
+<h2 id="use-of-llm-tools">Use of LLM tools<a class="anchor" aria-label="anchor" href="#use-of-llm-tools"></a>
+</h2>
+<p>Portions of this package were prepared with assistance from large
+language model tooling for narrowly defined, non-authorial tasks:
+copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
+boilerplate files (CI configs, build scripts), code refactoring. The
+tools used were <a href="https://kisski.gwdg.de/leistungen/2-02-llm-service/" class="external-link">Chat AI</a>,
+the LLM service of KISSKI (GWDG), and a self-hosted <strong>Mistral
+Small (24B, Apache-2.0)</strong> run locally via <a href="https://ollama.com/" class="external-link">Ollama</a> and the <code>ollamar</code> R
+package — local inference only, with no data sent to third parties for
+the self-hosted model.</p>
+<p>All scientific claims, methodological choices, analyses,
+interpretations, and conclusions are the author’s own. No LLM-generated
+text was incorporated without review and revision, and every reference
+was verified against its DOI, arXiv ID, or ISBN.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

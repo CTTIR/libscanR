@@ -14,7 +14,7 @@ ls_cluster(dataset, method = "kmeans", k = 3, ...)
 - dataset:
 
   A
-  [`ls_dataset()`](https://r-heller.github.io/libscanR/reference/ls_dataset.md)
+  [`ls_dataset()`](https://cttir.github.io/libscanR/reference/ls_dataset.md)
   object.
 
 - method:

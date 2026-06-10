@@ -3,7 +3,7 @@
 Attempts to identify the file format (generic CSV, SciAps, Applied
 Spectra) and dispatches to the correct reader. When `path` is a
 directory, delegates to
-[`ls_read_dir()`](https://r-heller.github.io/libscanR/reference/ls_read_dir.md).
+[`ls_read_dir()`](https://cttir.github.io/libscanR/reference/ls_read_dir.md).
 
 ## Usage
 

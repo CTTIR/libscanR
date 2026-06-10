@@ -32,7 +32,7 @@ ls_spectrum(wavelength, intensity, metadata = list(), baseline = NULL)
 
   Optional numeric vector of baseline values corresponding to each
   wavelength channel (populated by
-  [`ls_baseline()`](https://r-heller.github.io/libscanR/reference/ls_baseline.md)).
+  [`ls_baseline()`](https://cttir.github.io/libscanR/reference/ls_baseline.md)).
   Default `NULL`.
 
 ## Value

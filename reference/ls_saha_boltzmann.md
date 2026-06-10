@@ -23,7 +23,7 @@ ls_saha_boltzmann(
 - x:
 
   A
-  [`ls_spectrum()`](https://r-heller.github.io/libscanR/reference/ls_spectrum.md)
+  [`ls_spectrum()`](https://cttir.github.io/libscanR/reference/ls_spectrum.md)
   object (ideally baseline-corrected).
 
 - elements:

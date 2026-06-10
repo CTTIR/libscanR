@@ -37,7 +37,7 @@ ls_read_dir(
 - ...:
 
   Additional arguments passed to
-  [`ls_read_spectrum()`](https://r-heller.github.io/libscanR/reference/ls_read_spectrum.md).
+  [`ls_read_spectrum()`](https://cttir.github.io/libscanR/reference/ls_read_spectrum.md).
 
 ## Value
 

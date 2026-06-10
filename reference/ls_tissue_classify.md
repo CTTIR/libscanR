@@ -29,9 +29,9 @@ ls_tissue_classify(
 - x:
 
   A
-  [`ls_spectrum()`](https://r-heller.github.io/libscanR/reference/ls_spectrum.md)
+  [`ls_spectrum()`](https://cttir.github.io/libscanR/reference/ls_spectrum.md)
   or
-  [`ls_dataset()`](https://r-heller.github.io/libscanR/reference/ls_dataset.md)
+  [`ls_dataset()`](https://cttir.github.io/libscanR/reference/ls_dataset.md)
   object (unknowns).
 
 - method:
@@ -41,7 +41,7 @@ ls_tissue_classify(
 - reference:
 
   A
-  [`ls_dataset()`](https://r-heller.github.io/libscanR/reference/ls_dataset.md)
+  [`ls_dataset()`](https://cttir.github.io/libscanR/reference/ls_dataset.md)
   with labelled tissue reference spectra (needed for `"plsda"` and
   `"svm"`).
 

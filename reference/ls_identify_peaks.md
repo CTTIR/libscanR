@@ -19,7 +19,7 @@ ls_identify_peaks(
 - peaks:
 
   A tibble from
-  [`ls_find_peaks()`](https://r-heller.github.io/libscanR/reference/ls_find_peaks.md).
+  [`ls_find_peaks()`](https://cttir.github.io/libscanR/reference/ls_find_peaks.md).
 
 - elements:
 

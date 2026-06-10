@@ -1,7 +1,7 @@
 # Average Replicate Shots
 
 Averages shots within a
-[`ls_spectrum()`](https://r-heller.github.io/libscanR/reference/ls_spectrum.md).
+[`ls_spectrum()`](https://cttir.github.io/libscanR/reference/ls_spectrum.md).
 
 ## Usage
 
@@ -14,7 +14,7 @@ ls_average_shots(x, method = "mean", trim = 0, remove_outliers = FALSE)
 - x:
 
   A
-  [`ls_spectrum()`](https://r-heller.github.io/libscanR/reference/ls_spectrum.md)
+  [`ls_spectrum()`](https://cttir.github.io/libscanR/reference/ls_spectrum.md)
   object.
 
 - method:

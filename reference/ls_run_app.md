@@ -15,8 +15,8 @@ ls_run_app(data = NULL, port = NULL, launch.browser = TRUE)
 - data:
 
   Optional. A
-  [`ls_spectrum()`](https://r-heller.github.io/libscanR/reference/ls_spectrum.md),
-  [`ls_dataset()`](https://r-heller.github.io/libscanR/reference/ls_dataset.md),
+  [`ls_spectrum()`](https://cttir.github.io/libscanR/reference/ls_spectrum.md),
+  [`ls_dataset()`](https://cttir.github.io/libscanR/reference/ls_dataset.md),
   or file path to preload. Default `NULL` (start with upload interface).
 
 - port:

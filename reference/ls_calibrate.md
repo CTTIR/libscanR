@@ -25,7 +25,7 @@ ls_calibrate(
 - dataset:
 
   A
-  [`ls_dataset()`](https://r-heller.github.io/libscanR/reference/ls_dataset.md)
+  [`ls_dataset()`](https://cttir.github.io/libscanR/reference/ls_dataset.md)
   containing standard spectra. Spectra order must correspond to
   `concentrations`.
 
@@ -75,7 +75,7 @@ ls_calibrate(
 ## Value
 
 A
-[`ls_calibration()`](https://r-heller.github.io/libscanR/reference/ls_calibration.md)
+[`ls_calibration()`](https://cttir.github.io/libscanR/reference/ls_calibration.md)
 object.
 
 ## Examples

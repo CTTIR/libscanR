@@ -22,7 +22,7 @@ plot(x, y, ...)
 - ...:
 
   Arguments passed to
-  [`ls_plot_spectrum()`](https://r-heller.github.io/libscanR/reference/ls_plot_spectrum.md).
+  [`ls_plot_spectrum()`](https://cttir.github.io/libscanR/reference/ls_plot_spectrum.md).
 
 ## Value
 

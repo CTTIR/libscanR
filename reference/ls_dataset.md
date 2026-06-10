@@ -1,7 +1,7 @@
 # Create a LIBS Dataset
 
 Constructs a `libs_dataset`: a collection of
-[`ls_spectrum()`](https://r-heller.github.io/libscanR/reference/ls_spectrum.md)
+[`ls_spectrum()`](https://cttir.github.io/libscanR/reference/ls_spectrum.md)
 objects sharing a common wavelength axis, plus a sample-info table.
 
 ## Usage

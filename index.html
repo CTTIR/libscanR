@@ -11,20 +11,22 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="icon" sizes="any" href="favicon.ico">
 <link rel="manifest" href="site.webmanifest">
-<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<script src="lightswitch.js"></script><script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/Inter-0.4.10/font.css" rel="stylesheet">
+<link href="deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet">
+<link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Analysis and Visualization of Laser-Induced Breakdown Spectroscopy Data">
 <meta name="description" content="Provides a vendor-agnostic pipeline for importing, preprocessing, calibrating, and visualizing Laser-Induced Breakdown Spectroscopy (LIBS) spectral data. Supports baseline correction, peak identification against curated atomic emission line databases, univariate and multivariate calibration (including calibration-free LIBS and Saha-Boltzmann methods), elemental quantification with limit-of-detection and limit-of-quantification estimation, chemometric analysis (principal component analysis, partial least squares discriminant analysis, clustering) for tissue classification, and spatial elemental mapping. Includes an interactive shiny application for spectral exploration. Designed for biomedical tissue analysis, environmental monitoring, and materials characterization workflows.">
 <meta property="og:description" content="Provides a vendor-agnostic pipeline for importing, preprocessing, calibrating, and visualizing Laser-Induced Breakdown Spectroscopy (LIBS) spectral data. Supports baseline correction, peak identification against curated atomic emission line databases, univariate and multivariate calibration (including calibration-free LIBS and Saha-Boltzmann methods), elemental quantification with limit-of-detection and limit-of-quantification estimation, chemometric analysis (principal component analysis, partial least squares discriminant analysis, clustering) for tissue classification, and spatial elemental mapping. Includes an interactive shiny application for spectral exploration. Designed for biomedical tissue analysis, environmental monitoring, and materials characterization workflows.">
-<meta property="og:image" content="https://r-heller.github.io/libscanR/logo.svg">
+<meta property="og:image" content="https://cttir.github.io/libscanR/logo.svg">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="index.html">libscanR</a>
 
@@ -45,7 +47,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/r-heller/libscanR"><span class="fa fa-github"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/cttir/libscanR"><span class="fa fa-github"></span></a></li>
       </ul>
 </div>
 
@@ -92,13 +94,13 @@
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"r-heller/libscanR"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"cttir/libscanR"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-heller/libscanR" class="external-link">libscanR</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/cttir/libscanR" class="external-link">libscanR</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Generate a synthetic spectrum</span></span>
 <span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ls_simulate_spectrum.html">ls_simulate_spectrum</a></span><span class="op">(</span></span>
@@ -140,6 +142,12 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"libscanR"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="use-of-llm-tools">Use of LLM tools<a class="anchor" aria-label="anchor" href="#use-of-llm-tools"></a>
+</h2>
+<p>Portions of this package were prepared with assistance from large language model tooling for narrowly defined, non-authorial tasks: copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of boilerplate files (CI configs, build scripts), code refactoring. The tools used were <a href="https://kisski.gwdg.de/leistungen/2-02-llm-service/" class="external-link">Chat AI</a>, the LLM service of KISSKI (GWDG), and a self-hosted <strong>Mistral Small (24B, Apache-2.0)</strong> run locally via <a href="https://ollama.com/" class="external-link">Ollama</a> and the <code>ollamar</code> R package — local inference only, with no data sent to third parties for the self-hosted model.</p>
+<p>All scientific claims, methodological choices, analyses, interpretations, and conclusions are the author’s own. No LLM-generated text was incorporated without review and revision, and every reference was verified against its DOI, arXiv ID, or ISBN.</p>
+</div>
+<div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
 </h2>
 <p>MIT © Raban Heller</p>
@@ -148,8 +156,8 @@
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/r-heller/libscanR/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/r-heller/libscanR/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/cttir/libscanR/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/cttir/libscanR/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -179,8 +187,8 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/r-heller/libscanR/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/r-heller/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://app.codecov.io/gh/r-heller/libscanR" class="external-link"><img src="https://codecov.io/gh/r-heller/libscanR/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/cttir/libscanR/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/cttir/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://app.codecov.io/gh/cttir/libscanR" class="external-link"><img src="https://codecov.io/gh/cttir/libscanR/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
 </ul>
 </div>

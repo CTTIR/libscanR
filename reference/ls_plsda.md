@@ -13,7 +13,7 @@ ls_plsda(dataset, grouping, n_components = 5, validation = "CV")
 - dataset:
 
   A
-  [`ls_dataset()`](https://r-heller.github.io/libscanR/reference/ls_dataset.md)
+  [`ls_dataset()`](https://cttir.github.io/libscanR/reference/ls_dataset.md)
   object.
 
 - grouping:

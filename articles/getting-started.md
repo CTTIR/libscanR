@@ -5,7 +5,7 @@
 library(libscanR)
 ```
 
-## What is libscanR?
+### What is libscanR?
 
 `libscanR` provides a vendor-agnostic pipeline for Laser-Induced
 Breakdown Spectroscopy (LIBS) data, including import, preprocessing,
@@ -14,7 +14,7 @@ mapping, and visualization. It ships with a curated NIST emission line
 database and example datasets so every feature is runnable without real
 instrument data.
 
-## Core data structures
+### Core data structures
 
 `libscanR` defines three S3 classes:
 
@@ -22,9 +22,9 @@ instrument data.
 - `libs_dataset` — a collection of spectra sharing a wavelength axis.
 - `libs_calibration` — a fitted calibration model.
 
-## A 5-minute tour
+### A 5-minute tour
 
-### Simulate a spectrum
+#### Simulate a spectrum
 
 ``` r
 
@@ -41,7 +41,7 @@ spec
 #> • Baseline corrected: FALSE
 ```
 
-### Plot it
+#### Plot it
 
 ``` r
 
@@ -50,7 +50,7 @@ ls_plot_spectrum(spec, show_elements = c("Ca", "Na"))
 
 ![](getting-started_files/figure-html/plot-raw-1.png)
 
-### Preprocess: baseline, smooth, normalize
+#### Preprocess: baseline, smooth, normalize
 
 ``` r
 
@@ -63,7 +63,7 @@ ls_plot_spectrum(spec_proc)
 
 ![](getting-started_files/figure-html/preprocess-1.png)
 
-### Detect and identify peaks
+#### Detect and identify peaks
 
 ``` r
 
@@ -81,7 +81,7 @@ head(id[, c("wavelength_nm", "element", "ionization", "nist_aki", "confidence")]
 #> 6          231. NA              NA    NA        NA
 ```
 
-### Read from a file
+#### Read from a file
 
 ``` r
 
@@ -97,11 +97,11 @@ spec_in
 #> <libs_spectrum>
 #> • Range: 200-900 nm (1024 channels)
 #> • Shots: 1
-#> • Sample: "file201c2c1954c6"
+#> • Sample: "file207f110922da"
 #> • Baseline corrected: FALSE
 ```
 
-### Use example datasets
+#### Use example datasets
 
 ``` r
 
@@ -122,9 +122,27 @@ summary(ds)
 #> 94.1-643.47
 ```
 
-## Next steps
+### Next steps
 
-- [`vignette("preprocessing-workflow", package = "libscanR")`](https://r-heller.github.io/libscanR/articles/preprocessing-workflow.md)
-- [`vignette("calibration-quantification", package = "libscanR")`](https://r-heller.github.io/libscanR/articles/calibration-quantification.md)
-- [`vignette("tissue-classification", package = "libscanR")`](https://r-heller.github.io/libscanR/articles/tissue-classification.md)
-- [`vignette("spatial-mapping", package = "libscanR")`](https://r-heller.github.io/libscanR/articles/spatial-mapping.md)
+- [`vignette("preprocessing-workflow", package = "libscanR")`](https://cttir.github.io/libscanR/articles/preprocessing-workflow.md)
+- [`vignette("calibration-quantification", package = "libscanR")`](https://cttir.github.io/libscanR/articles/calibration-quantification.md)
+- [`vignette("tissue-classification", package = "libscanR")`](https://cttir.github.io/libscanR/articles/tissue-classification.md)
+- [`vignette("spatial-mapping", package = "libscanR")`](https://cttir.github.io/libscanR/articles/spatial-mapping.md)
+
+## Use of LLM tools
+
+Portions of this package were prepared with assistance from large
+language model tooling for narrowly defined, non-authorial tasks:
+copyediting, prose smoothing, Markdown/LaTeX formatting, scaffolding of
+boilerplate files (CI configs, build scripts), code refactoring. The
+tools used were [Chat
+AI](https://kisski.gwdg.de/leistungen/2-02-llm-service/), the LLM
+service of KISSKI (GWDG), and a self-hosted **Mistral Small (24B,
+Apache-2.0)** run locally via [Ollama](https://ollama.com/) and the
+`ollamar` R package — local inference only, with no data sent to third
+parties for the self-hosted model.
+
+All scientific claims, methodological choices, analyses,
+interpretations, and conclusions are the author’s own. No LLM-generated
+text was incorporated without review and revision, and every reference
+was verified against its DOI, arXiv ID, or ISBN.

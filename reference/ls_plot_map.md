@@ -13,7 +13,7 @@ ls_plot_map(map, color_scale = "viridis", title = NULL)
 - map:
 
   A `libs_map` object from
-  [`ls_build_map()`](https://r-heller.github.io/libscanR/reference/ls_build_map.md).
+  [`ls_build_map()`](https://cttir.github.io/libscanR/reference/ls_build_map.md).
 
 - color_scale:
 

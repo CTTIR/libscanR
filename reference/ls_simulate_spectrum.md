@@ -3,7 +3,7 @@
 Generates a realistic synthetic LIBS spectrum with configurable
 elemental composition, noise, and continuum background. Emission lines
 are drawn from the internal NIST database
-([`ls_element_db()`](https://r-heller.github.io/libscanR/reference/ls_element_db.md))
+([`ls_element_db()`](https://cttir.github.io/libscanR/reference/ls_element_db.md))
 and modelled as Lorentzian peaks.
 
 ## Usage
@@ -67,7 +67,7 @@ ls_simulate_spectrum(
 ## Value
 
 A
-[`ls_spectrum()`](https://r-heller.github.io/libscanR/reference/ls_spectrum.md)
+[`ls_spectrum()`](https://cttir.github.io/libscanR/reference/ls_spectrum.md)
 object.
 
 ## Examples

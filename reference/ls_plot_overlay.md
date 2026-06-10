@@ -14,7 +14,7 @@ ls_plot_overlay(dataset, color_by = NULL, normalize = FALSE, alpha = 0.5)
 - dataset:
 
   A
-  [`ls_dataset()`](https://r-heller.github.io/libscanR/reference/ls_dataset.md)
+  [`ls_dataset()`](https://cttir.github.io/libscanR/reference/ls_dataset.md)
   object.
 
 - color_by:

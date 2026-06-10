@@ -13,7 +13,7 @@ ls_train_classifier(dataset, grouping, method = "svm", ...)
 - dataset:
 
   A
-  [`ls_dataset()`](https://r-heller.github.io/libscanR/reference/ls_dataset.md)
+  [`ls_dataset()`](https://cttir.github.io/libscanR/reference/ls_dataset.md)
   with labelled samples.
 
 - grouping:

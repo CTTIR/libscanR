@@ -13,7 +13,7 @@ ls_plot_residuals(calibration)
 - calibration:
 
   A
-  [`ls_calibration()`](https://r-heller.github.io/libscanR/reference/ls_calibration.md)
+  [`ls_calibration()`](https://cttir.github.io/libscanR/reference/ls_calibration.md)
   object.
 
 ## Value

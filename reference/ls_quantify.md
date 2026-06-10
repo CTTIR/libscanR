@@ -13,15 +13,15 @@ ls_quantify(calibration, x, window_nm = NULL)
 - calibration:
 
   A
-  [`ls_calibration()`](https://r-heller.github.io/libscanR/reference/ls_calibration.md)
+  [`ls_calibration()`](https://cttir.github.io/libscanR/reference/ls_calibration.md)
   object.
 
 - x:
 
   A
-  [`ls_spectrum()`](https://r-heller.github.io/libscanR/reference/ls_spectrum.md)
+  [`ls_spectrum()`](https://cttir.github.io/libscanR/reference/ls_spectrum.md)
   or
-  [`ls_dataset()`](https://r-heller.github.io/libscanR/reference/ls_dataset.md)
+  [`ls_dataset()`](https://cttir.github.io/libscanR/reference/ls_dataset.md)
   object.
 
 - window_nm:

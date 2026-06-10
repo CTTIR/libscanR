@@ -13,7 +13,7 @@ ls_plot_pca(pca, pc_x = 1, pc_y = 2, color_by = NULL, ellipses = TRUE)
 - pca:
 
   A `libs_pca` object from
-  [`ls_pca()`](https://r-heller.github.io/libscanR/reference/ls_pca.md).
+  [`ls_pca()`](https://cttir.github.io/libscanR/reference/ls_pca.md).
 
 - pc_x:
 

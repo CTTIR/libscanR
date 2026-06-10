@@ -1,7 +1,7 @@
 # Plot an Element Map (alias)
 
 Convenience alias for
-[`ls_plot_map()`](https://r-heller.github.io/libscanR/reference/ls_plot_map.md).
+[`ls_plot_map()`](https://cttir.github.io/libscanR/reference/ls_plot_map.md).
 
 ## Usage
 
@@ -18,7 +18,7 @@ ls_plot_element_map(map, ...)
 - ...:
 
   Passed to
-  [`ls_plot_map()`](https://r-heller.github.io/libscanR/reference/ls_plot_map.md).
+  [`ls_plot_map()`](https://cttir.github.io/libscanR/reference/ls_plot_map.md).
 
 ## Value
 
