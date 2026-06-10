@@ -97,7 +97,7 @@ spec_in
 #> <libs_spectrum>
 #> • Range: 200-900 nm (1024 channels)
 #> • Shots: 1
-#> • Sample: "file207f110922da"
+#> • Sample: "file20cb53a2433a"
 #> • Baseline corrected: FALSE
 ```
 
