@@ -21,3 +21,4 @@
 ^_sanity\.R$
 ^_check_pkgs\.R$
 ^cran-comments\.md$
+^_pkgdown\.yml$

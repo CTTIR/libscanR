@@ -56,3 +56,4 @@ Suggests:
     covr
 VignetteBuilder: knitr
 LazyData: false
+Config/Needs/website: CTTIR/themakR
