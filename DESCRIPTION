@@ -3,7 +3,7 @@ Type: Package
 Title: Analysis and Visualization of Laser-Induced Breakdown Spectroscopy Data
 Version: 0.1.0
 Authors@R:
-    person("Raban", "Heller", email = "raban.heller@charite.de",
+    person("R.", "Heller", email = "raban.heller@charite.de",
            role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))
 Description: Provides a vendor-agnostic pipeline for importing, preprocessing,
     calibrating, and visualizing Laser-Induced Breakdown Spectroscopy (LIBS)
