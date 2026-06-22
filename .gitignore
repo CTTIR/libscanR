@@ -9,3 +9,8 @@ _build.R
 DROPHERE/
 *.tar.gz
 *.Rcheck/
+*.tmp
+*.log
+*~
+*.bak
+*.orig
