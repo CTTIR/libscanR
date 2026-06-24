@@ -20,5 +20,7 @@
 ^data-raw$
 ^_sanity\.R$
 ^_check_pkgs\.R$
+^fingerprint\.R$
+^_coverage$
 ^cran-comments\.md$
 ^_pkgdown\.yml$
