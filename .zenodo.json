@@ -1,0 +1,35 @@
+{
+  "upload_type": "software",
+  "title": "libscanR: Analysis and visualisation of laser-induced breakdown spectroscopy data",
+  "version": "0.1.0",
+  "publication_date": "2026-08-11",
+  "description": "<p>libscanR provides a vendor-neutral pipeline for importing, preprocessing, calibrating and visualising laser-induced breakdown spectroscopy measurements. It supports baseline correction and peak identification against curated atomic emission line databases, and offers both univariate and multivariate calibration, including calibration-free and Saha-Boltzmann approaches. Elemental quantification is accompanied by estimates of the limit of detection and limit of quantification. Chemometric methods such as principal component analysis, partial least squares discriminant analysis and clustering support tissue classification, alongside spatial mapping of elemental distributions. It is aimed at analytical and biomedical spectroscopy groups working with LIBS instrumentation.</p>",
+  "creators": [
+    {
+      "name": "Heller, Raban",
+      "orcid": "0000-0001-8006-9742"
+    }
+  ],
+  "contributors": [],
+  "license": "mit",
+  "access_right": "open",
+  "language": "eng",
+  "keywords": [
+    "libs",
+    "spectroscopy",
+    "chemometrics",
+    "elemental-analysis",
+    "calibration",
+    "r-package",
+    "rstats"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/CTTIR/libscanR",
+      "relation": "isSupplementTo",
+      "scheme": "url",
+      "resource_type": "software"
+    }
+  ],
+  "notes": "Prepared draft. Not yet published."
+}
