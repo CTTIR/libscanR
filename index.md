@@ -1,5 +1,7 @@
 # libscanR
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889942.svg)](https://doi.org/10.5281/zenodo.21889942)
+
 Vendor-agnostic analysis and visualization of **Laser-Induced Breakdown
 Spectroscopy (LIBS)** data in R, with a focus on biomedical tissue
 applications.
