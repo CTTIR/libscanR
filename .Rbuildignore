@@ -24,3 +24,4 @@
 ^_coverage$
 ^cran-comments\.md$
 ^_pkgdown\.yml$
+^tools/branding$
