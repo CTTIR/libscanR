@@ -1,5 +1,8 @@
 # Getting Started with libscanR
 
+![libscanR logo](figures/logo.svg)![libscanR
+logo](figures/logo-dark.svg)
+
 [![R-CMD-check](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/libscanR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/libscanR/)
 [![CRAN
@@ -112,7 +115,7 @@ spec_in
 #> <libs_spectrum>
 #> • Range: 200-900 nm (1024 channels)
 #> • Shots: 1
-#> • Sample: "file1e9a6264b000"
+#> • Sample: "file1f9d36f19c3f"
 #> • Baseline corrected: FALSE
 ```
 

@@ -1,5 +1,8 @@
 # Calibration and Quantification
 
+![libscanR logo](figures/logo.svg)![libscanR
+logo](figures/logo-dark.svg)
+
 [![R-CMD-check](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/libscanR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/libscanR/)
 [![CRAN
