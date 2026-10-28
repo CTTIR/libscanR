@@ -35,8 +35,7 @@ ui <- bslib::page_navbar(
   bslib::nav_spacer(),
   bslib::nav_item(
     shiny::tags$a(
-      shiny::tags$img(src = "logo.png", height = "30px",
-                      alt = "libscanR logo"),
+      utils::getFromNamespace(".cttir_brand_logo", "libscanR")(),
       href = "https://github.com/r-heller/libscanR",
       target = "_blank"
     )
