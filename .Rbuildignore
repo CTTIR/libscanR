@@ -8,7 +8,7 @@
 ^cran-comments\.md$
 ^\.archive$
 ^LICENSE\.md$
-^.*\.svg$
+^man/figures/.*\.svg$
 ^libscanR_icon\.svg$
 ^\.lintr$
 ^codecov\.yml$
