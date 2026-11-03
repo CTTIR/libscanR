@@ -5,14 +5,8 @@ logo](figures/logo-dark.svg)
 
 [![R-CMD-check](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/libscanR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/libscanR/)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/libscanR)](https://CRAN.R-project.org/package=libscanR)
 [![Codecov test
 coverage](https://codecov.io/gh/CTTIR/libscanR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/libscanR?branch=main)
-[![CRAN
-downloads](https://cranlogs.r-pkg.org/badges/libscanR)](https://cran.r-project.org/package=libscanR)
-[![CRAN downloads
-total](https://cranlogs.r-pkg.org/badges/grand-total/libscanR)](https://cran.r-project.org/package=libscanR)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle:
@@ -115,7 +109,7 @@ spec_in
 #> <libs_spectrum>
 #> • Range: 200-900 nm (1024 channels)
 #> • Shots: 1
-#> • Sample: "file1d866c6e5630"
+#> • Sample: "file1f3e7e7381ac"
 #> • Baseline corrected: FALSE
 ```
 
@@ -137,7 +131,7 @@ summary(ds)
 #>     liver 10
 #>    muscle 10
 #> ℹ Per-spectrum max intensity: median = 103.79, range =
-#> 94.1-643.47
+#> 94.1-596.38
 ```
 
 ## Next steps

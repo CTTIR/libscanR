@@ -91,7 +91,10 @@ Default 1.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Same class as input with normalized intensities.</p>
+    <p>Same class as input with normalized intensities. A zero or non-finite
+divisor is an error; a constant SNV shot becomes zero. Previous removed
+baselines are retained in <code>metadata$baseline_history</code> and cleared from
+<code>baseline</code>, because per-shot scaling changes their units.</p>
     </div>
 
     <div class="section level2">

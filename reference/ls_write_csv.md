@@ -21,7 +21,10 @@ ls_write_csv(x, path, include_metadata = TRUE)
 
 - include_metadata:
 
-  Logical. Prepend metadata as comment lines. Default `TRUE`.
+  Logical. Prepend metadata as comment lines. Default `TRUE`. JSON
+  comments preserve scalar values, arrays, nested lists, and the
+  baseline. Named vectors become JSON objects (lists on import);
+  R-specific classes and attributes are not preserved.
 
 ## Value
 

@@ -1,7 +1,11 @@
 # Export a LIBS Dataset to a Directory
 
 Writes each spectrum in a dataset as a separate CSV file, plus a
-`sample_info.csv` metadata table.
+`sample_info.csv` metadata table. IDs must be unique portable filenames.
+Existing output is left intact if `overwrite = FALSE`; if any target
+exists, the whole export is skipped. All files are staged before
+replacement, with rollback on ordinary write failures. Concurrent
+writers and power-loss recovery are not supported.
 
 ## Usage
 

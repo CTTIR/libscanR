@@ -59,7 +59,8 @@ sharing a common wavelength axis, plus a sample-info table.</p>
 
 <dl><dt id="arg-spectra">spectra<a class="anchor" aria-label="anchor" href="#arg-spectra"></a></dt>
 <dd><p>List of <code>libs_spectrum</code> objects. All must share the same
-wavelength axis (channels and values within 0.1 nm tolerance).</p></dd>
+wavelength axis (exact channel values). Resample deliberately before
+combining measurements on different axes; no channels are relabelled.</p></dd>
 
 
 <dt id="arg-sample-info">sample_info<a class="anchor" aria-label="anchor" href="#arg-sample-info"></a></dt>

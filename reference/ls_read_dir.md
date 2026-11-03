@@ -31,8 +31,8 @@ ls_read_dir(
 - sample_info:
 
   data.frame/tibble. Optional sample metadata table. Must have a
-  `sample_id` column matching (or being a subset of) the filenames
-  without extension. Default `NULL`.
+  `sample_id` column matching all of the filenames without extension.
+  Default `NULL`.
 
 - ...:
 

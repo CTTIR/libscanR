@@ -34,8 +34,8 @@ ls_plot_spectrum(
 
 - normalize:
 
-  Logical. Normalize intensity to `[0, 1]` before plotting. Default
-  `FALSE`.
+  Logical. Divide intensity by its positive maximum before plotting.
+  Default `FALSE`.
 
 - snr_threshold:
 

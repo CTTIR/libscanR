@@ -1,7 +1,5 @@
 # libscanR ![libscanR logo](reference/figures/logo-with-name.png)
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889942.svg)](https://doi.org/10.5281/zenodo.21889942)
-
 Vendor-agnostic analysis and visualization of **Laser-Induced Breakdown
 Spectroscopy (LIBS)** data in R, with a focus on biomedical tissue
 applications.
@@ -35,6 +33,10 @@ applications.
   [`ls_example_data()`](https://cttir.github.io/libscanR/reference/ls_example_data.md)
   provides synthetic tissue, calibration, and spatial datasets — no
   instrument data required.
+
+This development checkout has not been submitted as a new release. The
+recorded DOI and CRAN package page did not resolve during the 3 November
+2026 audit; install from GitHub while distribution metadata is verified.
 
 ## Installation
 

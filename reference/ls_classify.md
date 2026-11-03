@@ -43,25 +43,25 @@ if (requireNamespace("e1071", quietly = TRUE)) {
 #> # A tibble: 20 × 3
 #>    sample_id predicted_class probability
 #>    <chr>     <chr>                 <dbl>
-#>  1 muscle_01 kidney                0.539
-#>  2 muscle_02 kidney                0.519
-#>  3 muscle_03 liver                 0.544
-#>  4 muscle_04 kidney                0.564
-#>  5 muscle_05 kidney                0.565
-#>  6 muscle_06 kidney                0.569
-#>  7 muscle_07 liver                 0.581
-#>  8 muscle_08 liver                 0.548
-#>  9 muscle_09 liver                 0.489
-#> 10 muscle_10 kidney                0.554
-#> 11 fat_01    liver                 0.548
-#> 12 fat_02    kidney                0.560
-#> 13 fat_03    kidney                0.545
-#> 14 fat_04    kidney                0.566
-#> 15 fat_05    liver                 0.559
-#> 16 fat_06    kidney                0.552
-#> 17 fat_07    liver                 0.587
-#> 18 fat_08    liver                 0.588
-#> 19 fat_09    liver                 0.551
-#> 20 fat_10    liver                 0.562
+#>  1 muscle_01 liver                 0.559
+#>  2 muscle_02 liver                 0.533
+#>  3 muscle_03 kidney                0.555
+#>  4 muscle_04 liver                 0.594
+#>  5 muscle_05 liver                 0.593
+#>  6 muscle_06 liver                 0.599
+#>  7 muscle_07 kidney                0.599
+#>  8 muscle_08 kidney                0.559
+#>  9 muscle_09 liver                 0.490
+#> 10 muscle_10 liver                 0.579
+#> 11 fat_01    kidney                0.554
+#> 12 fat_02    liver                 0.587
+#> 13 fat_03    liver                 0.567
+#> 14 fat_04    liver                 0.596
+#> 15 fat_05    kidney                0.574
+#> 16 fat_06    liver                 0.577
+#> 17 fat_07    kidney                0.608
+#> 18 fat_08    kidney                0.610
+#> 19 fat_09    kidney                0.563
+#> 20 fat_10    kidney                0.575
 # }
 ```

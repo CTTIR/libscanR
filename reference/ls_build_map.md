@@ -2,6 +2,8 @@
 
 Constructs a spatial map from LIBS line-scan or raster-scan data. The
 dataset's `sample_info` must include `x_pos` and `y_pos` columns.
+Coordinates must be finite numeric values and each pair must be unique;
+aggregate replicate positions explicitly before mapping them.
 
 ## Usage
 

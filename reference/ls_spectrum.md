@@ -13,14 +13,16 @@ ls_spectrum(wavelength, intensity, metadata = list(), baseline = NULL)
 
 - wavelength:
 
-  Numeric vector of wavelengths in nanometers. Must be sortable and
-  contain no NA.
+  Numeric vector of wavelengths in nanometers. Must be contain at least
+  two distinct, finite, positive values. Channels and the optional
+  baseline are sorted together in ascending wavelength order.
 
 - intensity:
 
   Numeric vector (single shot) or matrix (multiple shots) of emission
   intensities. If matrix: rows = shots, columns = wavelength channels,
-  `ncol(intensity)` must equal `length(wavelength)`.
+  `ncol(intensity)` must equal `length(wavelength)`. All values must be
+  finite; signed baseline-corrected intensities are supported.
 
 - metadata:
 

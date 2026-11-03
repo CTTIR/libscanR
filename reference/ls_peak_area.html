@@ -66,12 +66,17 @@ subtracted (linear interpolation between window edges).</p>
 
 
 <dt id="arg-window-nm">window_nm<a class="anchor" aria-label="anchor" href="#arg-window-nm"></a></dt>
-<dd><p>Numeric. Integration window width. Default 1.</p></dd>
+<dd><p>Numeric. Integration window width. Default 1.
+To support coarsely sampled input, the effective window is at least five
+median channel spacings, with up to five nearest channels used at edges.
+This does not resolve overlapping lines; inspect instrument resolution
+and the integration region before interpreting an area as an element.</p></dd>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>Character. <code>"trapezoidal"</code> or <code>"gaussian_fit"</code>.
-Default <code>"trapezoidal"</code>.</p></dd>
+Default <code>"trapezoidal"</code>. A failed, non-converged or non-physical Gaussian
+fit emits a warning and returns the trapezoidal area instead.</p></dd>
 
 </dl></div>
     <div class="section level2">

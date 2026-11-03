@@ -23,12 +23,17 @@ ls_peak_area(x, center_nm, window_nm = 1, method = "trapezoidal")
 
 - window_nm:
 
-  Numeric. Integration window width. Default 1.
+  Numeric. Integration window width. Default 1. To support coarsely
+  sampled input, the effective window is at least five median channel
+  spacings, with up to five nearest channels used at edges. This does
+  not resolve overlapping lines; inspect instrument resolution and the
+  integration region before interpreting an area as an element.
 
 - method:
 
   Character. `"trapezoidal"` or `"gaussian_fit"`. Default
-  `"trapezoidal"`.
+  `"trapezoidal"`. A failed, non-converged or non-physical Gaussian fit
+  emits a warning and returns the trapezoidal area instead.
 
 ## Value
 

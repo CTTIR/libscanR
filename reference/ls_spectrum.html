@@ -59,13 +59,15 @@ more intensity vectors (shots).</p>
 
 <dl><dt id="arg-wavelength">wavelength<a class="anchor" aria-label="anchor" href="#arg-wavelength"></a></dt>
 <dd><p>Numeric vector of wavelengths in nanometers. Must be
-sortable and contain no NA.</p></dd>
+contain at least two distinct, finite, positive values. Channels and the
+optional baseline are sorted together in ascending wavelength order.</p></dd>
 
 
 <dt id="arg-intensity">intensity<a class="anchor" aria-label="anchor" href="#arg-intensity"></a></dt>
 <dd><p>Numeric vector (single shot) or matrix (multiple shots)
 of emission intensities. If matrix: rows = shots, columns = wavelength
-channels, <code>ncol(intensity)</code> must equal <code>length(wavelength)</code>.</p></dd>
+channels, <code>ncol(intensity)</code> must equal <code>length(wavelength)</code>. All values
+must be finite; signed baseline-corrected intensities are supported.</p></dd>
 
 
 <dt id="arg-metadata">metadata<a class="anchor" aria-label="anchor" href="#arg-metadata"></a></dt>

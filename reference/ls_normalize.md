@@ -42,7 +42,10 @@ ls_normalize(x, method = "total", ref_wavelength = NULL, ref_window = 1)
 
 ## Value
 
-Same class as input with normalized intensities.
+Same class as input with normalized intensities. A zero or non-finite
+divisor is an error; a constant SNV shot becomes zero. Previous removed
+baselines are retained in `metadata$baseline_history` and cleared from
+`baseline`, because per-shot scaling changes their units.
 
 ## Examples
 

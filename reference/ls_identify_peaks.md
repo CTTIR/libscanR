@@ -48,12 +48,12 @@ head(id)
 #> # A tibble: 6 × 12
 #>   wavelength_nm intensity   snr prominence fwhm_nm  area element ionization
 #>           <dbl>     <dbl> <dbl>      <dbl>   <dbl> <dbl> <chr>        <int>
-#> 1          240.      98.7  67.4       9.70      NA     0 Ca               1
-#> 2          202.      97.1  65.1       2.03      NA     0 NA              NA
-#> 3          206.      95.7  63.0       1.56      NA     0 NA              NA
-#> 4          208.      95.7  63.0       1.04      NA     0 NA              NA
-#> 5          205.      95.4  62.6       1.23      NA     0 NA              NA
-#> 6          212.      94.9  61.8       1.59      NA     0 NA              NA
+#> 1          240.      98.7  67.4       9.70   0.913 5.58  Ca               1
+#> 2          202.      97.1  65.1       2.03   2.18  1.07  NA              NA
+#> 3          206.      95.7  63.0       1.56   1.39  0     NA              NA
+#> 4          208.      95.7  63.0       1.04   0.467 0.280 NA              NA
+#> 5          205.      95.4  62.6       1.23   0.628 0.267 NA              NA
+#> 6          212.      94.9  61.8       1.59   0.653 0.307 NA              NA
 #> # ℹ 4 more variables: nist_wavelength_nm <dbl>, nist_aki <dbl>,
 #> #   deviation_nm <dbl>, confidence <dbl>
 ```

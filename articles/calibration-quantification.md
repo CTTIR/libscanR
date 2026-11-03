@@ -5,14 +5,8 @@ logo](figures/logo-dark.svg)
 
 [![R-CMD-check](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/libscanR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/libscanR/)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/libscanR)](https://CRAN.R-project.org/package=libscanR)
 [![Codecov test
 coverage](https://codecov.io/gh/CTTIR/libscanR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/libscanR?branch=main)
-[![CRAN
-downloads](https://cranlogs.r-pkg.org/badges/libscanR)](https://cran.r-project.org/package=libscanR)
-[![CRAN downloads
-total](https://cranlogs.r-pkg.org/badges/grand-total/libscanR)](https://cran.r-project.org/package=libscanR)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle:
@@ -144,6 +138,6 @@ ls_saha_boltzmann(
 #> # A tibble: 2 × 6
 #>   element temperature_k concentration_rel electron_density n_lines r_squared
 #>   <chr>           <dbl>             <dbl>            <dbl>   <int>     <dbl>
-#> 1 Ca           -113215.             0.595             1e17       3     0.993
-#> 2 Fe             53153.             0.405             1e17       3     0.144
+#> 1 Ca           -113828.             0.591             1e17       3     0.994
+#> 2 Fe             51522.             0.409             1e17       3     0.145
 ```

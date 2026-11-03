@@ -23,7 +23,8 @@ ls_plot_overlay(dataset, color_by = NULL, normalize = FALSE, alpha = 0.5)
 
 - normalize:
 
-  Logical. Normalize each spectrum to `[0, 1]`. Default `FALSE`.
+  Logical. Divide each spectrum by its positive maximum. Default
+  `FALSE`.
 
 - alpha:
 

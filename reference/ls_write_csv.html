@@ -67,7 +67,9 @@ one column per shot.</p>
 
 <dt id="arg-include-metadata">include_metadata<a class="anchor" aria-label="anchor" href="#arg-include-metadata"></a></dt>
 <dd><p>Logical. Prepend metadata as comment lines.
-Default <code>TRUE</code>.</p></dd>
+Default <code>TRUE</code>. JSON comments preserve scalar values, arrays, nested lists,
+and the baseline. Named vectors become JSON objects (lists on import);
+R-specific classes and attributes are not preserved.</p></dd>
 
 </dl></div>
     <div class="section level2">

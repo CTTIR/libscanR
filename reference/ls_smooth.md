@@ -1,8 +1,9 @@
 # Smooth Spectra
 
 Applies spectral smoothing. Methods: `"savgol"` (Savitzky-Golay, needs
-the `signal` package; otherwise falls back to moving average with a
-warning), `"moving_avg"`, `"gaussian"`, `"median"`.
+the `signal` package when available, otherwise uses local polynomial
+least squares with an intercept), `"moving_avg"`, `"gaussian"`,
+`"median"`.
 
 ## Usage
 

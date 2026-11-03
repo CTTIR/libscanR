@@ -47,13 +47,18 @@ data with a focus on biomedical tissue analysis.
 
 Useful links:
 
-- <https://github.com/r-heller/libscanR>
+- <https://github.com/cttir/libscanR>
 
-- <https://r-heller.github.io/libscanR/>
+- <https://cttir.github.io/libscanR/>
 
-- Report bugs at <https://github.com/r-heller/libscanR/issues>
+- Report bugs at <https://github.com/cttir/libscanR/issues>
 
 ## Author
 
-**Maintainer**: Raban Heller <raban.heller@charite.de>
+**Maintainer**: R. Heller <raban.heller@charite.de>
 ([ORCID](https://orcid.org/0000-0001-8006-9742))
+
+Authors:
+
+- R. Heller <raban.heller@charite.de>
+  ([ORCID](https://orcid.org/0000-0001-8006-9742))

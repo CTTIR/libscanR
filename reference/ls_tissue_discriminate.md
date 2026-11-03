@@ -58,12 +58,12 @@ with columns `wavelength_nm`, `mean_a`, `mean_b`, `p_value`,
 ds <- ls_example_data("tissue")
 head(ls_tissue_discriminate(ds, "tissue", "bone", "muscle"))
 #> # A tibble: 6 × 8
-#>   wavelength_nm mean_a mean_b   p_value fold_change      fdr significant element
-#>           <dbl>  <dbl>  <dbl>     <dbl>       <dbl>    <dbl> <lgl>       <chr>  
-#> 1          719.   78.4   41.7 3.18 e-10       0.894  1.84e-7 FALSE       NA     
-#> 2          432.   87.0   68.4 3.59 e-10       0.343  1.84e-7 FALSE       NA     
-#> 3          647.  121.    47.3 9.08 e-10       1.34   2.56e-7 TRUE        NA     
-#> 4          866.   47.4   32.5 1.000e- 9       0.532  2.56e-7 FALSE       NA     
-#> 5          715.  101.    41.8 2.02 e- 9       1.25   3.04e-7 TRUE        NA     
-#> 6          656.  110.    46.3 1.96 e- 9       1.23   3.04e-7 TRUE        H      
+#>   wavelength_nm mean_a mean_b  p_value fold_change      fdr significant element
+#>           <dbl>  <dbl>  <dbl>    <dbl>       <dbl>    <dbl> <lgl>       <chr>  
+#> 1          866.   48.8   32.1 1.43e-13       0.588 1.46e-10 FALSE       NA     
+#> 2          716.   63.0   41.7 1.10e-11       0.583 5.63e- 9 FALSE       NA     
+#> 3          422.  491.    69.0 5.51e- 9       2.81  2.26e- 7 TRUE        NA     
+#> 4          423.  460.    69.6 3.85e- 9       2.71  2.26e- 7 TRUE        NA     
+#> 5          488.  352.    62.0 5.84e- 9       2.49  2.26e- 7 TRUE        NA     
+#> 6          487.  327.    61.9 5.62e- 9       2.38  2.26e- 7 TRUE        NA     
 ```

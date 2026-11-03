@@ -5,14 +5,8 @@ logo](figures/logo-dark.svg)
 
 [![R-CMD-check](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/libscanR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/libscanR/)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/libscanR)](https://CRAN.R-project.org/package=libscanR)
 [![Codecov test
 coverage](https://codecov.io/gh/CTTIR/libscanR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/libscanR?branch=main)
-[![CRAN
-downloads](https://cranlogs.r-pkg.org/badges/libscanR)](https://cran.r-project.org/package=libscanR)
-[![CRAN downloads
-total](https://cranlogs.r-pkg.org/badges/grand-total/libscanR)](https://cran.r-project.org/package=libscanR)
 [![License:
 MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle:
@@ -63,21 +57,21 @@ head(d[!is.na(d$element) & d$significant, c("wavelength_nm",
                                             "fold_change",
                                             "fdr")], 15)
 #> # A tibble: 13 × 4
-#>    wavelength_nm element fold_change        fdr
-#>            <dbl> <chr>         <dbl>      <dbl>
-#>  1          240. Ca             2.30 0.00000162
-#>  2          657. Ca             1.95 0.00000162
-#>  3          422. Sr             1.86 0.00000162
-#>  4          644. Ca             1.70 0.00000162
-#>  5          646. Ca             1.65 0.00000162
-#>  6          444. Ca             1.59 0.00000162
-#>  7          720. Ca             1.56 0.00000162
-#>  8          650. Ca             1.52 0.00000162
-#>  9          394. Al             1.46 0.00000162
-#> 10          656. H              1.26 0.00000162
-#> 11          446. Ca             1.86 0.00000169
-#> 12          586. Ca             1.44 0.00000173
-#> 13          616. Ca             1.53 0.00000180
+#>    wavelength_nm element fold_change         fdr
+#>            <dbl> <chr>         <dbl>       <dbl>
+#>  1          240. Ca             2.30 0.000000226
+#>  2          657. Ca             1.94 0.000000226
+#>  3          446. Ca             1.86 0.000000226
+#>  4          644. Ca             1.70 0.000000226
+#>  5          646. Ca             1.65 0.000000226
+#>  6          616. Ca             1.52 0.000000226
+#>  7          650. Ca             1.52 0.000000226
+#>  8          444. Ca             1.58 0.000000231
+#>  9          422. Sr             1.86 0.000000280
+#> 10          720. Ca             1.56 0.000000280
+#> 11          394. Al             1.46 0.000000327
+#> 12          586. Ca             1.45 0.000000327
+#> 13          656. H              1.27 0.000000564
 ```
 
 ## PLS-DA classification

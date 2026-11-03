@@ -68,6 +68,6 @@ ls_saha_boltzmann(spec,
 #> # A tibble: 2 × 6
 #>   element temperature_k concentration_rel electron_density n_lines r_squared
 #>   <chr>           <dbl>             <dbl>            <dbl>   <int>     <dbl>
-#> 1 Ca            -65656.         0.0000425             1e17       3     0.449
-#> 2 Fe              4378.         1.000                 1e17       3     0.907
+#> 1 Ca            -65665.         0.0000423             1e17       3     0.449
+#> 2 Fe              4377.         1.000                 1e17       3     0.907
 ```
