@@ -41,7 +41,7 @@ ls_write_csv <- function(x, path, include_metadata = TRUE) {
   }
   # Encode before opening a file: unsupported metadata must not truncate output.
   header <- if (include_metadata) paste0("# libscanR-json-v1: ",
-    jsonlite::toJSON(list(metadata = .json_metadata(x$metadata), baseline = x$baseline),
+    jsonlite::toJSON(list(metadata = .json_metadata(x$metadata), baseline = x[["baseline"]]),
                      auto_unbox = TRUE, null = "null", digits = NA)) else character()
   con <- file(path, open = "wt", encoding = "UTF-8")
   on.exit(close(con), add = TRUE)
@@ -104,7 +104,7 @@ ls_export_spectra <- function(dataset, dir, overwrite = FALSE) {
   for (i in seq_along(dataset$spectra)) {
     .write_spectrum_csv(dataset$spectra[[i]], staged[i])
   }
-  utils::write.csv(dataset$sample_info, tail(staged, 1L), row.names = FALSE)
+  utils::write.csv(dataset$sample_info, utils::tail(staged, 1L), row.names = FALSE)
   .publish_files(staged, paths)
   invisible(dir)
 }
@@ -120,7 +120,7 @@ ls_export_spectra <- function(dataset, dir, overwrite = FALSE) {
     cli::cli_abort("The output target must not be a symbolic link.")
   }
   if (!directory && dir.exists(path)) cli::cli_abort("Output file is a directory.")
-  if (!directory && file.exists(path) && !file_test("-f", path)) {
+  if (!directory && file.exists(path) && !utils::file_test("-f", path)) {
     cli::cli_abort("Existing output must be a regular file.")
   }
   if (directory && file.exists(path) && !dir.exists(path)) {

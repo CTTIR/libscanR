@@ -52,15 +52,15 @@ ls_read_spectrum <- function(path, format = "auto", wavelength_col = 1,
     sample_id = tools::file_path_sans_ext(basename(path))
   ), payload$metadata)
   meta <- utils::modifyList(meta, metadata)
-  if (!is.null(meta$source_file)) {
-    meta$source_history <- c(meta$source_history,
-                             list(list(source_file = meta$source_file,
-                                       import_time = meta$import_time)))
+  if (!is.null(.meta_get(meta, "source_file", NULL))) {
+    meta$source_history <- c(.meta_get(meta, "source_history", list()),
+                             list(list(source_file = meta[["source_file"]],
+                                       import_time = .meta_get(meta, "import_time", NULL))))
   }
   meta$source_file <- path
   meta$import_time <- base::format(Sys.time(), "%Y-%m-%d %H:%M:%S")
   spec <- ls_spectrum(wavelength = wl, intensity = intensity,
-                      metadata = meta, baseline = payload$baseline)
+                      metadata = meta, baseline = payload[["baseline"]])
 
   if (verbose) {
     cli::cli_inform(c(
@@ -208,7 +208,8 @@ ls_read_csv <- function(path, ...) {
                                           simplifyDataFrame = FALSE,
                                           simplifyMatrix = FALSE),
                         error = function(e) cli::cli_abort("Invalid libscanR JSON metadata."))
-    if (!is.list(payload) || !all(c("metadata", "baseline") %in% names(payload))) {
+    if (!is.list(payload) || anyDuplicated(names(payload)) ||
+        !all(c("metadata", "baseline") %in% names(payload))) {
       cli::cli_abort("Invalid libscanR metadata structure.")
     }
     .check_metadata(payload$metadata)

@@ -93,3 +93,14 @@ test_that("seeded example generation is reproducible without changing session RN
   ls_example_data("tissue", seed = 2, n_channels = 16)
   expect_false(exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE))
 })
+test_that("Gaussian peak areas require a converged physical fit", {
+  wl <- seq(490, 510, length.out = 101)
+  doublet <- ls_spectrum(wl, exp(-(wl - 499)^2 / .1) + exp(-(wl - 501)^2 / .1))
+  trapezoid <- ls_peak_area(doublet, 500, 6)
+  expect_warning(area <- ls_peak_area(doublet, 500, 6, "gaussian_fit"),
+                  "using the trapezoidal area", class = "libscanR_peak_fit_warning")
+  expect_equal(area, trapezoid)
+  gaussian <- ls_spectrum(wl, 3 * exp(-(wl - 500)^2 / (2 * .3^2)))
+  expect_equal(ls_peak_area(gaussian, 500, 6, "gaussian_fit"),
+                3 * .3 * sqrt(2 * pi), tolerance = 1e-8)
+})

@@ -118,3 +118,18 @@ coarse-channel integration expansion is now documented explicitly. These
 changes require deliberate data alignment and adequate spectral resolution.
 Scientific calibration, explorer journeys and final release qualification are
 still pending; this checkpoint is not a release-readiness claim.
+
+
+The follow-up review requires exact structural and metadata field names and
+rejects non-converged Gaussian fits. A synthetic doublet previously returned an
+area from a fit that exceeded its iteration limit; it now reports a named warning
+and returns the measured trapezoidal result. Positive Gaussian and failure-path
+regressions cover the change. These code-only repairs do not update atomic data;
+the scientific/reference and explorer milestones remain under local qualification.
+
+The isolated code-only candidate passes the complete direct suite: 446 assertions,
+zero failures, errors, warnings or skips. Independent diff review found no material
+issue in the exact-name and Gaussian-fit follow-up, and confirmed that no atomic
+data files changed. The source-package check also identified two unqualified
+`utils` calls; both now use explicit namespaces. Final source-package evidence
+and the remote main receipt are retained in the maintenance audit directory.

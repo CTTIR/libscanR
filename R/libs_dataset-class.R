@@ -51,7 +51,7 @@ ls_dataset <- function(spectra, sample_info = NULL) {
   }
 
   sample_ids <- unname(vapply(spectra, function(s) {
-    .sample_id(s$metadata$sample_id)
+    .sample_id(.meta_get(s$metadata, "sample_id", NULL))
   }, character(1)))
 
   if (anyDuplicated(sample_ids[!is.na(sample_ids)])) {

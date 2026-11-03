@@ -12,7 +12,7 @@ print.libs_spectrum <- function(x, ...) {
     "*" = "Range: {.val {round(x$range_nm[1], 2)}}-{.val {round(x$range_nm[2], 2)}} nm ({x$n_channels} channels)",
     "*" = "Shots: {x$n_shots}",
     "*" = "Sample: {.val {sid}}{if (!is.na(mat)) paste0(' (', mat, ')') else ''}",
-    "*" = "Baseline corrected: {.val {!is.null(x$baseline)}}"
+    "*" = "Baseline corrected: {.val {!is.null(x[['baseline']])}}"
   ))
   invisible(x)
 }
@@ -100,7 +100,7 @@ plot.libs_spectrum <- function(x, y, ...) {
     wavelength = x$wavelength[idx],
     intensity = x$intensity[, idx, drop = FALSE],
     metadata = x$metadata,
-    baseline = if (is.null(x$baseline)) NULL else x$baseline[idx]
+    baseline = if (is.null(x[["baseline"]])) NULL else x[["baseline"]][idx]
   )
 }
 
@@ -135,9 +135,9 @@ c.libs_spectrum <- function(...) {
   }
   shared$combined_metadata <- lapply(args, function(a) a$metadata)
   baseline <- NULL
-  if (all(vapply(args, function(a) !is.null(a$baseline), logical(1)))) {
+  if (all(vapply(args, function(a) !is.null(a[["baseline"]]), logical(1)))) {
     weights <- vapply(args, function(a) a$n_shots, numeric(1))
-    baseline <- Reduce(`+`, Map(function(a, n) a$baseline * (n / sum(weights)),
+    baseline <- Reduce(`+`, Map(function(a, n) a[["baseline"]] * (n / sum(weights)),
                                 args, weights))
   }
   ls_spectrum(wavelength = wl, intensity = combined,

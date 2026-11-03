@@ -196,7 +196,8 @@ ls_identify_peaks <- function(peaks, elements = NULL, tolerance_nm = 0.2,
 #'   This does not resolve overlapping lines; inspect instrument resolution
 #'   and the integration region before interpreting an area as an element.
 #' @param method Character. `"trapezoidal"` or `"gaussian_fit"`.
-#'   Default `"trapezoidal"`.
+#'   Default `"trapezoidal"`. A failed, non-converged or non-physical Gaussian
+#'   fit emits a warning and returns the trapezoidal area instead.
 #'
 #' @return Numeric. Baseline-subtracted integrated peak area.
 #'
@@ -239,18 +240,28 @@ ls_peak_area <- function(x, center_nm, window_nm = 1,
   mu0 <- wl_seg[which.max(y_corr)]
   sigma0 <- window_nm / 4
   A0 <- max(y_corr)
+  if (A0 <= 0) return(0)
+  failure <- NULL
   fit <- tryCatch(
     stats::nls(y_corr ~ A * exp(-((wl_seg - mu)^2) / (2 * sigma^2)),
                start = list(A = A0, mu = mu0, sigma = sigma0),
-               control = stats::nls.control(warnOnly = TRUE)),
-    error = function(e) NULL
+               control = stats::nls.control(warnOnly = FALSE)),
+    error = function(e) {
+      failure <<- conditionMessage(e)
+      NULL
+    }
   )
-  if (is.null(fit)) {
+  co <- if (!is.null(fit)) stats::coef(fit) else NULL
+  # Area under Gaussian = A * sigma * sqrt(2*pi)
+  area <- if (!is.null(co)) co[["A"]] * abs(co[["sigma"]]) * sqrt(2 * pi) else NA_real_
+  if (is.null(fit) || !isTRUE(fit$convInfo$isConv) ||
+      any(!is.finite(co)) || co[["A"]] < 0 || co[["sigma"]] == 0 ||
+      co[["mu"]] < min(wl_seg) || co[["mu"]] > max(wl_seg) || !is.finite(area)) {
+    cli::cli_warn("Gaussian peak fit failed ({failure %||% 'invalid fitted parameters'}); using the trapezoidal area.",
+                  class = "libscanR_peak_fit_warning")
     return(max(0, .trapz(wl_seg, y_corr)))
   }
-  co <- stats::coef(fit)
-  # Area under Gaussian = A * sigma * sqrt(2*pi)
-  max(0, co[["A"]] * abs(co[["sigma"]]) * sqrt(2 * pi))
+  area
 }
 
 # -----------------------------------------------------------------------------

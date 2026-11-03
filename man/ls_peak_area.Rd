@@ -18,7 +18,8 @@ This does not resolve overlapping lines; inspect instrument resolution
 and the integration region before interpreting an area as an element.}
 
 \item{method}{Character. \code{"trapezoidal"} or \code{"gaussian_fit"}.
-Default \code{"trapezoidal"}.}
+Default \code{"trapezoidal"}. A failed, non-converged or non-physical Gaussian
+fit emits a warning and returns the trapezoidal area instead.}
 }
 \value{
 Numeric. Baseline-subtracted integrated peak area.

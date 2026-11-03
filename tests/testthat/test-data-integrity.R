@@ -173,3 +173,22 @@ test_that("malformed rectangular input is rejected without guessing a lost chann
   writeLines(c("wavelength,intensity", "500,1,2", "501,2,3", "502,3,4"), file)
   expect_error(ls_read_spectrum(file, verbose = FALSE), "inconsistent column counts")
 })
+test_that("structural fields and metadata use exact names", {
+  s <- ls_spectrum(1:4, 2:5, metadata = list(sample_id_unknown = "wrong"))
+  d <- ls_dataset(list(s))
+  expect_identical(d$sample_info$sample_id, "sample_1")
+  invalid <- s
+  names(invalid)[names(invalid) == "wavelength"] <- "wavelength_unknown"
+  expect_error(ls_normalize(invalid), "Invalid.*structure")
+  invalid <- d
+  names(invalid)[names(invalid) == "intensity_matrix"] <- "intensity_matrix_unknown"
+  expect_error(ls_normalize(invalid), "Invalid dataset structure")
+  invalid <- d
+  names(invalid$sample_info)[1] <- "sample_id_unknown"
+  expect_error(ls_normalize(invalid), "alignment")
+  s$metadata$processing_unknown <- list(list(operation = "not-performed"))
+  processed <- ls_normalize(s)
+  expect_length(processed$metadata$processing, 1L)
+  expect_identical(processed$metadata$processing[[1]]$operation, "normalize")
+  expect_identical(processed$metadata$processing_unknown, s$metadata$processing_unknown)
+})

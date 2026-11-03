@@ -152,9 +152,9 @@ ls_normalize <- function(x, method = "total", ref_wavelength = NULL,
 
   meta <- .record_processing(x$metadata, "normalize", list(
     method = method, ref_wavelength = ref_wavelength, ref_window = ref_window))
-  if (!is.null(x$baseline)) {
-    meta$baseline_history <- c(meta$baseline_history,
-                              list(list(stage = "before normalization", values = x$baseline)))
+  if (!is.null(x[["baseline"]])) {
+    meta$baseline_history <- c(.meta_get(meta, "baseline_history", list()),
+                              list(list(stage = "before normalization", values = x[["baseline"]])))
   }
   ls_spectrum(
     wavelength = x$wavelength,
@@ -218,7 +218,7 @@ ls_smooth <- function(x, method = "savgol", window = 11, poly_order = 3) {
     intensity = new_int,
     metadata = .record_processing(x$metadata, "smooth", list(
       method = method, window = window, poly_order = poly_order)),
-    baseline = x$baseline
+    baseline = x[["baseline"]]
   )
 }
 
@@ -256,7 +256,7 @@ ls_crop <- function(x, min_nm = NULL, max_nm = NULL) {
     wavelength = wl[idx],
     intensity = x$intensity[, idx, drop = FALSE],
     metadata = .record_processing(x$metadata, "crop", list(min_nm = min_nm, max_nm = max_nm)),
-    baseline = if (is.null(x$baseline)) NULL else x$baseline[idx]
+    baseline = if (is.null(x[["baseline"]])) NULL else x[["baseline"]][idx]
   )
 }
 
@@ -312,7 +312,7 @@ ls_average_shots <- function(x, method = "mean", trim = 0,
     wavelength = x$wavelength,
     intensity = matrix(avg, nrow = 1),
     metadata = new_meta,
-    baseline = x$baseline
+    baseline = x[["baseline"]]
   )
 }
 
@@ -523,7 +523,9 @@ ls_gate_optimize <- function(spectra, element, line_nm, window_nm = 1) {
 
 
 .record_processing <- function(metadata, operation, parameters) {
-  metadata$processing <- c(metadata$processing,
+  history <- .meta_get(metadata, "processing", list())
+  if (!is.list(history)) cli::cli_abort("metadata$processing must be a list of processing steps.")
+  metadata$processing <- c(history,
                            list(list(operation = operation, parameters = parameters)))
   metadata
 }

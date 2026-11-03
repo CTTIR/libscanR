@@ -13,6 +13,10 @@
   use the spectrum prediction path. Document coarse-channel integration expansion
   and the Gaussian demonstration model's limits.
 
+* Match structural and metadata fields exactly to prevent aliased sample IDs or
+  processing histories. Reject unconverged Gaussian peak fits with a visible
+  warning and a trapezoidal fallback.
+
 # libscanR 0.1.0
 
 * Standardize the named v5 package logo across README, documentation pages

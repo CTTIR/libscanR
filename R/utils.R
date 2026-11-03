@@ -12,6 +12,11 @@
       "x" = "You supplied a {.cls {class(x)[1]}}."
     ))
   }
+  if (!is.list(x) || anyDuplicated(names(x)) ||
+      !all(c("wavelength", "intensity", "metadata", "n_shots",
+             "n_channels", "range_nm") %in% names(x))) {
+    cli::cli_abort("Invalid {.cls libs_spectrum} structure; rebuild it with {.fn ls_spectrum}.")
+  }
   .check_wavelength(x$wavelength)
   .check_metadata(x$metadata)
   if (is.unsorted(x$wavelength, strictly = TRUE) ||
@@ -24,10 +29,10 @@
       !identical(as.numeric(x$range_nm), range(x$wavelength))) {
     cli::cli_abort("Invalid {.cls libs_spectrum} structure; rebuild it with {.fn ls_spectrum}.")
   }
-  if (!is.null(x$baseline) &&
-      (!is.numeric(x$baseline) || is.complex(x$baseline) ||
-       !is.null(dim(x$baseline)) || any(!is.finite(x$baseline)) ||
-       length(x$baseline) != x$n_channels)) {
+  if (!is.null(x[["baseline"]]) &&
+      (!is.numeric(x[["baseline"]]) || is.complex(x[["baseline"]]) ||
+       !is.null(dim(x[["baseline"]])) || any(!is.finite(x[["baseline"]])) ||
+       length(x[["baseline"]]) != x$n_channels)) {
     cli::cli_abort("Invalid spectrum baseline; rebuild it with {.fn ls_spectrum}.")
   }
   invisible(TRUE)
@@ -43,18 +48,25 @@
       "x" = "You supplied a {.cls {class(x)[1]}}."
     ))
   }
+  if (!is.list(x) || anyDuplicated(names(x)) ||
+      !all(c("spectra", "sample_info", "wavelength", "n_spectra", "n_channels",
+             "intensity_matrix", "range_nm") %in% names(x))) {
+    cli::cli_abort("Invalid dataset structure; rebuild with {.fn ls_dataset}.")
+  }
   if (!is.list(x$spectra) || !length(x$spectra)) {
     cli::cli_abort("Invalid dataset spectra; rebuild with {.fn ls_dataset}.")
   }
   invisible(lapply(x$spectra, .validate_spectrum))
   ids <- unname(vapply(x$spectra, function(s) {
-    .sample_id(s$metadata$sample_id, allow_missing = FALSE)
+    .sample_id(.meta_get(s$metadata, "sample_id", NULL), allow_missing = FALSE)
   }, character(1)))
   axes_match <- vapply(x$spectra, function(s) {
     .same_axis(s$wavelength, x$wavelength)
   }, logical(1))
   if (anyDuplicated(ids) || !all(axes_match) ||
       !is.data.frame(x$sample_info) ||
+      anyDuplicated(names(x$sample_info)) ||
+      !"sample_id" %in% names(x$sample_info) ||
       !identical(as.character(x$sample_info$sample_id), ids) ||
       !.same_count(x$n_spectra, length(x$spectra)) ||
       !.same_count(x$n_channels, length(x$wavelength)) ||
@@ -148,7 +160,7 @@
 .build_intensity_matrix <- function(spectra) {
   mat <- do.call(rbind, lapply(spectra, .mean_intensity))
   rownames(mat) <- vapply(spectra, function(s) {
-    id <- s$metadata$sample_id
+    id <- .meta_get(s$metadata, "sample_id", NULL)
     if (is.null(id)) NA_character_ else as.character(id)
   }, character(1))
   mat

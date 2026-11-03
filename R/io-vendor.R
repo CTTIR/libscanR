@@ -42,7 +42,7 @@ ls_read_sciaps <- function(path, verbose = TRUE) {
 
   meta$source_file <- path
   meta$vendor <- "SciAps"
-  meta$sample_id <- meta$sample_id %||% tools::file_path_sans_ext(basename(path))
+  meta$sample_id <- .meta_get(meta, "sample_id", tools::file_path_sans_ext(basename(path)))
 
   spec <- ls_spectrum(wavelength = wl, intensity = intensity,
                       metadata = meta)
