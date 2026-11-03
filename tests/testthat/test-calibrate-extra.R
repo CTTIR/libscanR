@@ -18,7 +18,13 @@ test_that("ls_calibrate internal_std requires reference line", {
                  verbose = FALSE),
     "internal_std_nm"
   )
-  cal <- ls_calibrate(ds, "Ca", 393.37, conc, method = "internal_std",
+  # This capability fixture has a measured positive reference in every standard;
+  # a coarse simulated spectrum need not contain that reference line.
+  ds <- ls_dataset(lapply(1:5, function(i) {
+    ls_spectrum(c(392, 393.37, 395, 588, 589, 590),
+                c(0, i, 0, 0, 2, 0), list(sample_id = paste0("s", i)))
+  }))
+  cal <- ls_calibrate(ds, "Ca", 393.37, 1:5, method = "internal_std",
                       internal_std_nm = 589.0, verbose = FALSE)
   expect_s3_class(cal, "libs_calibration")
 })
@@ -42,7 +48,7 @@ test_that("ls_calibrate is verbose for univariate", {
 })
 
 test_that("ls_saha_boltzmann errors for unnamed lines and all-fail", {
-  s <- ls_simulate_spectrum(elements = c(Ca = 10000), seed = 3,
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), elements = c(Ca = 10000), seed = 3,
                             n_channels = 512)
   s <- ls_baseline(s, method = "snip", iterations = 30)
   expect_error(ls_saha_boltzmann(s, elements = "Ca", lines_nm = list(123)),

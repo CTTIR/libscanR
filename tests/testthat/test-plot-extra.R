@@ -2,7 +2,7 @@
 
 # --- plot-calibration.R ------------------------------------------------------
 
-test_that("ls_plot_calibration toggles and PLS warning + residual paths", {
+test_that("ls_plot_calibration toggles and PLS training-fit diagnostics", {
   ds <- ls_example_data("calibration", n_channels = 128)
   conc <- ds$sample_info$concentration
   cal <- ls_calibrate(ds, "Ca", 393.37, conc, verbose = FALSE)
@@ -18,7 +18,7 @@ test_that("ls_plot_calibration toggles and PLS warning + residual paths", {
   skip_if_not_installed("pls")
   cal_pls <- ls_calibrate(ds, "Ca", 393.37, conc, method = "pls",
                           n_components = 2, verbose = FALSE)
-  expect_warning(ls_plot_calibration(cal_pls), "PLS")
+  expect_s3_class(ls_plot_calibration(cal_pls), "ggplot")
   expect_s3_class(ls_plot_residuals(cal_pls), "ggplot")
 })
 

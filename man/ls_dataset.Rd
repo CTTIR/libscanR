@@ -25,7 +25,7 @@ sharing a common wavelength axis, plus a sample-info table.
 }
 \examples{
 specs <- lapply(1:3, function(i) {
-  ls_simulate_spectrum(elements = c(Ca = 1000 * i, Na = 500), seed = i)
+  ls_simulate_spectrum(line_data = ls_demo_peaks(), elements = c(Ca = 1000 * i, Na = 500), seed = i)
 })
 specs <- Map(function(s, id) {
   s$metadata$sample_id <- paste0("s", id)

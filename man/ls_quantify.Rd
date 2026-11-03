@@ -11,14 +11,17 @@ ls_quantify(calibration, x, window_nm = NULL)
 
 \item{x}{A \code{\link[=ls_spectrum]{ls_spectrum()}} or \code{\link[=ls_dataset]{ls_dataset()}} object.}
 
-\item{window_nm}{Numeric. Peak integration window. Defaults to 1 if NULL.}
+\item{window_nm}{Optional numeric integration window. \code{NULL} reuses the fitted
+window; a different supplied value is rejected.}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble::tibble()}} with columns \code{sample_id}, \code{element},
 \code{concentration}, \code{unit}, \code{below_lod}, \code{below_loq}.
 }
 \description{
-Applies a calibration model to unknown spectra.
+Applies a calibration model using its saved wavelength axis, preprocessing and
+extraction contract. Legacy models without this contract must be refitted.
+Unavailable detection-limit flags are \code{NA}, not FALSE.
 }
 \examples{
 ds <- ls_example_data("calibration")

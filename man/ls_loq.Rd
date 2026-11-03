@@ -4,14 +4,14 @@
 \alias{ls_loq}
 \title{Limit of Quantification (10-sigma)}
 \usage{
-ls_loq(calibration, blank = NULL, window_nm = 1)
+ls_loq(calibration, blank = NULL, window_nm = NULL)
 }
 \arguments{
 \item{calibration}{A \code{\link[=ls_calibration]{ls_calibration()}} object.}
 
 \item{blank}{Optional \code{\link[=ls_spectrum]{ls_spectrum()}} of a blank sample.}
 
-\item{window_nm}{Numeric. Integration window. Default 1.}
+\item{window_nm}{Optional window; \code{NULL} uses the fitted window.}
 }
 \value{
 Numeric LOQ in the calibration's concentration unit.

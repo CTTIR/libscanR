@@ -52,6 +52,16 @@ A \code{\link[=ls_calibration]{ls_calibration()}} object.
 \description{
 Constructs a calibration model from standards with known concentrations.
 }
+\details{
+Prediction preserves the fitted wavelength axis, ordered preprocessing,
+integration window and internal-standard ratio or PLS columns. Univariate
+predictions retain inverse concentration-on-response regression. Estimated
+3-sigma LOD and 10-sigma LOQ use the residual standard deviation of a separate
+response-on-concentration fit divided by its absolute slope. These estimates
+require independent verification near the limits; they are not validated
+instrument limits. PLS reports training RMSE separately and leaves LOD/LOQ
+unavailable (\code{NA}); residual prediction error alone is not a detection limit.
+}
 \examples{
 ds <- ls_example_data("calibration")
 conc <- ds$sample_info$concentration

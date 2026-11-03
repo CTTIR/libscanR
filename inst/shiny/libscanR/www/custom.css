@@ -13,9 +13,13 @@
 .navbar a.nav-link:hover {
   color: #ffffff !important;
 }
-.nav-link.active {
+.navbar .nav-link.active {
   color: #ffffff !important;
   border-bottom: 3px solid #2E86AB !important;
+}
+.nav-tabs .nav-link,
+.nav-tabs .nav-link.active {
+  color: #256e8d !important;
 }
 .card {
   border-radius: 8px;
@@ -27,12 +31,12 @@
   font-weight: 600;
 }
 .btn-primary {
-  background-color: #2E86AB;
-  border-color: #2E86AB;
-}
-.btn-primary:hover {
   background-color: #256e8d;
   border-color: #256e8d;
+}
+.btn-primary:hover {
+  background-color: #1e5871;
+  border-color: #1e5871;
 }
 .form-label {
   font-weight: 500;

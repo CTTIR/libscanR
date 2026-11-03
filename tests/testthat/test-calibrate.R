@@ -27,20 +27,14 @@ test_that("ls_lod and ls_loq return positive values", {
 })
 
 test_that("ls_saha_boltzmann returns a tibble with temperature", {
-  skip_on_cran()
-  s <- ls_simulate_spectrum(
-    elements = c(Ca = 10000, Fe = 500, Na = 2000),
-    seed = 3, n_channels = 1024
-  )
-  s <- ls_baseline(s, method = "snip", iterations = 30)
-  res <- ls_saha_boltzmann(
-    s, elements = c("Ca", "Fe"),
-    lines_nm = list(Ca = c(422.673, 445.478, 487.813),
-                    Fe = c(371.994, 404.581, 438.354)),
-    verbose = FALSE
-  )
+  # The display simulator is not a physical plasma forward model.
+  env <- new.env(parent = globalenv())
+  sys.source(system.file("examples", "saha-boltzmann-synthetic.R", package = "libscanR"),
+              envir = env)
+  res <- do.call(ls_saha_boltzmann, env$saha_synthetic_example())
   expect_s3_class(res, "tbl_df")
-  expect_true("temperature_k" %in% names(res))
+  expect_equal(res$temperature_k, rep(10000, 2), tolerance = 1e-8)
+  expect_equal(res$concentration_rel, c(.7, .3), tolerance = 1e-10)
 })
 
 test_that("print.libs_calibration does not error", {

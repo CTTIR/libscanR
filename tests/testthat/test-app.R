@@ -53,3 +53,47 @@ test_that("ls_run_app passes data through shinyOptions", {
   )
   expect_true("libscanR.data" %in% names(captured$opts))
 })
+
+test_that("preloads validate and launch restores the previous Shiny option", {
+  for (pkg in c("shiny", "bslib", "plotly", "DT")) skip_if_not_installed(pkg)
+  previous <- shiny::getShinyOption("libscanR.data")
+  withr::defer(shiny::shinyOptions(libscanR.data = previous))
+  sentinel <- list(previous = TRUE)
+  shiny::shinyOptions(libscanR.data = sentinel)
+  spec <- ls_spectrum(c(400, 401), c(1, 2))
+  with_mocked_bindings({
+    ls_run_app(spec, launch.browser = FALSE)
+    expect_identical(shiny::getShinyOption("libscanR.data"), sentinel)
+  }, runApp = function(...) {
+    expect_identical(shiny::getShinyOption("libscanR.data"), spec)
+    NULL
+  }, .package = "shiny")
+  with_mocked_bindings({
+    expect_error(ls_run_app(spec, launch.browser = FALSE), "launch failed")
+    expect_identical(shiny::getShinyOption("libscanR.data"), sentinel)
+  }, runApp = function(...) stop("launch failed"), .package = "shiny")
+  expect_error(ls_run_app(list(invalid = TRUE)), class = "libscanR_app_input_error")
+  expect_identical(shiny::getShinyOption("libscanR.data"), sentinel)
+  tmp <- tempfile(fileext = ".csv")
+  withr::defer(unlink(tmp))
+  ls_write_csv(spec, tmp)
+  expect_equal(.ls_app_data(tmp)$intensity, spec$intensity)
+  spec$intensity[1] <- Inf
+  expect_error(.ls_app_data(spec), "Invalid.*structure")
+})
+
+test_that("old optional UI dependencies fail before the app starts", {
+  for (pkg in c("shiny", "bslib", "plotly", "DT")) skip_if_not_installed(pkg)
+  current_version <- utils::packageVersion
+  launched <- FALSE
+  with_mocked_bindings({
+    with_mocked_bindings({
+      expect_error(ls_run_app(launch.browser = FALSE),
+        "bslib.*0.5.0", class = "libscanR_app_dependency_error")
+    }, packageVersion = function(pkg, ...) {
+      if (identical(pkg, "bslib")) return(package_version("0.4.2"))
+      current_version(pkg, ...)
+    }, .package = "utils")
+  }, runApp = function(...) { launched <<- TRUE }, .package = "shiny")
+  expect_false(launched)
+})

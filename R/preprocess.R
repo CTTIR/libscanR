@@ -25,7 +25,7 @@
 #'   estimated baseline is stored in the `baseline` element for inspection.
 #'
 #' @examples
-#' spec <- ls_simulate_spectrum(seed = 1)
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 #' corr <- ls_baseline(spec, method = "snip")
 #' is.null(corr$baseline)
 #'
@@ -94,7 +94,7 @@ ls_baseline <- function(x, method = "snip", iterations = 100,
 #'   `baseline`, because per-shot scaling changes their units.
 #'
 #' @examples
-#' spec <- ls_simulate_spectrum(seed = 1)
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 #' spec_n <- ls_normalize(spec, method = "total")
 #' sum(spec_n$intensity[1, ])  # ~1
 #'
@@ -178,7 +178,7 @@ ls_normalize <- function(x, method = "total", ref_wavelength = NULL,
 #' @return Same class as input with smoothed intensities.
 #'
 #' @examples
-#' spec <- ls_simulate_spectrum(seed = 1)
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 #' sm <- ls_smooth(spec, method = "moving_avg", window = 9)
 #'
 #' @export
@@ -233,7 +233,7 @@ ls_smooth <- function(x, method = "savgol", window = 11, poly_order = 3) {
 #' @return Same class as input, cropped.
 #'
 #' @examples
-#' spec <- ls_simulate_spectrum(seed = 1)
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 #' ls_crop(spec, 380, 450)
 #' @export
 ls_crop <- function(x, min_nm = NULL, max_nm = NULL) {
@@ -274,7 +274,7 @@ ls_crop <- function(x, min_nm = NULL, max_nm = NULL) {
 #' @return A `libs_spectrum` with a single averaged shot.
 #'
 #' @examples
-#' spec <- ls_simulate_spectrum(n_shots = 10, seed = 1)
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), n_shots = 10, seed = 1)
 #' ls_average_shots(spec, remove_outliers = TRUE)
 #'
 #' @export
@@ -333,7 +333,7 @@ ls_average_shots <- function(x, method = "mean", trim = 0,
 #'
 #' @examples
 #' specs <- lapply(c(0.5, 1, 2, 5, 10), function(g) {
-#'   s <- ls_simulate_spectrum(seed = round(g * 10))
+#'   s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = round(g * 10))
 #'   s$metadata$gate_delay_us <- g
 #'   s
 #' })

@@ -14,12 +14,18 @@ ls_plsda(dataset, grouping, n_components = 5, validation = "CV")
 \item{n_components}{Integer. Number of PLS latent variables. Default 5.}
 
 \item{validation}{Character. \code{"CV"} (10-fold), \code{"LOO"}, or \code{"none"}.
-Default \code{"CV"}.}
+Default \code{"CV"}. Accuracy and predictions use held-out predictions for
+CV/LOO and fitted predictions only for \code{"none"}. Components are capped at
+the centered feature rank and training-sample bound of every fold.
+Every training fold must retain at least two classes. These sample-level
+folds do not establish patient/site-level generalization.}
 }
 \value{
 An S3 object of class \code{libs_plsda} with elements \code{model},
 \code{predictions} (tibble with predicted/observed class), \code{confusion_matrix},
-\code{accuracy}, \code{class_labels}, \code{n_components}, \code{sample_info}.
+\code{accuracy}, \code{class_labels}, \code{n_components}, \code{sample_info},
+\code{feature_contract}, and \code{evaluation_basis} (\code{"cross_validation"},
+\code{"leave_one_out"}, or \code{"training"}).
 }
 \description{
 Partial Least Squares Discriminant Analysis for class prediction.

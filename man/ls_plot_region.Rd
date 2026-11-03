@@ -22,9 +22,12 @@ Default \code{NULL} (auto-detect top peaks).}
 A ggplot2 object.
 }
 \description{
-Zooms into a specified wavelength range and annotates peaks.
+Zooms into a specified wavelength range and annotates peaks when a user
+reference is configured. With default \code{elements = NULL} and no reference,
+the spectrum remains visible and a subtitle reports unavailable annotations.
+Explicitly requesting element labels requires a configured reference.
 }
 \examples{
-spec <- ls_simulate_spectrum(seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 ls_plot_region(spec, 380, 410)
 }

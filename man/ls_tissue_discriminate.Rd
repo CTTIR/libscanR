@@ -34,7 +34,11 @@ A \code{\link[tibble:tibble]{tibble::tibble()}} with columns \code{wavelength_nm
 \description{
 Identifies emission channels that best discriminate two tissue types via
 per-wavelength t-tests with Benjamini-Hochberg FDR correction, plus log2
-fold-change. Optionally matches significant channels to NIST elements.
+fold-change. Element annotations are nearest wavelength candidates, not
+established elemental identities; \code{candidate_count} records ambiguity.
+Without a configured atomic reference, statistical results remain available,
+with missing element annotations and \code{annotation_status = "reference_unavailable"}.
+A configured but unreadable or invalid reference raises an error.
 }
 \examples{
 ds <- ls_example_data("tissue")

@@ -27,7 +27,9 @@ mod_preprocess_ui <- function(id) {
       shiny::actionButton(ns("apply"), "Apply",
                           class = "btn-primary w-100 mt-2"),
       shiny::actionButton(ns("reset"), "Reset",
-                          class = "btn-outline-secondary w-100 mt-2")
+                          class = "btn-outline-secondary w-100 mt-2"),
+      shiny::helpText("Apply replaces the processed data. Until then, plots and downloads use the last successful result. Reset restores raw data."),
+      shiny::uiOutput(ns("state"))
     ),
     bslib::card(
       bslib::card_header("Raw vs Processed"),
@@ -39,34 +41,49 @@ mod_preprocess_ui <- function(id) {
 mod_preprocess_server <- function(id, rv) {
   shiny::moduleServer(id, function(input, output, session) {
     ns <- session$ns
+    status <- shiny::reactiveVal("Ready. Choose settings and apply.")
+    output$state <- shiny::renderUI(.ls_app_result_status(status(),
+      rv$processed_data, "Ready. Plots and downloads use raw data."))
+    shiny::observeEvent(rv$raw_data, {
+      status("Ready. New raw data loaded.")
+    }, ignoreInit = TRUE, ignoreNULL = FALSE)
 
     shiny::observeEvent(input$apply, {
       shiny::req(rv$raw_data)
-      proc <- rv$raw_data
-      if (input$baseline_method != "none") {
-        proc <- libscanR::ls_baseline(proc,
-                                      method = input$baseline_method,
-                                      iterations = input$baseline_iter)
+      result <- .ls_app_attempt({
+        proc <- rv$raw_data
+        if (input$baseline_method != "none") {
+          proc <- libscanR::ls_baseline(proc,
+                                        method = input$baseline_method,
+                                        iterations = input$baseline_iter)
+        }
+        if (input$norm_method != "none") {
+          proc <- libscanR::ls_normalize(proc, method = input$norm_method)
+        }
+        if (input$smooth_method != "none") {
+          win <- input$smooth_window
+          proc <- libscanR::ls_smooth(proc,
+                                      method = input$smooth_method,
+                                      window = win)
+        }
+        if (input$crop_min > 0 || input$crop_max > 0) {
+          mn <- if (input$crop_min > 0) input$crop_min else NULL
+          mx <- if (input$crop_max > 0) input$crop_max else NULL
+          proc <- libscanR::ls_crop(proc, min_nm = mn, max_nm = mx)
+        }
+        proc
+      }, function(text) status(paste(text, "The previous data are retained.")))
+      if (result$ok) {
+        .ls_app_clear_results(rv)
+        rv$processed_data <- result$value
+        status("Complete. Plots and downloads use the applied result.")
       }
-      if (input$norm_method != "none") {
-        proc <- libscanR::ls_normalize(proc, method = input$norm_method)
-      }
-      if (input$smooth_method != "none") {
-        win <- input$smooth_window
-        proc <- libscanR::ls_smooth(proc,
-                                    method = input$smooth_method,
-                                    window = win)
-      }
-      if (input$crop_min > 0 || input$crop_max > 0) {
-        mn <- if (input$crop_min > 0) input$crop_min else NULL
-        mx <- if (input$crop_max > 0) input$crop_max else NULL
-        proc <- libscanR::ls_crop(proc, min_nm = mn, max_nm = mx)
-      }
-      rv$processed_data <- proc
     })
 
     shiny::observeEvent(input$reset, {
       rv$processed_data <- NULL
+      .ls_app_clear_results(rv)
+      status("Reset. Plots and downloads use raw data.")
     })
 
     output$compare <- plotly::renderPlotly({

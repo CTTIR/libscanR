@@ -76,14 +76,14 @@ test_that(".pick_cols validates names, expands default, and ranges", {
 })
 
 test_that("ls_write_csv writes single-shot, multi-shot and metadata", {
-  s1 <- ls_simulate_spectrum(seed = 1, n_channels = 20, n_shots = 1)
+  s1 <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1, n_channels = 20, n_shots = 1)
   p1 <- withr::local_tempfile(fileext = ".csv")
   ls_write_csv(s1, p1, include_metadata = TRUE)
   txt <- readLines(p1)
   expect_true(any(grepl("^#", txt)))   # metadata comment lines present
   expect_true(any(grepl("intensity", txt)))
 
-  s2 <- ls_simulate_spectrum(seed = 2, n_channels = 20, n_shots = 3)
+  s2 <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 2, n_channels = 20, n_shots = 3)
   p2 <- withr::local_tempfile(fileext = ".csv")
   ls_write_csv(s2, p2, include_metadata = FALSE)
   hdr <- readLines(p2, n = 1)

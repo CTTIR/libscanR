@@ -12,8 +12,9 @@ mod_import_ui <- function(id) {
       shiny::fileInput(ns("file"), "Upload spectrum (CSV/TSV/TXT)",
                        accept = c(".csv", ".tsv", ".txt"),
                        multiple = TRUE),
+      shiny::helpText("Files must share a wavelength axis and have distinct sample IDs. A failed batch leaves the previous data loaded."),
       shiny::hr(),
-      shiny::strong("Or load example data:"),
+      shiny::strong("Or load fictional teaching data:"),
       shiny::actionButton(ns("load_tissue"), "Tissue dataset",
                           class = "btn-outline-primary w-100"),
       shiny::actionButton(ns("load_cal"), "Calibration dataset",
@@ -22,6 +23,7 @@ mod_import_ui <- function(id) {
                           class = "btn-outline-primary w-100 mt-2")
     ),
     bslib::card(
+      fill = FALSE,
       bslib::card_header("Import status"),
       shiny::uiOutput(ns("status"))
     ),
@@ -42,40 +44,31 @@ mod_import_server <- function(id, rv) {
 
     shiny::observeEvent(input$file, {
       shiny::req(input$file)
-      specs <- list()
-      for (i in seq_len(nrow(input$file))) {
-        path <- input$file$datapath[i]
-        spec <- tryCatch({
-          switch(input$format,
-                 auto = libscanR::ls_read_auto(path, verbose = FALSE),
-                 generic = libscanR::ls_read_spectrum(path, verbose = FALSE),
-                 sciaps = libscanR::ls_read_sciaps(path, verbose = FALSE),
-                 aurora = libscanR::ls_read_aurora(path, verbose = FALSE))
-        }, error = function(e) NULL)
-        if (!is.null(spec)) specs[[length(specs) + 1]] <- spec
-      }
-      if (length(specs) == 0) return()
-      if (length(specs) == 1) {
-        rv$raw_data <- specs[[1]]
-      } else {
-        rv$raw_data <- libscanR::ls_dataset(specs)
+      result <- .ls_app_attempt(.ls_app_upload(input$file, input$format),
+        function(text) rv$import_error <- text)
+      if (result$ok) {
+        .ls_app_admit(rv, result$value)
       }
     })
 
     shiny::observeEvent(input$load_tissue, {
-      rv$raw_data <- libscanR::ls_example_data("tissue")
+      .ls_app_admit(rv, libscanR::ls_example_data("tissue"))
     })
     shiny::observeEvent(input$load_cal, {
-      rv$raw_data <- libscanR::ls_example_data("calibration")
+      .ls_app_admit(rv, libscanR::ls_example_data("calibration"))
     })
     shiny::observeEvent(input$load_spatial, {
-      rv$raw_data <- libscanR::ls_example_data("spatial")
+      .ls_app_admit(rv, libscanR::ls_example_data("spatial"))
     })
 
     output$status <- shiny::renderUI({
+      error <- if (!is.null(rv$import_error)) {
+        paste(rv$import_error, if (is.null(rv$raw_data)) "No data are loaded."
+              else "The previously loaded data are retained.")
+      } else NULL
       if (is.null(rv$raw_data)) {
-        return(shiny::div(class = "libscanR-status",
-                          "No data loaded yet. Upload a spectrum or load an example."))
+        return(.ls_app_status(error %||%
+          "No data loaded yet. Upload a spectrum or load an example."))
       }
       if (inherits(rv$raw_data, "libs_spectrum")) {
         txt <- sprintf("Spectrum loaded: %d channels, %d shots, range %.1f-%.1f nm.",
@@ -86,7 +79,7 @@ mod_import_server <- function(id, rv) {
                        rv$raw_data$n_spectra, rv$raw_data$n_channels,
                        rv$raw_data$range_nm[1], rv$raw_data$range_nm[2])
       }
-      shiny::div(class = "libscanR-status", txt)
+      .ls_app_status(paste(c(error, txt, .ls_app_teaching_note(rv$raw_data)), collapse = " "))
     })
 
     output$preview <- plotly::renderPlotly({

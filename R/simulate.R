@@ -5,7 +5,7 @@
 #'
 #' Generates a demonstration LIBS spectrum with configurable elemental
 #' composition, noise, and continuum background. Emission lines are drawn
-#' from the internal NIST database ([ls_element_db()]) and modelled as
+#' from the user-configured atomic reference ([ls_element_db()]) and modelled as
 #' Gaussian peaks. Peak widths are at least 2.5 channel spacings so coarse
 #' demonstrations remain visible; this is not an instrument response model
 #' or validation of quantitative elemental concentrations or tissue identity.
@@ -24,11 +24,17 @@
 #'   intensity variation (0-1). Default 0.1.
 #' @param fwhm_nm Numeric. Typical line FWHM in nm. Default 0.1.
 #' @param seed Optional integer random seed for reproducibility.
+#' @param line_data Optional explicit teaching peak table, with `component`,
+#'   `wavelength_nm` and `relative_strength` columns. Strengths are arbitrary
+#'   intensity multipliers, not atomic transition probabilities. Use
+#'   [ls_demo_peaks()] for a fictional fixture. `NULL` uses the configured
+#'   atomic reference and retains the transition-rate scaling convention.
 #'
 #' @return A [ls_spectrum()] object.
 #'
 #' @examples
-#' spec <- ls_simulate_spectrum(elements = c(Ca = 1000, Na = 500), seed = 1)
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
+#'                              elements = c(Ca = 1000, Na = 500), seed = 1)
 #' print(spec)
 #' @export
 ls_simulate_spectrum <- function(elements = c(Ca = 5000, Fe = 200, Na = 1000),
@@ -36,7 +42,7 @@ ls_simulate_spectrum <- function(elements = c(Ca = 5000, Fe = 200, Na = 1000),
                                  n_channels = 2048, n_shots = 10,
                                  noise_level = 0.02, continuum_level = 100,
                                  shot_rsd = 0.1, fwhm_nm = 0.1,
-                                 seed = NULL) {
+                                 seed = NULL, line_data = NULL) {
   .check_number(n_channels, "n_channels", min = 2, integer = TRUE)
   .check_number(n_shots, "n_shots", min = 1, integer = TRUE)
   .check_number(noise_level, "noise_level", min = 0)
@@ -66,20 +72,33 @@ ls_simulate_spectrum <- function(elements = c(Ca = 5000, Fe = 200, Na = 1000),
                                        diff(wavelength_range) * 1.2)
 
   # Fetch emission lines for specified elements
-  db <- ls_element_db(elements = names(elements),
-                      range_nm = wavelength_range)
+  if (is.null(line_data)) {
+    db <- ls_element_db(elements = names(elements), range_nm = wavelength_range)
+    line_source <- list(kind = "user_atomic_reference", path = attr(db, "reference_path"),
+                        sources = unique(db$source))
+    lines <- data.frame(component = db$element, wavelength_nm = db$wavelength_nm,
+                        relative_strength = db$aki * 1e-3)
+  } else {
+    lines <- .validate_demo_peaks(line_data)
+    lines <- lines[lines$wavelength_nm >= wavelength_range[1] &
+                     lines$wavelength_nm <= wavelength_range[2], , drop = FALSE]
+    line_source <- list(kind = "explicit_synthetic_peaks",
+                        description = "Fictional teaching peaks; not an atomic reference or experimental measurements.",
+                        peaks = lines)
+  }
   base_spec <- continuum
   sigma <- effective_fwhm / (2 * sqrt(2 * log(2)))
 
   for (el in names(elements)) {
     conc <- elements[[el]]
-    lines_el <- db[db$element == el, ]
+    lines_el <- lines[lines$component == el, ]
     if (nrow(lines_el) == 0) next
-    # Scale factor: concentration * relative transition probability
+    # Scale factor: component amount * explicit peak strength.
     for (j in seq_len(nrow(lines_el))) {
       center <- lines_el$wavelength_nm[j]
-      aki <- lines_el$aki[j]
-      amp <- conc * aki * 1e-3
+      strength <- lines_el$relative_strength[j]
+      if (!is.finite(strength) || strength <= 0) next
+      amp <- conc * strength
       if (amp <= 0) next
       # Gaussian demonstration profile
       base_spec <- base_spec + amp * exp(-((wl - center)^2) / (2 * sigma^2))
@@ -103,6 +122,7 @@ ls_simulate_spectrum <- function(elements = c(Ca = 5000, Fe = 200, Na = 1000),
     sample_id = "simulated",
     material = "synthetic",
     simulated = TRUE,
+    line_source = line_source,
     elements = elements,
     wavelength_range_nm = wavelength_range,
     n_channels = n_channels,
@@ -120,10 +140,13 @@ ls_simulate_spectrum <- function(elements = c(Ca = 5000, Fe = 200, Na = 1000),
 #' Generate Example LIBS Dataset
 #'
 #' Creates a synthetic `libs_dataset` suitable for demonstrating package
-#' features. Scenarios:
+#' features without an atomic reference download. All scenarios use explicit
+#' fictional peaks from [ls_demo_peaks()]; component names and tissue labels
+#' are teaching labels, not measured concentrations or biological ground truth.
+#' Scenarios:
 #'
 #' * `"tissue"` — 50 spectra from 5 tissue types (bone, liver, kidney,
-#'   muscle, fat), 10 per type, with tissue-typical elemental signatures.
+#'   muscle, fat), 10 per type, with deliberately different synthetic profiles.
 #' * `"calibration"` — 27 spectra of Ca standards (9 concentrations x 3
 #'   replicates) with constant matrix (Na, K, Mg).
 #' * `"spatial"` — 400 spectra on a 20x20 grid simulating a tissue
@@ -185,9 +208,10 @@ ls_example_data <- function(scenario = c("tissue", "calibration", "spatial", "al
     base_conc <- tissue_profiles[[tissue]]
     for (r in seq_len(n_per_tissue)) {
       counter <- counter + 1
-      # Add biological variation: 15% RSD per element
+      # Add invented between-example variation: 15% RSD per component
       conc <- base_conc * exp(stats::rnorm(length(base_conc), 0, 0.15))
       s <- ls_simulate_spectrum(
+        line_data = ls_demo_peaks(),
         elements = conc,
         n_channels = n_channels,
         n_shots = 5,
@@ -225,6 +249,7 @@ ls_example_data <- function(scenario = c("tissue", "calibration", "spatial", "al
       counter <- counter + 1
       elems <- c(Ca = c_val, matrix_elems)
       s <- ls_simulate_spectrum(
+        line_data = ls_demo_peaks(),
         elements = elems,
         n_channels = n_channels,
         n_shots = 5,
@@ -274,6 +299,7 @@ ls_example_data <- function(scenario = c("tissue", "calibration", "spatial", "al
       K = 500
     )
     s <- ls_simulate_spectrum(
+        line_data = ls_demo_peaks(),
       elements = elems,
       n_channels = n_channels,
       n_shots = 3,

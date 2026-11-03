@@ -1,5 +1,5 @@
 test_that("ls_baseline produces shifted intensities", {
-  s <- ls_simulate_spectrum(seed = 1, n_channels = 128)
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1, n_channels = 128)
   s2 <- ls_baseline(s, method = "snip", iterations = 30)
   expect_s3_class(s2, "libs_spectrum")
   expect_false(is.null(s2$baseline))
@@ -7,7 +7,7 @@ test_that("ls_baseline produces shifted intensities", {
 })
 
 test_that("ls_baseline supports multiple methods", {
-  s <- ls_simulate_spectrum(seed = 1, n_channels = 64)
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1, n_channels = 64)
   for (m in c("snip", "als", "rolling_ball", "linear", "polynomial")) {
     s2 <- ls_baseline(s, method = m, iterations = 20, order = 2)
     expect_s3_class(s2, "libs_spectrum")
@@ -15,7 +15,7 @@ test_that("ls_baseline supports multiple methods", {
 })
 
 test_that("ls_normalize gives expected sums / scales", {
-  s <- ls_simulate_spectrum(seed = 2, n_channels = 128)
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 2, n_channels = 128)
   tot <- ls_normalize(s, method = "total")
   expect_equal(sum(tot$intensity[1, ]), 1, tolerance = 1e-8)
 
@@ -24,7 +24,7 @@ test_that("ls_normalize gives expected sums / scales", {
 })
 
 test_that("ls_smooth reduces variance", {
-  s <- ls_simulate_spectrum(seed = 1, n_channels = 128, noise_level = 0.1)
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1, n_channels = 128, noise_level = 0.1)
   s2 <- ls_smooth(s, method = "moving_avg", window = 9)
   expect_s3_class(s2, "libs_spectrum")
   expect_lt(stats::sd(diff(s2$intensity[1, ])),
@@ -32,14 +32,14 @@ test_that("ls_smooth reduces variance", {
 })
 
 test_that("ls_crop restricts wavelength range", {
-  s <- ls_simulate_spectrum(seed = 1, n_channels = 256)
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1, n_channels = 256)
   s2 <- ls_crop(s, min_nm = 400, max_nm = 500)
   expect_true(min(s2$wavelength) >= 400)
   expect_true(max(s2$wavelength) <= 500)
 })
 
 test_that("ls_average_shots collapses to single shot", {
-  s <- ls_simulate_spectrum(seed = 1, n_channels = 64, n_shots = 8)
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1, n_channels = 64, n_shots = 8)
   a <- ls_average_shots(s, remove_outliers = TRUE)
   expect_equal(a$n_shots, 1)
 })

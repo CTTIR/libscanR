@@ -1,0 +1,7 @@
+element,ionization,wavelength_nm,wavelength_medium,wavelength_vacuum_nm,A_s,g_upper,energy_upper_ev,response,source,integrated_energy,integrated_photon
+X,1,520,vacuum,520,10000000.0,1,2.0,0.5,Fictional analytical regression fixture; not measured or NIST data,14695.5191936576867566810047373,0.00764166998070199711347412246339
+X,1,530,vacuum,530,20000000.0,3,3.0,1.1,Fictional analytical regression fixture; not measured or NIST data,59636.0020551227454870621240309,0.0316070810892150551081429257364
+X,1,540,vacuum,540,50000000.0,5,4.0,1.3,Fictional analytical regression fixture; not measured or NIST data,90313.4094385087143885308209513,0.0487692410967947057698066433137
+Y,2,560,vacuum,560,30000000.0,2,2.2,2.4,Fictional analytical regression fixture; not measured or NIST data,765582.855978746052548763206157,0.428726399348097789427307395448
+Y,2,570,vacuum,570,10000000.0,4,3.4,1.7,Fictional analytical regression fixture; not measured or NIST data,88242.6230555121683619296863093,0.0502982951416419359662999211963
+Y,2,580,vacuum,580,40000000.0,6,4.5,0.8,Fictional analytical regression fixture; not measured or NIST data,68319.0764680605284988149569580,0.0396250643514751065293126750356

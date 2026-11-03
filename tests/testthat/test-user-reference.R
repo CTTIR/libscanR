@@ -1,0 +1,95 @@
+test_that("missing references are explicit and never replaced by teaching peaks", {
+  withr::local_options(list(libscanR.element_db = NULL))
+  withr::local_envvar(LIBSCANR_ELEMENT_DB = NA_character_)
+  expect_error(ls_element_db(), class = "libscan_reference_missing")
+  expect_error(ls_simulate_spectrum(seed = 1), "Download/import")
+  expect_error(ls_identify_peaks(data.frame(wavelength_nm = 500, intensity = 1)),
+               class = "libscan_reference_missing")
+  demo <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+  expect_identical(demo$metadata$line_source$kind, "explicit_synthetic_peaks")
+  expect_match(demo$metadata$line_source$description, "Fictional")
+  expect_s3_class(ls_plot_spectrum(demo, show_elements = character()), "ggplot")
+  region <- ls_plot_region(demo, 380, 450, snr_threshold = 1)
+  expect_match(region$labels$subtitle, "annotations unavailable")
+  expect_error(ls_plot_spectrum(demo, show_elements = "Ca"), class = "libscan_reference_missing")
+  dataset <- ls_example_data("tissue", n_channels = 64)
+  expect_true(all(vapply(dataset$spectra, function(s) {
+    identical(s$metadata$line_source$kind, "explicit_synthetic_peaks")
+  }, logical(1))))
+  result <- ls_tissue_discriminate(dataset, "tissue", "bone", "liver")
+  expect_true(all(is.na(result$element)))
+  expect_true(all(result$annotation_status == "reference_unavailable"))
+  expect_true(any(is.finite(result$p_value)))
+  expect_identical(system.file("extdata", "nist_lines.rds", package = "libscanR"), "")
+  expect_identical(system.file("extdata", "nist_lines_verified.rds", package = "libscanR"), "")
+})
+
+test_that("explicit reference, option and environment precedence is deterministic", {
+  csv <- synthetic_reference_file()
+  rds <- synthetic_reference_file("rds")
+  withr::local_envvar(LIBSCANR_ELEMENT_DB = csv)
+  withr::local_options(list(libscanR.element_db = NULL))
+  from_env <- ls_element_db()
+  expect_equal(from_env$wavelength_nm, c(393.37, 410, 500, 589))
+  withr::local_options(list(libscanR.element_db = rds))
+  expect_identical(attr(ls_element_db(), "reference_path"), normalizePath(rds, winslash = "/"))
+  expect_identical(attr(ls_element_db(path = csv), "reference_path"), normalizePath(csv, winslash = "/"))
+  options(libscanR.element_db = tempfile())
+  expect_error(ls_element_db(), "does not exist")
+  expect_equal(ls_element_db(path = csv)$aki, c(1, NA, 2, .5))
+  options(libscanR.element_db = character())
+  expect_error(ls_element_db(), "one nonempty string")
+})
+
+test_that("reference filtering preserves unknown physical values and provenance", {
+  path <- synthetic_reference_file()
+  db <- ls_element_db(path = path, range_nm = NULL, ionization = NULL)
+  expect_true(is.na(db$aki[2]))
+  expect_match(db$source[1], "Fictional")
+  expect_equal(ls_element_db(path = path, min_aki = .6)$aki, c(1, 2))
+  expect_equal(ls_element_db(path = path, elements = "Ca")$ionization, c(1, 2))
+  expect_equal(ls_element_db(path = path, persistent_only = TRUE)$element, c("Ca", "Na"))
+  expect_equal(nrow(ls_element_db(path = path, elements = "Absent")), 0)
+  raw <- readRDS(synthetic_reference_file("rds"))
+  invalid <- tempfile(fileext = ".rds")
+  raw$source <- NULL
+  saveRDS(raw, invalid)
+  expect_error(ls_element_db(path = invalid), "columns")
+  raw$source <- rep("Fictional", nrow(raw))
+  raw$wavelength_nm[1] <- Inf
+  saveRDS(raw, invalid)
+  expect_error(ls_element_db(path = invalid), "finite")
+  raw$wavelength_nm[1] <- 393.37
+  raw$A_s <- c(100, NA, 2e8, .5e8)
+  saveRDS(raw, invalid)
+  expect_error(ls_element_db(path = invalid), "units are inconsistent")
+  saveRDS(ls_demo_peaks(), invalid)
+  expect_error(ls_element_db(path = invalid), "columns")
+})
+
+test_that("configured simulation preserves rate scaling while explicit teaching input is separate", {
+  withr::local_options(list(libscanR.element_db = synthetic_reference_file()))
+  spec <- ls_simulate_spectrum(elements = c(Ca = 1000), wavelength_range = c(392.37, 394.37),
+    n_channels = 3, n_shots = 1, shot_rsd = 0, noise_level = 0, continuum_level = 0, seed = 1)
+  expect_equal(spec$intensity[1, 2], 1)
+  expect_identical(spec$metadata$line_source$kind, "user_atomic_reference")
+  expect_match(spec$metadata$line_source$sources, "Fictional software regression")
+  reference <- readRDS(synthetic_reference_file("rds"))
+  reference$persistent <- FALSE
+  reference_file <- tempfile(fileext = ".rds")
+  saveRDS(reference, reference_file)
+  options(libscanR.element_db = reference_file)
+  annotated <- ls_plot_spectrum(spec, show_elements = "Ca")
+  expect_equal(annotated$layers[[2]]$data$wavelength_nm, 393.37)
+  peaks <- data.frame(component = "Q", wavelength_nm = 400, relative_strength = 2)
+  before <- peaks
+  options(libscanR.element_db = tempfile())
+  demo <- ls_simulate_spectrum(elements = c(Q = 3), line_data = peaks,
+    wavelength_range = c(399, 401), n_channels = 3, n_shots = 1,
+    shot_rsd = 0, noise_level = 0, continuum_level = 0, seed = 1)
+  expect_equal(demo$intensity[1, 2], 6)
+  expect_identical(peaks, before)
+  expect_equal(demo$metadata$line_source$peaks$relative_strength, 2)
+  peaks$relative_strength <- Inf
+  expect_error(ls_simulate_spectrum(line_data = peaks), "invalid values")
+})

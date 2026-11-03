@@ -24,7 +24,7 @@ the \code{signal} package when available, otherwise uses local polynomial least
 squares with an intercept), \code{"moving_avg"}, \code{"gaussian"}, \code{"median"}.
 }
 \examples{
-spec <- ls_simulate_spectrum(seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 sm <- ls_smooth(spec, method = "moving_avg", window = 9)
 
 }

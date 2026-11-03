@@ -14,7 +14,11 @@ ls_calibration(
   lod = NULL,
   loq = NULL,
   r_squared = NULL,
-  unit = "ppm"
+  unit = "ppm",
+  feature_contract = NULL,
+  response_model = NULL,
+  lod_basis = NULL,
+  training_rmse = NULL
 )
 }
 \arguments{
@@ -27,7 +31,9 @@ ls_calibration(
 \item{intensities}{Numeric vector. Measured peak intensities or areas
 (or ratios for \code{internal_std}). Same length as \code{concentrations}.}
 
-\item{model}{Fitted model object (e.g. \code{lm}, \code{mvr}).}
+\item{model}{Fitted model object (\code{lm} with one plain numeric predictor and
+an intercept, or \code{mvr} for PLS). Transformed terms and offsets are rejected
+by univariate prediction.}
 
 \item{method}{Character. One of \code{"univariate"}, \code{"internal_std"}, \code{"pls"},
 \code{"cf_libs"}. Default \code{"univariate"}.}
@@ -40,6 +46,17 @@ ls_calibration(
 
 \item{unit}{Character. Concentration unit, e.g. \code{"ppm"}, \code{"wt_pct"},
 \code{"mg_kg"}. Default \code{"ppm"}.}
+
+\item{feature_contract}{Optional fitted wavelength/preprocessing and extraction
+contract, normally populated by \code{\link[=ls_calibrate]{ls_calibrate()}}.}
+
+\item{response_model}{Optional response-on-concentration regression used to
+estimate univariate detection limits.}
+
+\item{lod_basis}{Character description of the limit estimate, or \code{NULL}.}
+
+\item{training_rmse}{Numeric training prediction error, or \code{NULL}. This is not
+a detection limit or a held-out estimate.}
 }
 \value{
 A \code{libs_calibration} S3 object.

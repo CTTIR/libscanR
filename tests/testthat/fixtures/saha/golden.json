@@ -1,0 +1,12 @@
+{
+  "temperature_k": 10000.0,
+  "electron_density": 1e+17,
+  "fractions": {
+    "X": 0.7,
+    "Y": 0.3
+  },
+  "ion_ratios": {
+    "X": 21.48506428989863,
+    "Y": 1.7579227009821345
+  }
+}

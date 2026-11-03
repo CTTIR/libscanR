@@ -2,49 +2,56 @@
 % Please edit documentation in R/elements.R
 \name{ls_element_db}
 \alias{ls_element_db}
-\title{NIST Emission Line Database}
-\source{
-NIST Atomic Spectra Database: \url{https://physics.nist.gov/asd}
-}
+\title{Read a User-Supplied Atomic Line Reference}
 \usage{
 ls_element_db(
   elements = NULL,
   range_nm = c(190, 900),
   min_aki = 0,
   ionization = c(1L, 2L),
-  persistent_only = FALSE
+  persistent_only = FALSE,
+  path = NULL
 )
 }
 \arguments{
-\item{elements}{Character vector. Restrict to specific element symbols
-(e.g. \code{c("Ca", "Fe")}). Default \code{NULL} (all).}
+\item{elements}{Character vector of element symbols, or \code{NULL} for all.}
 
-\item{range_nm}{Numeric vector of length 2. Wavelength range filter in nm.
-Default \code{c(190, 900)}.}
+\item{range_nm}{Two ordered finite wavelength limits, or \code{NULL} for all.}
 
-\item{min_aki}{Numeric. Minimum transition probability (10^8 s^-1).
-Default 0 (no filter).}
+\item{min_aki}{Minimum transition probability in units of 10^8 s^-1.
+Missing rates are excluded only when this is positive.}
 
-\item{ionization}{Integer vector of ionization states to include:
-1 = neutral, 2 = singly ionized. Default \code{c(1L, 2L)}.}
+\item{ionization}{Ionization states: 1 = neutral, 2 = singly ionized,
+or \code{NULL} for all supplied positive integer stages.}
 
-\item{persistent_only}{Logical. Keep only persistent lines. Default \code{FALSE}.}
+\item{persistent_only}{Keep only rows explicitly marked \code{persistent}.}
+
+\item{path}{Local CSV/RDS file. Default \code{NULL} uses the configured path.}
 }
 \value{
-A \code{\link[tibble:tibble]{tibble::tibble()}} with columns \code{element}, \code{ionization},
-\code{wavelength_nm}, \code{aki}, \code{ei_ev}, \code{ek_ev}, \code{persistent}.
+A \code{\link[tibble:tibble]{tibble::tibble()}} retaining the reference columns. Physical fields
+required by \code{\link[=ls_saha_boltzmann]{ls_saha_boltzmann()}} must be supplied and independently checked;
+loading a reference does not establish its scientific validity or reuse rights.
 }
 \description{
-Returns a curated subset of the NIST Atomic Spectra Database containing
-analytically useful emission lines for LIBS analysis, with a focus on
-biomedically relevant elements. Data compiled from the NIST Atomic Spectra
-Database (\url{https://physics.nist.gov/asd}); values are for reference use
-only and users requiring high-precision spectroscopy should consult NIST
-ASD directly.
+Reads a local CSV or RDS table supplied by the user. No atomic reference
+compilation is bundled and this function does not access the network.
+Configure a file with \code{options(libscanR.element_db = "/path/lines.csv")}
+or the environment variable \code{LIBSCANR_ELEMENT_DB}. An explicit \code{path}
+takes precedence over the option, which takes precedence over the variable.
+}
+\details{
+The table must contain \code{element}, \code{ionization}, \code{wavelength_nm}, \code{aki}
+(transition probability in units of 10^8 s^-1), \code{wavelength_medium}
+(\code{"air"} or \code{"vacuum"}) and a nonempty \code{source} attribution per row.
+Missing transition rates remain missing. Optional \code{ei_ev}, \code{ek_ev} and
+\code{persistent} columns default to missing energies and \code{FALSE}; no persistent
+line designation is inferred. Other columns and provenance are retained.
+The installed package provides \code{scripts/import_nist.py} for converting a
+separately downloaded NIST ASD CSV; see the README for exact settings.
 }
 \examples{
-head(ls_element_db())
-ls_element_db(elements = "Ca", persistent_only = TRUE)
-ls_element_db(elements = c("Na", "K"), range_nm = c(580, 780))
-
+# After downloading and importing a reference as described in the README:
+# options(libscanR.element_db = "local-data/atomic-lines.csv")
+# ls_element_db(elements = "Ca")
 }

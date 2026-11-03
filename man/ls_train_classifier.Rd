@@ -16,7 +16,12 @@ ls_train_classifier(dataset, grouping, method = "svm", ...)
 \item{...}{Additional arguments passed to the underlying trainer.}
 }
 \value{
-An S3 object of class \code{libs_classifier}.
+An S3 object of class \code{libs_classifier}, including predictions,
+a square confusion matrix, the fitted \code{feature_contract}, and
+\code{evaluation_basis}: \code{"training"} for SVM or \code{"out_of_bag"} for RF.
+SVM evaluation uses the same probability-based class decision as
+\code{\link[=ls_classify]{ls_classify()}}. Training accuracy is not an independent estimate of
+generalization.
 }
 \description{
 Trains SVM or Random Forest on spectral intensity features.

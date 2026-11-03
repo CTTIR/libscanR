@@ -9,7 +9,10 @@
 \arguments{
 \item{object}{A \code{libs_calibration} object.}
 
-\item{newdata}{A numeric vector of new intensities (or a matrix for PLS).}
+\item{newdata}{A finite numeric vector of already integrated responses (ratios
+for internal-standard calibration), or a matrix with the fitted PLS columns
+in their trained order. This low-level method cannot verify wavelength labels;
+use \code{\link[=ls_quantify]{ls_quantify()}} for spectra with checked feature identity.}
 
 \item{...}{Unused.}
 }

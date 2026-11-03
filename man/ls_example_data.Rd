@@ -24,12 +24,15 @@ A \code{libs_dataset} object (or named list for \code{"all"}).
 }
 \description{
 Creates a synthetic \code{libs_dataset} suitable for demonstrating package
-features. Scenarios:
+features without an atomic reference download. All scenarios use explicit
+fictional peaks from \code{\link[=ls_demo_peaks]{ls_demo_peaks()}}; component names and tissue labels
+are teaching labels, not measured concentrations or biological ground truth.
+Scenarios:
 }
 \details{
 \itemize{
 \item \code{"tissue"} — 50 spectra from 5 tissue types (bone, liver, kidney,
-muscle, fat), 10 per type, with tissue-typical elemental signatures.
+muscle, fat), 10 per type, with deliberately different synthetic profiles.
 \item \code{"calibration"} — 27 spectra of Ca standards (9 concentrations x 3
 replicates) with constant matrix (Na, K, Mg).
 \item \code{"spatial"} — 400 spectra on a 20x20 grid simulating a tissue

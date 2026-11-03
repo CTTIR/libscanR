@@ -13,7 +13,8 @@
 #' @param line_nm Numeric. Emission line wavelength (nm).
 #' @param calibration Optional [ls_calibration()]. If provided, intensities
 #'   are converted to concentration. Default `NULL`.
-#' @param window_nm Numeric. Peak integration window. Default 1.
+#' @param window_nm Optional integration window. `NULL` reuses the calibration's
+#'   fitted window, or 1 nm for an uncalibrated map.
 #'
 #' @return A list with S3 class `libs_map` containing `x`, `y`, `values`,
 #'   `element`, `line_nm`, `unit`, and a rasterized `grid` matrix when the
@@ -25,7 +26,7 @@
 #' dim(m$grid)
 #' @export
 ls_build_map <- function(dataset, element, line_nm,
-                         calibration = NULL, window_nm = 1) {
+                         calibration = NULL, window_nm = NULL) {
   .validate_dataset(dataset)
   info <- dataset$sample_info
   if (!all(c("x_pos", "y_pos") %in% names(info))) {
@@ -33,7 +34,7 @@ ls_build_map <- function(dataset, element, line_nm,
   }
   xs <- info$x_pos
   ys <- info$y_pos
-  if (!is.numeric(xs) || !is.numeric(ys) ||
+  if (!is.numeric(xs) || !is.numeric(ys) || is.complex(xs) || is.complex(ys) ||
       any(!is.finite(xs)) || any(!is.finite(ys))) {
     cli::cli_abort("Map coordinates must be finite numeric values.")
   }
@@ -41,18 +42,21 @@ ls_build_map <- function(dataset, element, line_nm,
     cli::cli_abort("Map coordinate pairs must be unique; aggregate replicate positions explicitly.")
   }
 
-  intens <- vapply(dataset$spectra, function(s) {
-    ls_peak_area(s, line_nm, window_nm)
-  }, numeric(1))
-
-  unit <- "a.u."
+  unit <- "a.u. nm"
   if (!is.null(calibration)) {
+    if (!inherits(calibration, "libs_calibration")) {
+      cli::cli_abort("calibration must be a libs_calibration model.")
+    }
     if (!identical(calibration$element, element) ||
         !isTRUE(all.equal(calibration$wavelength_nm, line_nm, tolerance = 0))) {
       cli::cli_abort("The calibration element and line must match the requested map.")
     }
     intens <- ls_quantify(calibration, dataset, window_nm = window_nm)$concentration
     unit <- calibration$unit
+  } else {
+    intens <- vapply(dataset$spectra, function(s) {
+      ls_peak_area(s, line_nm, window_nm %||% 1)
+    }, numeric(1))
   }
 
   # Try to build a regular grid if coordinates allow
@@ -92,7 +96,8 @@ ls_build_map <- function(dataset, element, line_nm,
 #' @param lines_nm Named numeric vector: wavelength per element (e.g.
 #'   `c(Ca = 393.37, Fe = 371.99)`).
 #' @param calibrations Named list of [ls_calibration()] objects. Default `NULL`.
-#' @param window_nm Numeric. Integration window. Default 1.
+#' @param window_nm Optional integration window. `NULL` reuses each calibration's
+#'   fitted window, or 1 nm for uncalibrated maps.
 #'
 #' @return A named list of `libs_map` objects.
 #'
@@ -102,7 +107,7 @@ ls_build_map <- function(dataset, element, line_nm,
 #'                 c(Ca = 393.37, Fe = 371.99))
 #' @export
 ls_map_elements <- function(dataset, elements, lines_nm,
-                            calibrations = NULL, window_nm = 1) {
+                            calibrations = NULL, window_nm = NULL) {
   .validate_dataset(dataset)
   if (is.null(names(lines_nm)) || !all(elements %in% names(lines_nm))) {
     cli::cli_abort("{.arg lines_nm} must be a named numeric vector covering all {.arg elements}.")

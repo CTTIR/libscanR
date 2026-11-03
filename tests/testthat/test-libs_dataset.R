@@ -1,6 +1,6 @@
 test_that("ls_dataset constructs from list of spectra", {
   specs <- lapply(1:3, function(i) {
-    s <- ls_simulate_spectrum(seed = i, n_channels = 64)
+    s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = i, n_channels = 64)
     s$metadata$sample_id <- paste0("s", i)
     s
   })
@@ -12,8 +12,8 @@ test_that("ls_dataset constructs from list of spectra", {
 })
 
 test_that("ls_dataset validates wavelength consistency", {
-  s1 <- ls_simulate_spectrum(n_channels = 64, seed = 1)
-  s2 <- ls_simulate_spectrum(n_channels = 128, seed = 2)
+  s1 <- ls_simulate_spectrum(line_data = ls_demo_peaks(), n_channels = 64, seed = 1)
+  s2 <- ls_simulate_spectrum(line_data = ls_demo_peaks(), n_channels = 128, seed = 2)
   expect_error(ls_dataset(list(s1, s2)), "inconsistent")
 })
 

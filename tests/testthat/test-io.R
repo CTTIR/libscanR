@@ -29,7 +29,7 @@ test_that("ls_read_spectrum fails on missing file", {
 })
 
 test_that("ls_write_csv round-trip", {
-  s <- ls_simulate_spectrum(seed = 1, n_channels = 50, n_shots = 1)
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1, n_channels = 50, n_shots = 1)
   tmp <- withr::local_tempfile(fileext = ".csv")
   ls_write_csv(s, tmp, include_metadata = FALSE)
   s2 <- ls_read_spectrum(tmp, verbose = FALSE)

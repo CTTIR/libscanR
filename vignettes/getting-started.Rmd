@@ -31,14 +31,6 @@ resource_files:
 </div>
 <!-- cttir-vignette-logo: end -->
 
-<!-- badges: start -->
-[![R-CMD-check](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml)
-[![pkgdown](https://github.com/CTTIR/libscanR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/libscanR/)
-[![Codecov test coverage](https://codecov.io/gh/CTTIR/libscanR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/libscanR?branch=main)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-<!-- badges: end -->
-
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -58,8 +50,9 @@ library(libscanR)
 `libscanR` provides a vendor-agnostic pipeline for Laser-Induced Breakdown
 Spectroscopy (LIBS) data, including import, preprocessing, peak detection,
 calibration, quantification, chemometrics, spatial mapping, and
-visualization. It ships with a curated NIST emission line database and
-example datasets so every feature is runnable without real instrument data.
+visualization. It includes explicitly fictional teaching datasets. Atomic-line identification
+requires a separately downloaded, user-configured reference; no NIST compilation
+is bundled. See the README for local download/import configuration.
 
 ## Core data structures
 
@@ -74,7 +67,7 @@ example datasets so every feature is runnable without real instrument data.
 ### Simulate a spectrum
 
 ```{r simulate}
-spec <- ls_simulate_spectrum(
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
   elements = c(Ca = 5000, Na = 1000, Fe = 200),
   n_channels = 1024,
   seed = 1
@@ -84,13 +77,13 @@ spec
 
 ### Plot it
 
-```{r plot-raw}
-ls_plot_spectrum(spec, show_elements = c("Ca", "Na"))
+```{r plot-raw, fig.alt="Fictional teaching spectrum: mean intensity across wavelengths from 200 to 900 nm, including simulated peaks and a continuum background."}
+ls_plot_spectrum(spec)
 ```
 
 ### Preprocess: baseline, smooth, normalize
 
-```{r preprocess}
+```{r preprocess, fig.alt="The same fictional spectrum after SNIP baseline correction, five-channel moving-average smoothing and total normalization; the vertical scale is normalized intensity."}
 spec_proc <- spec |>
   ls_baseline(method = "snip", iterations = 40) |>
   ls_smooth(method = "moving_avg", window = 5) |>
@@ -98,12 +91,21 @@ spec_proc <- spec |>
 ls_plot_spectrum(spec_proc)
 ```
 
-### Detect and identify peaks
+### Detect peaks without an atomic reference
 
 ```{r peaks}
 peaks <- ls_find_peaks(spec_proc, snr_threshold = 3)
+head(peaks)
+```
+
+Atomic identification is a separate, optional step. First configure a reference
+using the README instructions. These candidates are wavelength matches, not
+proof of an element's presence:
+
+```{r identify, eval=FALSE}
+options(libscanR.element_db = "local-data/atomic-lines.csv")
 id <- ls_identify_peaks(peaks, elements = c("Ca", "Na", "Fe"))
-head(id[, c("wavelength_nm", "element", "ionization", "nist_aki", "confidence")])
+ls_plot_spectrum(spec_proc, show_elements = c("Ca", "Na"))
 ```
 
 ### Read from a file

@@ -36,30 +36,38 @@ ui <- bslib::page_navbar(
   bslib::nav_item(
     shiny::tags$a(
       utils::getFromNamespace(".cttir_brand_logo", "libscanR")(),
-      href = "https://github.com/r-heller/libscanR",
+      href = "https://github.com/CTTIR/libscanR",
       target = "_blank"
     )
   )
 )
 
 server <- function(input, output, session) {
+  preload_error <- NULL
+  initial <- tryCatch(libscanR:::.ls_app_data(
+    shiny::getShinyOption("libscanR.data", default = NULL)),
+    error = function(e) {
+      preload_error <<- conditionMessage(e)
+      NULL
+    })
   rv <- shiny::reactiveValues(
-    raw_data = shiny::getShinyOption("libscanR.data", default = NULL),
+    raw_data = initial,
+    import_error = preload_error,
     processed_data = NULL,
     peaks = NULL,
     calibrations = list(),
     pca_result = NULL,
-    plsda_result = NULL
+    plsda_result = NULL,
+    cluster_result = NULL
   )
 
-  # If preloaded data was given as a file path, try to import it
   shiny::observeEvent(rv$raw_data, {
-    if (is.character(rv$raw_data) && length(rv$raw_data) == 1 &&
-        file.exists(rv$raw_data)) {
-      rv$raw_data <- tryCatch(libscanR::ls_read_auto(rv$raw_data, verbose = FALSE),
-                              error = function(e) NULL)
-    }
-  }, once = TRUE)
+    rv$processed_data <- NULL
+    .ls_app_clear_results(rv)
+  }, ignoreInit = TRUE, ignoreNULL = FALSE, priority = 100)
+  shiny::observeEvent(rv$processed_data, {
+    .ls_app_clear_results(rv)
+  }, ignoreInit = TRUE, ignoreNULL = FALSE, priority = 100)
 
   mod_import_server("import", rv)
   mod_preprocess_server("preprocess", rv)

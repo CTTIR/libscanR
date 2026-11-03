@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: If you use this software, please cite it as below.
 type: software
 title: 'libscanR: Analysis and visualisation of laser-induced breakdown spectroscopy data'
-version: 0.1.0
+version: 0.1.0.9001
 authors:
 - family-names: Heller
   given-names: Raban

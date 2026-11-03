@@ -1,7 +1,7 @@
 # Additional tests for R/peaks.R ----------------------------------------------
 
 test_that("ls_find_peaks returns empty tibble when no peaks pass threshold", {
-  s <- ls_simulate_spectrum(elements = c(Ca = 1), seed = 1, n_channels = 64,
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), elements = c(Ca = 1), seed = 1, n_channels = 64,
                             noise_level = 0)
   # absurdly high threshold -> no peaks
   pk <- ls_find_peaks(s, snr_threshold = 1e9, min_prominence = 1)
@@ -12,7 +12,7 @@ test_that("ls_find_peaks returns empty tibble when no peaks pass threshold", {
 })
 
 test_that("ls_peak_area gaussian_fit method runs", {
-  s <- ls_simulate_spectrum(elements = c(Ca = 10000), seed = 1,
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), elements = c(Ca = 10000), seed = 1,
                             n_channels = 1024)
   s <- ls_baseline(s, method = "snip", iterations = 30)
   area <- ls_peak_area(s, 393.37, window_nm = 2, method = "gaussian_fit")
@@ -26,7 +26,8 @@ test_that("ls_identify_peaks validates input and missing columns", {
 })
 
 test_that("ls_identify_peaks warns when no DB lines match the filter", {
-  s <- ls_simulate_spectrum(elements = c(Ca = 10000), seed = 1,
+  withr::local_options(list(libscanR.element_db = synthetic_reference_file()))
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), elements = c(Ca = 10000), seed = 1,
                             n_channels = 512)
   pk <- ls_find_peaks(s, snr_threshold = 2)
   expect_warning(

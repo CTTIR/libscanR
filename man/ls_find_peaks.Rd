@@ -31,7 +31,8 @@ Detects peaks in a LIBS spectrum using local maxima detection with
 prominence and signal-to-noise filtering.
 }
 \examples{
-spec <- ls_simulate_spectrum(elements = c(Ca = 5000, Na = 1000), seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
+                             elements = c(Ca = 5000, Na = 1000), seed = 1)
 peaks <- ls_find_peaks(spec, snr_threshold = 5)
 head(peaks)
 

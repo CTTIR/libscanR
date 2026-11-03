@@ -14,3 +14,10 @@ DROPHERE/
 *~
 *.bak
 *.orig
+
+# User-owned atomic references must remain local.
+local-data/
+inst/extdata/nist*
+data-raw/nist-*
+
+__pycache__/

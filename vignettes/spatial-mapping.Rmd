@@ -31,14 +31,6 @@ resource_files:
 </div>
 <!-- cttir-vignette-logo: end -->
 
-<!-- badges: start -->
-[![R-CMD-check](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml)
-[![pkgdown](https://github.com/CTTIR/libscanR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/libscanR/)
-[![Codecov test coverage](https://codecov.io/gh/CTTIR/libscanR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/libscanR?branch=main)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-<!-- badges: end -->
-
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -69,14 +61,14 @@ The simulated tissue section has:
 
 ## Build a single elemental map
 
-```{r single}
+```{r single, fig.alt="A 20 by 20 fictional raster map of integrated response near 393.37 nm. The viridis legend ranges from low purple to high yellow; values are peak area, not calibrated concentration."}
 m_ca <- ls_build_map(ds, "Ca", 393.37)
 ls_plot_map(m_ca)
 ```
 
 ## Multi-element panel
 
-```{r panel}
+```{r panel, fig.alt="Three fictional raster maps labelled Ca, Fe and Zn, each showing integrated response at its specified teaching wavelength and its own colour scale."}
 maps <- ls_map_elements(ds, c("Ca", "Fe", "Zn"),
                         c(Ca = 393.37, Fe = 371.99, Zn = 213.86))
 ls_plot_map_panel(maps)
@@ -84,7 +76,7 @@ ls_plot_map_panel(maps)
 
 ## Applying a calibration to the map
 
-```{r calib}
+```{r calib, fig.alt="The fictional Ca-labelled raster map after applying the teaching calibration, with predicted concentration in ppm. This demonstrates model application, not validated tissue concentrations."}
 cal_ds <- ls_example_data("calibration")
 cal <- ls_calibrate(cal_ds, "Ca", 393.37,
                     concentrations = cal_ds$sample_info$concentration,

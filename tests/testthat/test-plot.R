@@ -1,11 +1,12 @@
 test_that("ls_plot_spectrum returns a ggplot", {
-  s <- ls_simulate_spectrum(seed = 1, n_channels = 128)
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1, n_channels = 128)
   p <- ls_plot_spectrum(s)
   expect_s3_class(p, "ggplot")
 })
 
 test_that("ls_plot_spectrum with peaks and elements works", {
-  s <- ls_simulate_spectrum(seed = 1, n_channels = 256)
+  withr::local_options(list(libscanR.element_db = synthetic_reference_file()))
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1, n_channels = 256)
   p <- ls_plot_spectrum(s, show_peaks = TRUE, show_elements = "Ca",
                         snr_threshold = 3)
   expect_s3_class(p, "ggplot")
@@ -57,7 +58,7 @@ test_that("PCA plots return ggplot", {
 })
 
 test_that("ls_plot_region works", {
-  s <- ls_simulate_spectrum(seed = 1, n_channels = 256)
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1, n_channels = 256)
   p <- ls_plot_region(s, 380, 450)
   expect_s3_class(p, "ggplot")
 })

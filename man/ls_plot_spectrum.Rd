@@ -19,7 +19,9 @@ ls_plot_spectrum(
 \item{show_peaks}{Logical. Annotate detected peaks. Default \code{FALSE}.}
 
 \item{show_elements}{Character vector of element symbols to highlight
-as dashed vertical lines with labels. Default \code{NULL}.}
+as dashed vertical lines from the configured reference. All matching rows
+in the displayed range are used; no persistent-line status is inferred.
+Default \code{NULL}.}
 
 \item{normalize}{Logical. Divide intensity by its positive maximum before plotting.
 Default \code{FALSE}.}
@@ -36,6 +38,7 @@ A ggplot2 object.
 Generic spectrum plotter. Returns a ggplot2 object.
 }
 \examples{
-spec <- ls_simulate_spectrum(seed = 1)
-ls_plot_spectrum(spec, show_elements = "Ca")
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+ls_plot_spectrum(spec)
+# Element overlays require a configured reference; see ls_element_db().
 }

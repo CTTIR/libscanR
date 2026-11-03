@@ -24,7 +24,7 @@ Exports a \code{libs_spectrum} to a CSV file with a \code{wavelength_nm} column 
 one column per shot.
 }
 \examples{
-spec <- ls_simulate_spectrum(seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 tmp <- tempfile(fileext = ".csv")
 ls_write_csv(spec, tmp)
 unlink(tmp)

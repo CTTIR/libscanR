@@ -9,7 +9,7 @@ ls_map_elements(
   elements,
   lines_nm,
   calibrations = NULL,
-  window_nm = 1
+  window_nm = NULL
 )
 }
 \arguments{
@@ -22,7 +22,8 @@ ls_map_elements(
 
 \item{calibrations}{Named list of \code{\link[=ls_calibration]{ls_calibration()}} objects. Default \code{NULL}.}
 
-\item{window_nm}{Numeric. Integration window. Default 1.}
+\item{window_nm}{Optional integration window. \code{NULL} reuses each calibration's
+fitted window, or 1 nm for uncalibrated maps.}
 }
 \value{
 A named list of \code{libs_map} objects.

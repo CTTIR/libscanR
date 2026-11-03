@@ -1,7 +1,7 @@
 # Tests for R/utils.R internal helpers ----------------------------------------
 
 test_that(".validate_spectrum / .validate_dataset accept and reject", {
-  s <- ls_simulate_spectrum(seed = 1, n_channels = 20, n_shots = 2)
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1, n_channels = 20, n_shots = 2)
   expect_true(.validate_spectrum(s))
   expect_error(.validate_spectrum(list()), "libs_spectrum")
   ds <- ls_example_data("calibration", n_channels = 32)
@@ -15,14 +15,14 @@ test_that(".wavelength_to_idx finds nearest channel", {
 })
 
 test_that(".mean_intensity handles vector, single-row, and multi-row", {
-  s_vec <- ls_simulate_spectrum(seed = 1, n_channels = 10, n_shots = 1)
+  s_vec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1, n_channels = 10, n_shots = 1)
   s_vec$intensity <- as.numeric(s_vec$intensity)
   expect_type(.mean_intensity(s_vec), "double")
 
-  s1 <- ls_simulate_spectrum(seed = 2, n_channels = 10, n_shots = 1)
+  s1 <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 2, n_channels = 10, n_shots = 1)
   expect_length(.mean_intensity(s1), 10)
 
-  s3 <- ls_simulate_spectrum(seed = 3, n_channels = 10, n_shots = 3)
+  s3 <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 3, n_channels = 10, n_shots = 3)
   expect_length(.mean_intensity(s3), 10)
 })
 

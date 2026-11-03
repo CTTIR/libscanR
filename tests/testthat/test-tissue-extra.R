@@ -7,7 +7,7 @@ test_that("ls_tissue_classify plsda and svm methods run", {
   out_pls <- ls_tissue_classify(ds, method = "plsda", reference = ds,
                                 group_col = "tissue", verbose = FALSE)
   expect_s3_class(out_pls, "tbl_df")
-  expect_true(all(c("sample_id", "predicted_tissue", "confidence") %in%
+  expect_true(all(c("sample_id", "predicted_tissue", "score", "score_type", "status") %in%
                     names(out_pls)))
 
   skip_if_not_installed("e1071")

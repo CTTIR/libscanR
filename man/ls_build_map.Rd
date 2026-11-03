@@ -4,7 +4,7 @@
 \alias{ls_build_map}
 \title{Build a Spatial Elemental Map}
 \usage{
-ls_build_map(dataset, element, line_nm, calibration = NULL, window_nm = 1)
+ls_build_map(dataset, element, line_nm, calibration = NULL, window_nm = NULL)
 }
 \arguments{
 \item{dataset}{A \code{\link[=ls_dataset]{ls_dataset()}} object with spatial coordinates.}
@@ -16,7 +16,8 @@ ls_build_map(dataset, element, line_nm, calibration = NULL, window_nm = 1)
 \item{calibration}{Optional \code{\link[=ls_calibration]{ls_calibration()}}. If provided, intensities
 are converted to concentration. Default \code{NULL}.}
 
-\item{window_nm}{Numeric. Peak integration window. Default 1.}
+\item{window_nm}{Optional integration window. \code{NULL} reuses the calibration's
+fitted window, or 1 nm for an uncalibrated map.}
 }
 \value{
 A list with S3 class \code{libs_map} containing \code{x}, \code{y}, \code{values},

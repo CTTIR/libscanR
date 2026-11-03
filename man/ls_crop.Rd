@@ -20,6 +20,6 @@ Same class as input, cropped.
 Subsets a spectrum or dataset to a wavelength range.
 }
 \examples{
-spec <- ls_simulate_spectrum(seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 ls_crop(spec, 380, 450)
 }

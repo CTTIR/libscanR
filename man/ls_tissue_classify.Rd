@@ -27,15 +27,18 @@ labels. Default \code{"tissue"}.}
 }
 \value{
 A \code{\link[tibble:tibble]{tibble::tibble()}} with columns \code{sample_id}, \code{predicted_tissue},
-\code{confidence}.
+\code{score}, \code{score_type}, and \code{status}. The former \code{confidence} column is
+replaced to distinguish relative heuristic scores, unrestricted PLS-DA
+scores and SVM probability estimates. None establishes tissue validity.
 }
 \description{
 Classifies tissue types based on LIBS spectral signatures. Implements
 three methods:
 \itemize{
-\item \code{"ratio"} — rule-based using canonical elemental ratios (Ca/Na, Fe/Na,
-Zn/Na, K/Na, C/Ca) derived from tissue biochemistry. No training data
-required.
+\item \code{"ratio"} — an unvalidated heuristic based on integrated Ca, Na, K, Fe
+and C line responses. It is a research illustration, not a calibrated tissue
+probability or clinical classifier. All required lines must be covered and
+the response denominators must be positive; otherwise the row is unclassified.
 \item \code{"plsda"} — fits a PLS-DA model on the supplied labelled \code{reference}
 dataset and predicts class for \code{x}.
 \item \code{"svm"} — fits an SVM on \code{reference} and predicts class.

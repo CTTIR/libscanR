@@ -17,7 +17,8 @@
 #'   `snr`, `prominence`, `fwhm_nm`, `area`, sorted by intensity descending.
 #'
 #' @examples
-#' spec <- ls_simulate_spectrum(elements = c(Ca = 5000, Na = 1000), seed = 1)
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
+#'                              elements = c(Ca = 5000, Na = 1000), seed = 1)
 #' peaks <- ls_find_peaks(spec, snr_threshold = 5)
 #' head(peaks)
 #'
@@ -102,7 +103,10 @@ ls_find_peaks <- function(x, snr_threshold = 3, min_prominence = 0.01,
 #' Identify Peaks Against the NIST Line Database
 #'
 #' Matches detected peaks to known atomic emission lines. Each peak is
-#' assigned its best-scoring candidate from the curated NIST database.
+#' assigned its nearest wavelength candidate from the user-configured reference.
+#' No atomic reference is bundled; configure [ls_element_db()] first.
+#' This is a candidate identification, not proof of elemental presence or
+#' resolution of blended transitions. Check the measured air/vacuum convention.
 #'
 #' @param peaks A tibble from [ls_find_peaks()].
 #' @param elements Character vector. Restrict search. Default `NULL` = all.
@@ -110,10 +114,13 @@ ls_find_peaks <- function(x, snr_threshold = 3, min_prominence = 0.01,
 #' @param ionization Integer vector of ionization states. Default `c(1L, 2L)`.
 #'
 #' @return A tibble with all peak columns plus: `element`, `ionization`,
-#'   `nist_wavelength_nm`, `nist_aki`, `deviation_nm`, `confidence` (0-1).
+#'   `nist_wavelength_nm`, `nist_aki`, `deviation_nm`, `confidence` (0-1),
+#'   `n_candidates`, and `wavelength_medium`. The legacy `confidence` name
+#'   denotes only `1 - abs(deviation_nm) / tolerance_nm`, not a probability.
 #'
-#' @examples
-#' spec <- ls_simulate_spectrum(elements = c(Ca = 5000, Na = 1000), seed = 1)
+#' @examplesIf !is.null(getOption("libscanR.element_db")) || nzchar(Sys.getenv("LIBSCANR_ELEMENT_DB"))
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
+#'                              elements = c(Ca = 5000, Na = 1000), seed = 1)
 #' pk <- ls_find_peaks(spec, snr_threshold = 5)
 #' id <- ls_identify_peaks(pk, elements = c("Ca", "Na"))
 #' head(id)
@@ -144,6 +151,8 @@ ls_identify_peaks <- function(peaks, elements = NULL, tolerance_nm = 0.2,
     out$nist_aki <- rep(NA_real_, nrow(out))
     out$deviation_nm <- rep(NA_real_, nrow(out))
     out$confidence <- rep(NA_real_, nrow(out))
+    out$n_candidates <- integer(nrow(out))
+    out$wavelength_medium <- rep(NA_character_, nrow(out))
     return(tibble::as_tibble(out))
   }
 
@@ -154,17 +163,20 @@ ls_identify_peaks <- function(peaks, elements = NULL, tolerance_nm = 0.2,
   matched_aki <- rep(NA_real_, n)
   matched_dev <- rep(NA_real_, n)
   conf <- rep(NA_real_, n)
+  n_candidates <- integer(n)
+  medium <- rep(NA_character_, n)
 
-  max_aki <- max(db$aki, na.rm = TRUE)
   for (i in seq_len(n)) {
     dev <- peaks$wavelength_nm[i] - db$wavelength_nm
     within <- abs(dev) <= tolerance_nm
     if (!any(within)) next
     cand <- db[within, ]
     devs <- dev[within]
-    # Score: weight by (1 - |dev|/tol) * (aki / max_aki)
-    score <- (1 - abs(devs) / tolerance_nm) * (cand$aki / max_aki)
+    # Transition rates are not measured line strengths or identification odds.
+    score <- 1 - abs(devs) / tolerance_nm
     best <- which.max(score)
+    n_candidates[i] <- nrow(cand)
+    medium[i] <- cand$wavelength_medium[best]
     matched_element[i] <- cand$element[best]
     matched_ion[i] <- cand$ionization[best]
     matched_wl[i] <- cand$wavelength_nm[best]
@@ -180,6 +192,8 @@ ls_identify_peaks <- function(peaks, elements = NULL, tolerance_nm = 0.2,
   out$nist_aki <- matched_aki
   out$deviation_nm <- matched_dev
   out$confidence <- conf
+  out$n_candidates <- n_candidates
+  out$wavelength_medium <- medium
   tibble::as_tibble(out)
 }
 
@@ -202,7 +216,8 @@ ls_identify_peaks <- function(peaks, elements = NULL, tolerance_nm = 0.2,
 #' @return Numeric. Baseline-subtracted integrated peak area.
 #'
 #' @examples
-#' spec <- ls_simulate_spectrum(elements = c(Ca = 5000), seed = 1)
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
+#'                              elements = c(Ca = 5000), seed = 1)
 #' ls_peak_area(spec, 393.37)
 #' @export
 ls_peak_area <- function(x, center_nm, window_nm = 1,

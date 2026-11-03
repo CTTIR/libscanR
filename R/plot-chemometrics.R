@@ -6,8 +6,11 @@
 #' @param pca A `libs_pca` object from [ls_pca()].
 #' @param pc_x Integer. PC for x-axis. Default 1.
 #' @param pc_y Integer. PC for y-axis. Default 2.
-#' @param color_by Character. Grouping variable. Default `NULL`.
-#' @param ellipses Logical. Draw 95% confidence ellipses per group. Default `TRUE`.
+#' @param color_by Character. Sample-info column. Numeric values use a continuous
+#'   colour scale; other values define discrete groups. Default `NULL`.
+#' @param ellipses Logical. Draw nominal 95% normal-theory data ellipses for
+#'   discrete groups with at least four non-collinear points. They describe score
+#'   dispersion, not confidence intervals for a group mean. Default `TRUE`.
 #'
 #' @return A ggplot2 object.
 #'
@@ -21,9 +24,12 @@ ls_plot_pca <- function(pca, pc_x = 1, pc_y = 2, color_by = NULL,
   if (!inherits(pca, "libs_pca")) {
     cli::cli_abort("{.arg pca} must be a {.cls libs_pca} object.")
   }
+  .check_number(pc_x, "pc_x", min = 1, integer = TRUE)
+  .check_number(pc_y, "pc_y", min = 1, integer = TRUE)
   if (pc_x > pca$n_components || pc_y > pca$n_components) {
     cli::cli_abort("pc_x / pc_y exceed number of computed components ({pca$n_components}).")
   }
+  .check_flag(ellipses, "ellipses")
   scores <- pca$scores
   df <- data.frame(
     PC_x = scores[, pc_x],
@@ -36,14 +42,22 @@ ls_plot_pca <- function(pca, pc_x = 1, pc_y = 2, color_by = NULL,
     if (!color_by %in% names(pca$sample_info)) {
       cli::cli_abort("{.arg color_by} column {.val {color_by}} not found.")
     }
-    df$group <- as.character(pca$sample_info[[color_by]])
+    df$group <- pca$sample_info[[color_by]]
+    numeric_colour <- is.numeric(df$group)
+    if (!numeric_colour) df$group <- as.factor(df$group)
     p <- ggplot2::ggplot(df, ggplot2::aes(x = .data$PC_x, y = .data$PC_y,
                                           colour = .data$group))
-    if (ellipses) {
-      p <- p + ggplot2::stat_ellipse(level = 0.95, alpha = 0.5)
+    if (ellipses && !numeric_colour) {
+      eligible <- .ellipse_groups(df$PC_x, df$PC_y, df$group)
+      if (any(eligible)) p <- p + ggplot2::stat_ellipse(
+        data = df[eligible, , drop = FALSE], type = "norm", level = 0.95)
     }
-    p <- p + ggplot2::geom_point(size = 2.5, alpha = 0.8) +
-      ggplot2::scale_colour_brewer(palette = "Set1", name = color_by)
+    p <- p + ggplot2::geom_point(size = 2.5, alpha = 0.8)
+    if (numeric_colour) {
+      p <- p + ggplot2::scale_colour_viridis_c(name = color_by)
+    } else if (nlevels(df$group) <= 9L) {
+      p <- p + ggplot2::scale_colour_brewer(palette = "Set1", name = color_by)
+    } else p <- p + ggplot2::scale_colour_viridis_d(name = color_by)
   } else {
     p <- ggplot2::ggplot(df, ggplot2::aes(x = .data$PC_x, y = .data$PC_y)) +
       ggplot2::geom_point(size = 2.5, colour = "#2E86AB", alpha = 0.8)
@@ -78,6 +92,8 @@ ls_plot_loadings <- function(pca, pc = 1, n_top = 10) {
   if (!inherits(pca, "libs_pca")) {
     cli::cli_abort("{.arg pca} must be a {.cls libs_pca} object.")
   }
+  .check_number(pc, "pc", min = 1, max = pca$n_components, integer = TRUE)
+  .check_number(n_top, "n_top", min = 0, integer = TRUE)
   loadings <- pca$loadings[, pc]
   df <- data.frame(
     wavelength_nm = pca$wavelength,
@@ -164,6 +180,7 @@ ls_plot_plsda <- function(plsda, type = "scores") {
     cli::cli_abort("{.arg plsda} must be a {.cls libs_plsda} object.")
   }
   type <- match.arg(type, c("scores", "confusion", "vip"))
+  basis <- .evaluation_label(plsda[["evaluation_basis"]])
 
   if (type == "scores") {
     scores <- plsda$model$scores[, 1:min(2, ncol(plsda$model$scores)),
@@ -173,14 +190,17 @@ ls_plot_plsda <- function(plsda, type = "scores") {
       LV2 = if (ncol(scores) >= 2) scores[, 2] else rep(0, nrow(scores)),
       class = plsda$predictions$observed
     )
-    return(ggplot2::ggplot(df, ggplot2::aes(x = .data$LV1, y = .data$LV2,
-                                            colour = .data$class)) +
-             ggplot2::geom_point(size = 2.5, alpha = 0.8) +
-             ggplot2::stat_ellipse(level = 0.95, alpha = 0.5) +
-             ggplot2::scale_colour_brewer(palette = "Set1") +
-             ggplot2::labs(x = "LV1", y = "LV2",
-                           title = sprintf("PLS-DA Scores (accuracy %.1f%%)",
-                                           plsda$accuracy * 100)) +
+    p <- ggplot2::ggplot(df, ggplot2::aes(x = .data$LV1, y = .data$LV2,
+                                          colour = .data$class)) +
+      ggplot2::geom_point(size = 2.5, alpha = 0.8)
+    eligible <- .ellipse_groups(df$LV1, df$LV2, df$class)
+    if (any(eligible)) p <- p + ggplot2::stat_ellipse(
+      data = df[eligible, , drop = FALSE], type = "norm", level = 0.95)
+    p <- if (length(unique(df$class)) <= 9L) {
+      p + ggplot2::scale_colour_brewer(palette = "Set1")
+    } else p + ggplot2::scale_colour_viridis_d()
+    return(p + ggplot2::labs(x = "LV1", y = "LV2", title = "PLS-DA training scores",
+                             subtitle = sprintf("%s accuracy: %.1f%%", basis, plsda$accuracy * 100)) +
              theme_libs())
   }
   if (type == "confusion") {
@@ -195,19 +215,21 @@ ls_plot_plsda <- function(plsda, type = "scores") {
                                 colour = "white") +
              ggplot2::scale_fill_viridis_c(option = "viridis") +
              ggplot2::labs(x = "Predicted", y = "Observed",
-                           title = "Confusion matrix") +
+                           title = "Confusion matrix",
+                           subtitle = sprintf("%s accuracy: %.1f%%", basis, plsda$accuracy * 100)) +
              theme_libs())
   }
   # VIP
   vip <- .vip_scores(plsda$model, plsda$n_components)
-  wl <- plsda$model$scale
-  df <- data.frame(wavelength_idx = seq_along(vip), vip = vip)
+  wl <- plsda[["feature_contract"]][["wavelength"]]
+  known_axis <- is.numeric(wl) && length(wl) == length(vip)
+  df <- data.frame(wavelength_idx = if (known_axis) wl else seq_along(vip), vip = vip)
   ggplot2::ggplot(df, ggplot2::aes(x = .data$wavelength_idx,
                                    y = .data$vip)) +
     ggplot2::geom_line(colour = "#2E86AB") +
     ggplot2::geom_hline(yintercept = 1, linetype = "dashed",
                         colour = "red") +
-    ggplot2::labs(x = "Wavelength channel", y = "VIP score",
+    ggplot2::labs(x = if (known_axis) "Wavelength (nm)" else "Wavelength channel", y = "VIP score",
                   title = "Variable Importance in Projection") +
     theme_libs()
 }
@@ -216,30 +238,40 @@ ls_plot_plsda <- function(plsda, type = "scores") {
 #' @keywords internal
 #' @noRd
 .vip_scores <- function(object, ncomp) {
-  if (!requireNamespace("pls", quietly = TRUE)) {
-    return(rep(NA_real_, length(object$coefficients)))
-  }
   W <- object$loading.weights
   Q <- object$Yloadings
   TT <- object$scores
-  p <- nrow(W)
-  h <- ncomp
-  q <- ncol(Q)
-  # SS per component: (Q[,,h]^2) * (TT[,h]'*TT[,h])
-  SS <- rep(0, h)
-  for (k in seq_len(h)) {
-    SS[k] <- sum(Q[, k]^2) * sum(TT[, k]^2)
+  if (!is.matrix(W) || !is.matrix(Q) || !is.matrix(TT)) {
+    cli::cli_abort("VIP requires fitted weights, response loadings and scores.")
   }
-  vip <- numeric(p)
-  for (i in seq_len(p)) {
-    s <- 0
-    for (k in seq_len(h)) {
-      w_ik <- W[i, k]
-      denom <- sum(W[, k]^2)
-      if (denom == 0) next
-      s <- s + SS[k] * (w_ik^2 / denom)
+  .check_number(ncomp, "ncomp", min = 1, max = min(ncol(W), ncol(Q), ncol(TT)), integer = TRUE)
+  idx <- seq_len(ncomp)
+  energy <- colSums(Q[, idx, drop = FALSE]^2) * colSums(TT[, idx, drop = FALSE]^2)
+  norms <- colSums(W[, idx, drop = FALSE]^2)
+  if (any(!is.finite(energy)) || any(!is.finite(norms)) ||
+      !is.finite(sum(energy)) || sum(energy) <= 0 || any(norms[energy > 0] <= 0)) {
+    cli::cli_abort("VIP is undefined without finite, positive modeled response variation and weights.")
+  }
+  active <- energy > 0
+  contributions <- sweep(W[, idx[active], drop = FALSE]^2, 2L, norms[active], "/")
+  as.numeric(sqrt(nrow(W) * (contributions %*% energy[active]) / sum(energy)))
+}
+
+.ellipse_groups <- function(x, y, group) {
+  valid <- is.finite(x) & is.finite(y) & !is.na(group)
+  result <- rep(FALSE, length(x))
+  for (g in unique(as.character(group[valid]))) {
+    idx <- which(valid & as.character(group) == g)
+    xy <- cbind(x[idx], y[idx])
+    if (length(idx) >= 4L && qr(scale(xy, center = TRUE, scale = FALSE))$rank == 2L) {
+      result[idx] <- TRUE
     }
-    vip[i] <- sqrt(p * s / sum(SS))
   }
-  vip
+  result
+}
+
+.evaluation_label <- function(basis) {
+  switch(if (is.null(basis)) "unknown" else basis,
+         cross_validation = "Cross-validated", leave_one_out = "Leave-one-out",
+         training = "Training", out_of_bag = "Out-of-bag", "Unspecified evaluation")
 }

@@ -31,14 +31,6 @@ resource_files:
 </div>
 <!-- cttir-vignette-logo: end -->
 
-<!-- badges: start -->
-[![R-CMD-check](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml)
-[![pkgdown](https://github.com/CTTIR/libscanR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/libscanR/)
-[![Codecov test coverage](https://codecov.io/gh/CTTIR/libscanR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/libscanR?branch=main)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-<!-- badges: end -->
-
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -64,8 +56,8 @@ cropping, and shot averaging.
 Four methods are supported: `snip`, `als`, `rolling_ball`, `linear`,
 `polynomial`. SNIP and ALS are the workhorses for LIBS continuum removal.
 
-```{r baseline}
-spec <- ls_simulate_spectrum(
+```{r baseline, fig.alt="Three curves compare the raw fictional spectrum with SNIP and ALS baseline-corrected intensities on the same wavelength axis."}
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
   elements = c(Ca = 5000, Na = 1000, K = 800, Fe = 200),
   n_channels = 1024, seed = 1
 )
@@ -102,7 +94,7 @@ norm_is <- ls_normalize(snip, method = "internal_std", ref_wavelength = 589)
 
 ## Smoothing
 
-```{r smooth}
+```{r smooth, fig.alt="The 380 to 410 nm region of the fictional spectrum after SNIP baseline correction and seven-channel moving-average smoothing."}
 sm <- ls_smooth(snip, method = "moving_avg", window = 7)
 ls_plot_region(sm, 380, 410)
 ```
@@ -110,7 +102,7 @@ ls_plot_region(sm, 380, 410)
 ## Averaging replicate shots with outlier removal
 
 ```{r avg}
-multi <- ls_simulate_spectrum(seed = 1, n_channels = 512, n_shots = 20,
+multi <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1, n_channels = 512, n_shots = 20,
                               noise_level = 0.05)
 avg <- ls_average_shots(multi, remove_outliers = TRUE)
 avg$n_shots
@@ -118,14 +110,14 @@ avg$n_shots
 
 ## Cropping
 
-```{r crop}
+```{r crop, fig.alt="SNIP-corrected fictional spectrum cropped to 380 through 450 nm, showing the simulated peak near the Ca-labelled teaching window."}
 ca_region <- ls_crop(snip, 380, 450)
-ls_plot_spectrum(ca_region, show_elements = "Ca")
+ls_plot_spectrum(ca_region)
 ```
 
 ## Recommended pipeline
 
-```{r pipeline}
+```{r pipeline, fig.alt="Fictional spectrum after the recommended SNIP, five-channel moving-average and total-normalization pipeline, plotted against wavelength."}
 processed <- spec |>
   ls_baseline(method = "snip", iterations = 60) |>
   ls_smooth(method = "moving_avg", window = 5) |>

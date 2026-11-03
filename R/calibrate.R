@@ -22,6 +22,15 @@
 #' @param unit Character. Concentration unit. Default `"ppm"`.
 #' @param verbose Logical. Default `TRUE`.
 #'
+#' @details Prediction preserves the fitted wavelength axis, ordered preprocessing,
+#'   integration window and internal-standard ratio or PLS columns. Univariate
+#'   predictions retain inverse concentration-on-response regression. Estimated
+#'   3-sigma LOD and 10-sigma LOQ use the residual standard deviation of a separate
+#'   response-on-concentration fit divided by its absolute slope. These estimates
+#'   require independent verification near the limits; they are not validated
+#'   instrument limits. PLS reports training RMSE separately and leaves LOD/LOQ
+#'   unavailable (`NA`); residual prediction error alone is not a detection limit.
+#'
 #' @return A [ls_calibration()] object.
 #'
 #' @examples
@@ -36,194 +45,100 @@ ls_calibrate <- function(dataset, element, line_nm, concentrations,
                          pls_window_nm = NULL, n_components = 5,
                          unit = "ppm", verbose = TRUE) {
   .validate_dataset(dataset)
+  .check_flag(verbose, "verbose")
   method <- match.arg(method, c("univariate", "internal_std", "pls", "cf_libs"))
   if (length(concentrations) != dataset$n_spectra) {
     cli::cli_abort("{.arg concentrations} length ({length(concentrations)}) must match number of spectra ({dataset$n_spectra}).")
   }
+  .check_numeric_vector(concentrations, "concentrations", 3L)
+  if (length(unique(concentrations)) < 2L) cli::cli_abort("Calibration requires distinct concentrations.")
+  .check_number(line_nm, "line_nm", min = min(dataset$wavelength), max = max(dataset$wavelength))
+  .check_number(window_nm, "window_nm", min = .Machine$double.eps)
+  if (method == "cf_libs") cli::cli_abort("Use {.fn ls_saha_boltzmann} for CF-LIBS on a single spectrum.")
 
-  if (method == "cf_libs") {
-    cli::cli_abort("Use {.fn ls_saha_boltzmann} for CF-LIBS on a single spectrum.")
-  }
-
-  # Peak intensities
-  intensities <- vapply(dataset$spectra, function(s) {
-    ls_peak_area(s, line_nm, window_nm)
-  }, numeric(1))
-
+  contract <- .spectral_feature_contract(dataset)
+  contract$method <- method
+  contract$line_nm <- line_nm
+  contract$window_nm <- window_nm
+  contract$internal_std_nm <- NULL
   if (method == "internal_std") {
-    if (is.null(internal_std_nm)) {
-      cli::cli_abort("{.arg internal_std_nm} is required for internal standard calibration.")
-    }
-    std_int <- vapply(dataset$spectra, function(s) {
-      ls_peak_area(s, internal_std_nm, window_nm)
-    }, numeric(1))
-    std_int[std_int == 0] <- NA
-    intensities <- intensities / std_int
+    if (is.null(internal_std_nm)) cli::cli_abort("{.arg internal_std_nm} is required for internal standard calibration.")
+    .check_number(internal_std_nm, "internal_std_nm", min = min(dataset$wavelength), max = max(dataset$wavelength))
+    contract$internal_std_nm <- internal_std_nm
   }
-
   if (method == "pls") {
     .require_pkg("pls", "Required for PLS calibration.")
-    if (is.null(pls_window_nm)) {
-      pls_window_nm <- c(line_nm - 5, line_nm + 5)
+    .check_number(n_components, "n_components", min = 1, integer = TRUE)
+    if (is.null(pls_window_nm)) pls_window_nm <- c(line_nm - 5, line_nm + 5)
+    .check_numeric_vector(pls_window_nm, "pls_window_nm", 2L)
+    if (length(pls_window_nm) != 2L || pls_window_nm[1L] >= pls_window_nm[2L]) {
+      cli::cli_abort("{.arg pls_window_nm} must contain two increasing bounds.")
     }
-    idx <- which(dataset$wavelength >= pls_window_nm[1] &
-                   dataset$wavelength <= pls_window_nm[2])
-    X <- dataset$intensity_matrix[, idx, drop = FALSE]
-    n_components <- min(n_components, nrow(X) - 1, ncol(X))
+    idx <- which(dataset$wavelength >= pls_window_nm[1L] & dataset$wavelength <= pls_window_nm[2L])
+    if (!length(idx)) cli::cli_abort("The PLS window contains no measured channels.")
+    contract$pls_indices <- idx
+    X <- .calibration_features(contract, dataset)
+    rank <- qr(scale(X, center = TRUE, scale = FALSE))$rank
+    n_components <- min(n_components, nrow(X) - 1L, ncol(X), rank)
+    if (n_components < 1L) cli::cli_abort("PLS calibration requires varying spectral features.")
     model_df <- data.frame(Y = as.numeric(concentrations))
     model_df$X <- X
-    fit <- pls::plsr(Y ~ X, ncomp = n_components, data = model_df,
-                     validation = "none")
+    fit <- pls::plsr(Y ~ X, ncomp = n_components, data = model_df, validation = "none")
     pred <- as.numeric(stats::predict(fit, ncomp = n_components))
+    if (any(!is.finite(pred))) cli::cli_abort("PLS calibration is numerically degenerate; reduce components or revise the standards.")
     r2 <- .r_squared(concentrations, pred)
-    lod <- stats::sd(stats::residuals(fit)[, , n_components], na.rm = TRUE) * 3
-    loq <- lod * 10 / 3
-    if (verbose) {
-      cli::cli_inform(c("v" = "PLS calibration fit: ncomp = {n_components}, R2 = {round(r2, 4)}"))
-    }
-    return(ls_calibration(
-      element = element,
-      wavelength_nm = line_nm,
-      concentrations = concentrations,
-      intensities = rowMeans(X),
-      model = fit,
-      method = "pls",
-      lod = lod,
-      loq = loq,
-      r_squared = r2,
-      unit = unit
-    ))
+    if (verbose) cli::cli_inform(c("v" = "PLS calibration fit: ncomp = {n_components}, R2 = {round(r2, 4)}"))
+    return(ls_calibration(element, line_nm, concentrations, rowMeans(X), fit,
+                          method = method, lod = NA_real_, loq = NA_real_,
+                          r_squared = r2, unit = unit, feature_contract = contract,
+                          lod_basis = "unavailable_for_pls",
+                          training_rmse = sqrt(mean((concentrations - pred)^2))))
   }
 
-  # Univariate / internal_std: linear regression of concentration on intensity
-  df <- data.frame(concentration = as.numeric(concentrations),
-                   intensity = as.numeric(intensities))
-  df <- df[stats::complete.cases(df), ]
+  intensities <- .calibration_features(contract, dataset)
+  if (length(unique(intensities)) < 2L) cli::cli_abort("Calibration requires varying integrated responses.")
+  df <- data.frame(concentration = as.numeric(concentrations), intensity = intensities)
+  # Retain inverse prediction behavior; estimate limits in response units.
   fit <- stats::lm(concentration ~ intensity, data = df)
-  r2 <- summary(fit)$r.squared
-  slope <- stats::coef(fit)[["intensity"]]
-  sigma <- summary(fit)$sigma
+  response_fit <- stats::lm(intensity ~ concentration, data = df)
+  slope <- stats::coef(response_fit)[["concentration"]]
+  if (!is.finite(slope) || slope == 0) cli::cli_abort("Calibration response sensitivity must be finite and nonzero.")
+  sigma <- sqrt(sum(stats::residuals(response_fit)^2) / stats::df.residual(response_fit))
   lod <- 3 * sigma / abs(slope)
   loq <- 10 * sigma / abs(slope)
-
-  if (verbose) {
-    cli::cli_inform(c(
-      "v" = "{method} calibration for {element}: R2 = {round(r2, 4)}, LOD = {signif(lod, 3)} {unit}, LOQ = {signif(loq, 3)} {unit}"
-    ))
-  }
-
-  ls_calibration(
-    element = element,
-    wavelength_nm = line_nm,
-    concentrations = concentrations,
-    intensities = intensities,
-    model = fit,
-    method = method,
-    lod = lod,
-    loq = loq,
-    r_squared = r2,
-    unit = unit
-  )
+  pred <- as.numeric(stats::predict(fit))
+  r2 <- .r_squared(concentrations, pred)
+  if (!all(is.finite(c(lod, loq, pred)))) cli::cli_abort("Calibration fit is numerically non-finite.")
+  if (verbose) cli::cli_inform(c("v" = "{method} calibration for {element}: R2 = {round(r2, 4)}, estimated LOD = {signif(lod, 3)} {unit}, LOQ = {signif(loq, 3)} {unit}"))
+  ls_calibration(element, line_nm, concentrations, intensities, fit,
+                  method = method, lod = lod, loq = loq, r_squared = r2, unit = unit,
+                  feature_contract = contract, response_model = response_fit,
+                  lod_basis = "response_residual_3sigma",
+                  training_rmse = sqrt(mean((concentrations - pred)^2)))
 }
 
-#' Calibration-Free LIBS via Saha-Boltzmann
-#'
-#' Implements the CF-LIBS method for semi-quantitative analysis without
-#' reference standards. Uses the Boltzmann plot method to estimate plasma
-#' temperature and then relative elemental concentrations from line
-#' intensities. Electron density is provided as an input or assumed.
-#'
-#' @param x A [ls_spectrum()] object (ideally baseline-corrected).
-#' @param elements Character vector. Elements to quantify.
-#' @param lines_nm Named list. Emission lines per element for the Boltzmann
-#'   plot, e.g. `list(Ca = c(393.37, 396.85, 422.67))`.
-#' @param electron_density Numeric. Assumed electron density (cm^-3).
-#'   Default `1e17`.
-#' @param window_nm Numeric. Integration window per line. Default 0.5.
-#' @param verbose Logical. Default `TRUE`.
-#'
-#' @return A [tibble::tibble()] with columns `element`, `temperature_k`,
-#'   `concentration_rel` (relative mole fraction, sum normalized to 1),
-#'   `electron_density`, `n_lines` (lines used), `r_squared` (Boltzmann fit).
-#'
-#' @examples
-#' spec <- ls_simulate_spectrum(
-#'   elements = c(Ca = 5000, Fe = 200, Na = 1000), seed = 2)
-#' spec <- ls_baseline(spec)
-#' ls_saha_boltzmann(spec,
-#'   elements = c("Ca", "Fe"),
-#'   lines_nm = list(Ca = c(422.673, 445.478, 487.813),
-#'                   Fe = c(371.994, 404.581, 438.354)))
-#' @export
-ls_saha_boltzmann <- function(x, elements, lines_nm,
-                              electron_density = 1e17,
-                              window_nm = 0.5, verbose = TRUE) {
-  .validate_spectrum(x)
-  if (is.null(names(lines_nm)) || !all(elements %in% names(lines_nm))) {
-    cli::cli_abort("{.arg lines_nm} must be a named list with an entry per element.")
-  }
-
-  db <- ls_element_db(elements = elements)
-
-  results <- list()
-  for (el in elements) {
-    ls <- lines_nm[[el]]
-    el_db <- db[db$element == el & db$ionization == 1L, ]
-    if (nrow(el_db) == 0) {
-      if (verbose) cli::cli_warn("No neutral lines in DB for {el}; skipping.")
-      next
+.calibration_features <- function(contract, dataset) {
+  if (identical(contract[["method"]], "pls")) {
+    idx <- contract[["pls_indices"]]
+    if (!is.numeric(idx) || !length(idx) || anyNA(idx) ||
+        any(idx != trunc(idx)) || any(idx < 1L | idx > dataset$n_channels) || anyDuplicated(idx)) {
+      cli::cli_abort("Invalid saved PLS feature selection; refit the calibration.")
     }
-    # For each requested line: find closest DB entry, compute ln(I*lambda/(g*A))
-    pts <- list()
-    for (wn in ls) {
-      matched <- el_db[which.min(abs(el_db$wavelength_nm - wn)), ]
-      if (nrow(matched) == 0 || abs(matched$wavelength_nm - wn) > 0.5) next
-      intensity <- ls_peak_area(x, wn, window_nm)
-      if (intensity <= 0) next
-      lambda_m <- matched$wavelength_nm * 1e-9
-      # g upper level assumed 2J+1 (defaulted to 1)
-      g <- 1
-      A <- matched$aki * 1e8  # s^-1
-      E_upper <- matched$ek_ev  # eV
-      y <- log(intensity * lambda_m / (g * A))
-      pts[[length(pts) + 1]] <- data.frame(E = E_upper, y = y)
-    }
-    if (length(pts) < 2) {
-      if (verbose) cli::cli_warn("Fewer than 2 usable lines for {el}; skipping.")
-      next
-    }
-    bp <- do.call(rbind, pts)
-    fit <- stats::lm(y ~ E, data = bp)
-    slope <- stats::coef(fit)[["E"]]
-    intercept <- stats::coef(fit)[["(Intercept)"]]
-    # Slope = -1 / (k_B * T) where k_B in eV/K
-    k_B_eV <- 8.617333262e-5
-    T_k <- -1 / (slope * k_B_eV)
-    r2 <- summary(fit)$r.squared
-    results[[el]] <- list(
-      element = el,
-      temperature_k = T_k,
-      concentration_raw = exp(intercept),
-      n_lines = nrow(bp),
-      r_squared = r2
-    )
+    return(dataset$intensity_matrix[, idx, drop = FALSE])
   }
-
-  if (length(results) == 0) {
-    cli::cli_abort("No element quantified; Boltzmann plot failed for all species.")
-  }
-
-  raw <- vapply(results, function(r) r$concentration_raw, numeric(1))
-  rel <- raw / sum(raw)
-  out <- tibble::tibble(
-    element = vapply(results, function(r) r$element, character(1)),
-    temperature_k = vapply(results, function(r) r$temperature_k, numeric(1)),
-    concentration_rel = rel,
-    electron_density = electron_density,
-    n_lines = vapply(results, function(r) as.integer(r$n_lines), integer(1)),
-    r_squared = vapply(results, function(r) r$r_squared, numeric(1))
-  )
-  out
+  values <- vapply(dataset$spectra, function(s) {
+    area <- ls_peak_area(s, contract[["line_nm"]], contract[["window_nm"]])
+    if (identical(contract[["method"]], "internal_std")) {
+      reference <- ls_peak_area(s, contract[["internal_std_nm"]], contract[["window_nm"]])
+      if (!is.finite(reference) || reference <= 0) {
+        cli::cli_abort("Internal-standard integrated response must be positive and finite for every spectrum.")
+      }
+      area <- area / reference
+    }
+    area
+  }, numeric(1))
+  if (any(!is.finite(values))) cli::cli_abort("Integrated calibration responses must be finite.")
+  unname(values)
 }
 
 # -----------------------------------------------------------------------------

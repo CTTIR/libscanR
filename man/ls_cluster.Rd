@@ -19,7 +19,8 @@ function.}
 }
 \value{
 An S3 object of class \code{libs_clusters} with elements \code{cluster},
-\code{method}, \code{k}, \code{silhouette} (mean silhouette score when computable),
+\code{method}, \code{k}, \code{silhouette} (mean score excluding DBSCAN noise;
+singleton clusters contribute zero; \code{NA} when not computable),
 \code{sample_info}.
 }
 \description{

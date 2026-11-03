@@ -22,15 +22,23 @@ ls_identify_peaks(
 }
 \value{
 A tibble with all peak columns plus: \code{element}, \code{ionization},
-\code{nist_wavelength_nm}, \code{nist_aki}, \code{deviation_nm}, \code{confidence} (0-1).
+\code{nist_wavelength_nm}, \code{nist_aki}, \code{deviation_nm}, \code{confidence} (0-1),
+\code{n_candidates}, and \code{wavelength_medium}. The legacy \code{confidence} name
+denotes only \code{1 - abs(deviation_nm) / tolerance_nm}, not a probability.
 }
 \description{
 Matches detected peaks to known atomic emission lines. Each peak is
-assigned its best-scoring candidate from the curated NIST database.
+assigned its nearest wavelength candidate from the user-configured reference.
+No atomic reference is bundled; configure \code{\link[=ls_element_db]{ls_element_db()}} first.
+This is a candidate identification, not proof of elemental presence or
+resolution of blended transitions. Check the measured air/vacuum convention.
 }
 \examples{
-spec <- ls_simulate_spectrum(elements = c(Ca = 5000, Na = 1000), seed = 1)
+\dontshow{if (!is.null(getOption("libscanR.element_db")) || nzchar(Sys.getenv("LIBSCANR_ELEMENT_DB"))) withAutoprint(\{ # examplesIf}
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
+                             elements = c(Ca = 5000, Na = 1000), seed = 1)
 pk <- ls_find_peaks(spec, snr_threshold = 5)
 id <- ls_identify_peaks(pk, elements = c("Ca", "Na"))
 head(id)
+\dontshow{\}) # examplesIf}
 }

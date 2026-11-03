@@ -1,8 +1,8 @@
 {
   "upload_type": "software",
   "title": "libscanR: Analysis and visualisation of laser-induced breakdown spectroscopy data",
-  "version": "0.1.0",
-  "description": "<p>libscanR provides a vendor-neutral pipeline for importing, preprocessing, calibrating and visualising laser-induced breakdown spectroscopy measurements. It supports baseline correction and peak identification against curated atomic emission line databases, and offers both univariate and multivariate calibration, including calibration-free and Saha-Boltzmann approaches. Elemental quantification is accompanied by estimates of the limit of detection and limit of quantification. Chemometric methods such as principal component analysis, partial least squares discriminant analysis and clustering support tissue classification, alongside spatial mapping of elemental distributions. It is aimed at analytical and biomedical spectroscopy groups working with LIBS instrumentation.</p>",
+  "version": "0.1.0.9001",
+  "description": "<p>libscanR provides a research workflow for importing, preprocessing, calibrating and visualising laser-induced breakdown spectroscopy measurements. It supports matching against user-supplied atomic-line references, univariate and multivariate calibration, exploratory chemometrics, heuristic tissue classification and spatial mapping. An explicit two-stage Saha-Boltzmann calculation requires user-supplied physical and instrument-response inputs. Detection-limit estimates and model performance retain their calculation and evaluation basis. Synthetic examples verify software behaviour; they do not establish instrument or clinical validity.</p>",
   "creators": [
     {
       "name": "Heller, Raban",
@@ -30,5 +30,5 @@
       "resource_type": "software"
     }
   ],
-  "notes": "Prepared draft. Not yet published. Previously recorded identifier 10.5281/zenodo.21889942 requires verification before archival publication."
+  "notes": "Development draft. No new archival publication is claimed. MIT covers the software only. No atomic reference compilation is bundled; users obtain and configure their own reference under its provider terms."
 }

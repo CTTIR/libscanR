@@ -47,7 +47,7 @@ interpolation), or \code{"polynomial"} (low-order polynomial fit of
 baseline-only regions).
 }
 \examples{
-spec <- ls_simulate_spectrum(seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 corr <- ls_baseline(spec, method = "snip")
 is.null(corr$baseline)
 

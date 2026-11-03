@@ -24,7 +24,7 @@ A \code{libs_spectrum} with a single averaged shot.
 Averages shots within a \code{\link[=ls_spectrum]{ls_spectrum()}}.
 }
 \examples{
-spec <- ls_simulate_spectrum(n_shots = 10, seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), n_shots = 10, seed = 1)
 ls_average_shots(spec, remove_outliers = TRUE)
 
 }

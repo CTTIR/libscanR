@@ -27,7 +27,7 @@ different gate delays to recommend optimal timing for a target line.
 }
 \examples{
 specs <- lapply(c(0.5, 1, 2, 5, 10), function(g) {
-  s <- ls_simulate_spectrum(seed = round(g * 10))
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = round(g * 10))
   s$metadata$gate_delay_us <- g
   s
 })

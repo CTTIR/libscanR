@@ -8,7 +8,8 @@ ls_run_app(data = NULL, port = NULL, launch.browser = TRUE)
 }
 \arguments{
 \item{data}{Optional. A \code{\link[=ls_spectrum]{ls_spectrum()}}, \code{\link[=ls_dataset]{ls_dataset()}}, or file path to
-preload. Default \code{NULL} (start with upload interface).}
+preload. Objects and files are validated before starting the app.
+Default \code{NULL} (start with upload interface).}
 
 \item{port}{Integer. Port for the app. Default \code{NULL} (auto-select).}
 
@@ -21,6 +22,36 @@ Invisible \code{NULL}. Launches a Shiny application as a side effect.
 Starts an interactive Shiny application for exploring, preprocessing, and
 analyzing LIBS spectral data. The app provides six tabs: Import,
 Preprocessing, Peaks, Calibration, Chemometrics, and Export.
+}
+\details{
+Upload batches are admitted together: invalid files leave the
+previously loaded data intact. Original upload names identify their source.
+New data and successful preprocessing invalidate downstream analysis
+results. Preprocessing controls take effect only after Apply; a failed
+operation retains the last successful data, and Reset restores raw data.
+
+The complete ZIP download contains one CSV per spectrum and, for a dataset,
+\code{sample_info.csv}. Spectrum CSV files retain all shots, baseline and
+supported metadata through \code{\link[=ls_write_csv]{ls_write_csv()}}. ZIP creation requires an
+external \code{zip} command on \code{PATH} (or configured through \code{R_ZIPCMD}),
+including on Windows. The separate wide dataset CSV
+contains mean intensities only. Calibration CSV files summarize figures of
+merit rather than storing reusable prediction models. Load a labelled
+\code{\link[=ls_dataset]{ls_dataset()}} through \code{data} for analyses requiring concentration or class
+columns in \code{sample_info}.
+
+Example datasets use explicitly fictional teaching peaks and concentrations,
+not an atomic reference or experimental measurements. Peak detection and
+raw plots work without a reference. Optional element annotations require
+a user-supplied file configured for \code{\link[=ls_element_db]{ls_element_db()}}; missing or invalid
+references leave raw detections available and report the annotation error.
+Peak and calibration CSVs carry \code{data_origin = "explicit_synthetic_peaks"}
+for wholly fictional inputs; mixed calibration inputs carry
+\code{"includes_explicit_synthetic_peaks"}. Peak exports follow the first
+spectrum actually used for detection.
+
+The previous application data option is restored when the app stops or
+startup fails. Each browser session keeps its own working data and results.
 }
 \examples{
 \donttest{

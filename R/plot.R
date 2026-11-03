@@ -8,7 +8,9 @@
 #' @param x A [ls_spectrum()] object.
 #' @param show_peaks Logical. Annotate detected peaks. Default `FALSE`.
 #' @param show_elements Character vector of element symbols to highlight
-#'   as dashed vertical lines with labels. Default `NULL`.
+#'   as dashed vertical lines from the configured reference. All matching rows
+#'   in the displayed range are used; no persistent-line status is inferred.
+#'   Default `NULL`.
 #' @param normalize Logical. Divide intensity by its positive maximum before plotting.
 #'   Default `FALSE`.
 #' @param snr_threshold Numeric. SNR threshold for peak annotation when
@@ -18,8 +20,9 @@
 #' @return A ggplot2 object.
 #'
 #' @examples
-#' spec <- ls_simulate_spectrum(seed = 1)
-#' ls_plot_spectrum(spec, show_elements = "Ca")
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+#' ls_plot_spectrum(spec)
+#' # Element overlays require a configured reference; see ls_element_db().
 #' @export
 ls_plot_spectrum <- function(x, show_peaks = FALSE, show_elements = NULL,
                              normalize = FALSE, snr_threshold = 5, ...) {
@@ -50,10 +53,9 @@ ls_plot_spectrum <- function(x, show_peaks = FALSE, show_elements = NULL,
     }
   }
 
-  if (!is.null(show_elements)) {
+  if (length(show_elements) > 0L) {
     el <- ls_element_db(elements = show_elements,
-                        range_nm = x$range_nm,
-                        persistent_only = TRUE)
+                        range_nm = x$range_nm)
     if (nrow(el) > 0) {
       p <- p +
         ggplot2::geom_vline(data = el,
@@ -134,7 +136,10 @@ ls_plot_overlay <- function(dataset, color_by = NULL, normalize = FALSE,
 
 #' Plot a Spectral Region in Detail
 #'
-#' Zooms into a specified wavelength range and annotates peaks.
+#' Zooms into a specified wavelength range and annotates peaks when a user
+#' reference is configured. With default `elements = NULL` and no reference,
+#' the spectrum remains visible and a subtitle reports unavailable annotations.
+#' Explicitly requesting element labels requires a configured reference.
 #'
 #' @param x A [ls_spectrum()] or [ls_dataset()] object.
 #' @param min_nm Numeric. Minimum wavelength (nm).
@@ -146,7 +151,7 @@ ls_plot_overlay <- function(dataset, color_by = NULL, normalize = FALSE,
 #' @return A ggplot2 object.
 #'
 #' @examples
-#' spec <- ls_simulate_spectrum(seed = 1)
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 #' ls_plot_region(spec, 380, 410)
 #' @export
 ls_plot_region <- function(x, min_nm, max_nm, elements = NULL,
@@ -159,7 +164,15 @@ ls_plot_region <- function(x, min_nm, max_nm, elements = NULL,
   cropped <- ls_crop(x, min_nm, max_nm)
 
   pk <- ls_find_peaks(cropped, snr_threshold = snr_threshold)
-  pk_id <- if (nrow(pk) > 0) ls_identify_peaks(pk, elements = elements) else pk
+  annotations_unavailable <- FALSE
+  pk_id <- if (nrow(pk) > 0) {
+    tryCatch(ls_identify_peaks(pk, elements = elements),
+      libscan_reference_missing = function(e) {
+        if (!is.null(elements)) rlang::cnd_signal(e)
+        annotations_unavailable <<- TRUE
+        pk
+      })
+  } else pk
 
   df <- data.frame(
     wavelength_nm = cropped$wavelength,
@@ -170,6 +183,10 @@ ls_plot_region <- function(x, min_nm, max_nm, elements = NULL,
     ggplot2::geom_line(colour = "#2E86AB", linewidth = 0.5) +
     ggplot2::labs(x = "Wavelength (nm)", y = "Intensity (a.u.)") +
     theme_libs()
+
+  if (annotations_unavailable) {
+    p <- p + ggplot2::labs(subtitle = "Atomic annotations unavailable: configure a user reference with ls_element_db().")
+  }
 
   if (nrow(pk_id) > 0 && "element" %in% names(pk_id)) {
     pk_lab <- pk_id[!is.na(pk_id$element), ]

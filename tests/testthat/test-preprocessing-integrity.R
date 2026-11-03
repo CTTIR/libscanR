@@ -88,7 +88,7 @@ test_that("seeded example generation is reproducible without changing session RN
   second <- ls_example_data("tissue", seed = 8, n_channels = 16)
   expect_equal(first$intensity_matrix, second$intensity_matrix)
   rm(".Random.seed", envir = .GlobalEnv)
-  ls_simulate_spectrum(seed = 2, n_channels = 16)
+  ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 2, n_channels = 16)
   expect_false(exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE))
   ls_example_data("tissue", seed = 2, n_channels = 16)
   expect_false(exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE))

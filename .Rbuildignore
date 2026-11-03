@@ -31,3 +31,9 @@
 ^\.zenodo\.json$
 ^planning$
 ^Rplots\.pdf$
+
+^local-data$
+^inst/extdata/nist.*$
+
+(^|/)__pycache__($|/)
+(^|/)Rplots\.pdf$

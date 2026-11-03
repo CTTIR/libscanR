@@ -13,7 +13,8 @@ ls_simulate_spectrum(
   continuum_level = 100,
   shot_rsd = 0.1,
   fwhm_nm = 0.1,
-  seed = NULL
+  seed = NULL,
+  line_data = NULL
 )
 }
 \arguments{
@@ -39,6 +40,12 @@ intensity variation (0-1). Default 0.1.}
 \item{fwhm_nm}{Numeric. Typical line FWHM in nm. Default 0.1.}
 
 \item{seed}{Optional integer random seed for reproducibility.}
+
+\item{line_data}{Optional explicit teaching peak table, with \code{component},
+\code{wavelength_nm} and \code{relative_strength} columns. Strengths are arbitrary
+intensity multipliers, not atomic transition probabilities. Use
+\code{\link[=ls_demo_peaks]{ls_demo_peaks()}} for a fictional fixture. \code{NULL} uses the configured
+atomic reference and retains the transition-rate scaling convention.}
 }
 \value{
 A \code{\link[=ls_spectrum]{ls_spectrum()}} object.
@@ -46,12 +53,13 @@ A \code{\link[=ls_spectrum]{ls_spectrum()}} object.
 \description{
 Generates a demonstration LIBS spectrum with configurable elemental
 composition, noise, and continuum background. Emission lines are drawn
-from the internal NIST database (\code{\link[=ls_element_db]{ls_element_db()}}) and modelled as
+from the user-configured atomic reference (\code{\link[=ls_element_db]{ls_element_db()}}) and modelled as
 Gaussian peaks. Peak widths are at least 2.5 channel spacings so coarse
 demonstrations remain visible; this is not an instrument response model
 or validation of quantitative elemental concentrations or tissue identity.
 }
 \examples{
-spec <- ls_simulate_spectrum(elements = c(Ca = 1000, Na = 500), seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
+                             elements = c(Ca = 1000, Na = 500), seed = 1)
 print(spec)
 }

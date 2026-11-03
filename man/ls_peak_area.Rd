@@ -29,6 +29,7 @@ Integrates peak area at a given emission line, with a local baseline
 subtracted (linear interpolation between window edges).
 }
 \examples{
-spec <- ls_simulate_spectrum(elements = c(Ca = 5000), seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
+                             elements = c(Ca = 5000), seed = 1)
 ls_peak_area(spec, 393.37)
 }

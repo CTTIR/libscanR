@@ -12,14 +12,17 @@ ls_plot_calibration(
 )
 }
 \arguments{
-\item{calibration}{A \code{\link[=ls_calibration]{ls_calibration()}} object (univariate/internal_std).}
+\item{calibration}{A \code{\link[=ls_calibration]{ls_calibration()}} object. PLS shows fitted training
+concentrations against known concentrations, not a one-feature curve.}
 
 \item{show_lod}{Logical. Show LOD as a horizontal dashed line. Default \code{TRUE}.}
 
 \item{show_loq}{Logical. Show LOQ as a horizontal dashed line. Default \code{TRUE}.}
 
 \item{show_prediction_interval}{Logical. Show 95\% prediction band.
-Default \code{TRUE}.}
+Default \code{TRUE}. For univariate/internal-standard fits this is the fitted
+model's interval for a new observation, not a confidence band for its mean.
+PLS plots do not supply a prediction interval.}
 }
 \value{
 A ggplot2 object.

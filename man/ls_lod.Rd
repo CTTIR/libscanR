@@ -4,19 +4,25 @@
 \alias{ls_lod}
 \title{Limit of Detection (3-sigma)}
 \usage{
-ls_lod(calibration, blank = NULL, window_nm = 1)
+ls_lod(calibration, blank = NULL, window_nm = NULL)
 }
 \arguments{
 \item{calibration}{A \code{\link[=ls_calibration]{ls_calibration()}} object.}
 
 \item{blank}{Optional \code{\link[=ls_spectrum]{ls_spectrum()}} of a blank sample. If \code{NULL} (the
 default), LOD is recomputed from the residual standard error of the
-calibration model.}
+response-on-concentration calibration model. A supplied blank must contain
+at least two replicate shots on the fitted axis with the same preprocessing;
+its standard deviation is computed from the same integrated response (or
+internal-standard ratio) for each shot, not variation across wavelengths.}
 
-\item{window_nm}{Numeric. Integration window for the blank. Default 1.}
+\item{window_nm}{Optional window; \code{NULL} uses the fitted window. A different
+value is rejected.}
 }
 \value{
-Numeric LOD in the calibration's concentration unit.
+Estimated numeric LOD in the calibration's concentration unit; \code{NA}
+for PLS. This 3-sigma estimate requires independent confirmation near the
+detection limit and is not an instrument qualification.
 }
 \description{
 Calculates LOD using the 3-sigma criterion.

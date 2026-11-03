@@ -13,7 +13,10 @@ ls_classify(model, new_data)
 }
 \value{
 A \code{\link[tibble:tibble]{tibble::tibble()}} with columns \code{sample_id}, \code{predicted_class},
-and optionally \code{probability}.
+and \code{score} for PLS-DA (an unbounded discriminant score, not a
+probability), or \code{probability} for SVM/RF. The wavelength axis and ordered
+preprocessing must match the fitted contract. Legacy models without this
+contract must be refitted before prediction.
 }
 \description{
 Applies a trained classifier (from \code{\link[=ls_plsda]{ls_plsda()}} or \code{\link[=ls_train_classifier]{ls_train_classifier()}})

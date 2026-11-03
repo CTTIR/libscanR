@@ -1,13 +1,13 @@
 test_that("ls_simulate_spectrum returns libs_spectrum", {
-  s <- ls_simulate_spectrum(seed = 1, n_channels = 128, n_shots = 3)
+  s <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1, n_channels = 128, n_shots = 3)
   expect_s3_class(s, "libs_spectrum")
   expect_equal(s$n_channels, 128)
   expect_equal(s$n_shots, 3)
 })
 
 test_that("ls_simulate_spectrum seed is reproducible", {
-  s1 <- ls_simulate_spectrum(seed = 42, n_channels = 64)
-  s2 <- ls_simulate_spectrum(seed = 42, n_channels = 64)
+  s1 <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 42, n_channels = 64)
+  s2 <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 42, n_channels = 64)
   expect_equal(s1$intensity, s2$intensity)
 })
 

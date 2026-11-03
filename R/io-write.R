@@ -13,7 +13,7 @@
 #' @return Invisibly returns `path`.
 #'
 #' @examples
-#' spec <- ls_simulate_spectrum(seed = 1)
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 #' tmp <- tempfile(fileext = ".csv")
 #' ls_write_csv(spec, tmp)
 #' unlink(tmp)
