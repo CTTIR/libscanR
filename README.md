@@ -1,14 +1,10 @@
 # libscanR <picture class="cttir-readme-logo"><source class="cttir-logo-dark-source" media="(prefers-color-scheme: dark)" srcset="man/figures/logo-with-name-dark.png" /><img src="man/figures/logo-with-name.png" align="right" alt="libscanR logo" width="120" height="139" /></picture>
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889942.svg)](https://doi.org/10.5281/zenodo.21889942)
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/libscanR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/libscanR/)
-[![CRAN status](https://www.r-pkg.org/badges/version/libscanR)](https://CRAN.R-project.org/package=libscanR)
 [![Codecov test coverage](https://codecov.io/gh/CTTIR/libscanR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/libscanR?branch=main)
-[![CRAN downloads](https://cranlogs.r-pkg.org/badges/libscanR)](https://cran.r-project.org/package=libscanR)
-[![CRAN downloads total](https://cranlogs.r-pkg.org/badges/grand-total/libscanR)](https://cran.r-project.org/package=libscanR)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
@@ -39,6 +35,10 @@ biomedical tissue applications.
 - **Shiny app**: Six-tab interactive explorer (`ls_run_app()`).
 - **Reproducible examples**: `ls_example_data()` provides synthetic
   tissue, calibration, and spatial datasets — no instrument data required.
+
+This development checkout has not been submitted as a new release. The recorded
+DOI and CRAN package page did not resolve during the 3 November 2026 audit;
+install from GitHub while distribution metadata is verified.
 
 ## Installation
 

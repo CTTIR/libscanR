@@ -133,3 +133,9 @@ issue in the exact-name and Gaussian-fit follow-up, and confirmed that no atomic
 data files changed. The source-package check also identified two unqualified
 `utils` calls; both now use explicit namespaces. Final source-package evidence
 and the remote main receipt are retained in the maintenance audit directory.
+
+The earlier DOI badge and release date were not confirmed: the DOI resolver and
+CRAN package page returned HTTP404, while the Zenodo API returned403 (reservation
+status unknown). Remove those unsupported release signals, retain the identifier
+in draft archival notes and leave publication verification pending. No release
+or submission is implied by this source-code milestone.
