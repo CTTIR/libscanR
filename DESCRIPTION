@@ -30,7 +30,6 @@ Imports:
     cli,
     tibble,
     dplyr,
-    readr,
     jsonlite,
     Matrix,
     ggplot2,
