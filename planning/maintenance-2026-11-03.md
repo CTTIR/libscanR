@@ -177,3 +177,28 @@ Exact commands, hashes, successful results and superseded harness failures are
 retained separately under `evidence/libscanR/user-reference`. Earlier data-bearing
 local candidate receipts are historical and are not substituted for this final
 archive's evidence. No restricted data-containing candidate history is merged.
+
+## Hosted workflow and PLS fixture follow-up
+
+The published `0784aec` source passed hosted lint, coverage and pkgdown. Two
+separate failures required a narrow follow-up. Importer run `41641499309` stopped
+before tests because Python 3.9 has no setup-python build for Ubuntu 26.04.
+The job now uses Ubuntu 24.04 and tests both Python 3.9 and 3.15; the official
+actions/python-versions manifest lists both builds for that runner.
+
+R-CMD-check run `41641499829` failed only on Windows. The rank-one component-cap
+fixture used alternating classes, producing exactly zero feature-response
+association in its two endpoint leave-one-out folds. Floating-point residuals
+on macOS had hidden that invalid successful-fit assumption. Contiguous classes
+retain rank one and nonzero association in every training fold. The separate
+two-sample refusal still selects one member of each class. A balanced repeated-
+level fixture now explicitly checks zero covariance before and after variance
+scaling and verifies refusal by the unchanged numerical-degeneracy guard.
+
+All **101 affected R assertions** pass without warnings or skips. All six
+importer tests pass on local Python 3.9.6 and 3.15.0; actionlint and independent
+review pass. The production R code, importer, app, site and restricted-data
+handling are unchanged. The prior exact-archive results apply to those identical
+runtime bytes; this follow-up does not claim a new full archive check. Windows
+and both importer matrix jobs must still be observed on the eventual fix commit.
+Evidence is retained under `evidence/libscanR/user-reference/hosted-followup`.

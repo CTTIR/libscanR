@@ -60,7 +60,10 @@ test_that("PLS-DA LOO and fitted evaluation have explicit distinct bases", {
 
 test_that("component counts and fold feature rank are validated", {
   skip_if_not_installed("pls")
-  ds <- chemometric_dataset(outer(seq_len(8), c(1, 2, 3, 4)))
+  # Rank one with nonzero feature-response association in every LOO fold.
+  # Alternating labels instead have zero association when row 1 or 8 is held out.
+  ds <- chemometric_dataset(outer(seq_len(8), c(1, 2, 3, 4)),
+                             labels = rep(c("A", "B"), each = 4))
   for (n in list(0, -1, 1.5, NA_real_, Inf, c(1, 2), TRUE)) {
     expect_error(ls_plsda(ds, "group", n_components = n), "n_components")
     expect_error(ls_pca(ds, n_components = n), "n_components")
@@ -69,13 +72,30 @@ test_that("component counts and fold feature rank are validated", {
   expect_equal(fit$n_components, 1)
   expect_equal(dim(fit$model$validation$pred)[3], 1)
   expect_true(is.finite(fit$accuracy))
-  expect_error(ls_plsda(ds[1:2], "group", validation = "LOO"), "training fold")
+  expect_error(ls_plsda(ds[c(1, 5)], "group", validation = "LOO"), "training fold")
   constant <- chemometric_dataset(matrix(10, 8, 4))
   expect_error(ls_plsda(constant, "group"), "varying")
   expect_error(ls_pca(constant), "varying")
   expect_error(ls_pca(constant, scale = FALSE), "varying")
   expect_error(ls_pca(ds[1]), "two spectra")
   expect_error(ls_pca(ds, scale = 1), "scale")
+})
+
+test_that("PLS-DA refuses exact zero feature-response association", {
+  skip_if_not_installed("pls")
+  # Each class has the same repeated feature levels. Centering gives equal
+  # absolute magnitudes, so covariance is zero even after variance scaling.
+  ds <- chemometric_dataset(outer(c(1, 1, 3, 3), c(1, 2, 3, 4)),
+                             labels = c("A", "B", "A", "B"))
+  response <- stats::model.matrix(~ factor(ds$sample_info$group) - 1)
+  covariance <- crossprod(scale(ds$intensity_matrix, scale = FALSE),
+                          scale(response, scale = FALSE))
+  expect_identical(unname(covariance), matrix(0, 4, 2))
+  scaled_covariance <- crossprod(scale(ds$intensity_matrix),
+                                 scale(response, scale = FALSE))
+  expect_identical(unname(scaled_covariance), matrix(0, 4, 2))
+  expect_error(ls_plsda(ds, "group", n_components = 50, validation = "none"),
+               "PLS predictions are numerically degenerate")
 })
 
 test_that("class labels are complete and square class tables retain empty columns", {
