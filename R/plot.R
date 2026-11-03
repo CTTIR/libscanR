@@ -9,7 +9,7 @@
 #' @param show_peaks Logical. Annotate detected peaks. Default `FALSE`.
 #' @param show_elements Character vector of element symbols to highlight
 #'   as dashed vertical lines with labels. Default `NULL`.
-#' @param normalize Logical. Normalize intensity to `[0, 1]` before plotting.
+#' @param normalize Logical. Divide intensity by its positive maximum before plotting.
 #'   Default `FALSE`.
 #' @param snr_threshold Numeric. SNR threshold for peak annotation when
 #'   `show_peaks = TRUE`. Default 5.
@@ -24,8 +24,11 @@
 ls_plot_spectrum <- function(x, show_peaks = FALSE, show_elements = NULL,
                              normalize = FALSE, snr_threshold = 5, ...) {
   .validate_spectrum(x)
+  .check_flag(normalize, "normalize")
+  .check_flag(show_peaks, "show_peaks")
   inten <- .mean_intensity(x)
-  if (normalize && max(inten) > 0) inten <- inten / max(inten)
+  divisor <- if (normalize && max(inten) > 0) max(inten) else 1
+  inten <- inten / divisor
 
   df <- data.frame(wavelength_nm = x$wavelength, intensity = inten)
 
@@ -38,7 +41,7 @@ ls_plot_spectrum <- function(x, show_peaks = FALSE, show_elements = NULL,
   if (show_peaks) {
     pk <- ls_find_peaks(x, snr_threshold = snr_threshold)
     if (nrow(pk) > 0) {
-      if (normalize) pk$intensity <- pk$intensity / max(inten)
+      pk$intensity <- pk$intensity / divisor
       p <- p + ggplot2::geom_point(
         data = pk,
         ggplot2::aes(x = .data$wavelength_nm, y = .data$intensity),
@@ -72,7 +75,7 @@ ls_plot_spectrum <- function(x, show_peaks = FALSE, show_elements = NULL,
 #' @param dataset A [ls_dataset()] object.
 #' @param color_by Character. Column in `sample_info` for color mapping.
 #'   Default `NULL`.
-#' @param normalize Logical. Normalize each spectrum to `[0, 1]`. Default `FALSE`.
+#' @param normalize Logical. Divide each spectrum by its positive maximum. Default `FALSE`.
 #' @param alpha Numeric. Line alpha. Default 0.5.
 #'
 #' @return A ggplot2 object.

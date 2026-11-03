@@ -28,65 +28,39 @@
 ls_read_spectrum <- function(path, format = "auto", wavelength_col = 1,
                              intensity_col = 2, skip = 0,
                              metadata = list(), verbose = TRUE) {
-  if (!file.exists(path)) {
-    cli::cli_abort("File not found: {.path {path}}")
-  }
+  .check_input_file(path)
+  .check_number(skip, "skip", min = 0, integer = TRUE)
+  .check_flag(verbose, "verbose")
+  .check_metadata(metadata)
   format <- match.arg(format, c("auto", "csv", "tsv", "txt"))
   if (format == "auto") {
     ext <- tolower(tools::file_ext(path))
-    format <- switch(ext,
-                     csv = "csv",
-                     tsv = "tsv",
-                     txt = "txt",
-                     "csv")
+    format <- switch(ext, csv = "csv", tsv = "tsv", txt = "txt", "csv")
   }
-  delim <- switch(format,
-                  csv = ",",
-                  tsv = "\t",
-                  txt = NULL)
-
-  if (is.null(delim)) {
-    df <- tryCatch(
-      utils::read.table(path, header = TRUE, sep = "", skip = skip,
-                        stringsAsFactors = FALSE),
-      error = function(e) utils::read.table(path, header = FALSE, sep = "",
-                                            skip = skip,
-                                            stringsAsFactors = FALSE)
-    )
-  } else {
-    df <- tryCatch(
-      readr::read_delim(path, delim = delim, skip = skip,
-                        show_col_types = FALSE,
-                        progress = FALSE),
-      error = function(e) {
-        utils::read.table(path, header = TRUE, sep = delim, skip = skip,
-                          stringsAsFactors = FALSE)
-      }
-    )
-  }
-  df <- as.data.frame(df)
-
-  wl <- .pick_col(df, wavelength_col)
-  int_cols_df <- .pick_cols(df, intensity_col)
-  int_cols_df <- as.data.frame(lapply(int_cols_df, as.numeric))
-  if (ncol(int_cols_df) == 1) {
-    intensity <- as.numeric(int_cols_df[[1]])
-  } else {
-    intensity <- t(as.matrix(int_cols_df))
-    dimnames(intensity) <- NULL
-  }
-
+  lines <- readLines(path, warn = FALSE, encoding = "UTF-8")
+  if (skip >= length(lines)) cli::cli_abort("No data after skipped lines.")
+  lines <- lines[seq.int(skip + 1L, length(lines))]
+  payload <- .read_csv_metadata(lines)
+  delim <- switch(format, csv = ",", tsv = "\t", txt = "")
+  df <- .read_spectral_table(lines, delim = delim)
+  wl <- .numeric_column(.pick_col(df, wavelength_col), "wavelength")
+  int_df <- .pick_cols(df, intensity_col)
+  intensity <- t(vapply(int_df, .numeric_column, numeric(nrow(df)),
+                         name = "intensity"))
+  dimnames(intensity) <- NULL
   meta <- utils::modifyList(list(
-    source_file = path,
-    import_time = format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
     sample_id = tools::file_path_sans_ext(basename(path))
-  ), metadata)
-
-  spec <- ls_spectrum(
-    wavelength = as.numeric(wl),
-    intensity = intensity,
-    metadata = meta
-  )
+  ), payload$metadata)
+  meta <- utils::modifyList(meta, metadata)
+  if (!is.null(meta$source_file)) {
+    meta$source_history <- c(meta$source_history,
+                             list(list(source_file = meta$source_file,
+                                       import_time = meta$import_time)))
+  }
+  meta$source_file <- path
+  meta$import_time <- base::format(Sys.time(), "%Y-%m-%d %H:%M:%S")
+  spec <- ls_spectrum(wavelength = wl, intensity = intensity,
+                      metadata = meta, baseline = payload$baseline)
 
   if (verbose) {
     cli::cli_inform(c(
@@ -104,7 +78,7 @@ ls_read_spectrum <- function(path, format = "auto", wavelength_col = 1,
 #' @param pattern Character. File pattern (regex). Default `"\\.(csv|tsv|txt)$"`.
 #' @param recursive Logical. Recurse into subdirectories. Default `FALSE`.
 #' @param sample_info data.frame/tibble. Optional sample metadata table.
-#'   Must have a `sample_id` column matching (or being a subset of) the
+#'   Must have a `sample_id` column matching all of the
 #'   filenames without extension. Default `NULL`.
 #' @param ... Additional arguments passed to [ls_read_spectrum()].
 #'
@@ -135,6 +109,14 @@ ls_read_dir <- function(dir, pattern = "\\.(csv|tsv|txt)$",
     cli::cli_abort("No files matching {.val {pattern}} in {.path {dir}}")
   }
 
+  info_file <- file.path(dir, "sample_info.csv")
+  files <- files[basename(files) != "sample_info.csv"]
+  if (!length(files)) cli::cli_abort("No spectrum files remain after excluding sample_info.csv.")
+  if (is.null(sample_info) && file.exists(info_file)) {
+    sample_info <- utils::read.csv(info_file, stringsAsFactors = FALSE,
+                                   colClasses = c(sample_id = "character"),
+                                   check.names = FALSE)
+  }
   spectra <- lapply(files, function(f) {
     ls_read_spectrum(f, ...)
   })
@@ -157,6 +139,9 @@ ls_read_csv <- function(path, ...) {
 #' @keywords internal
 #' @noRd
 .pick_col <- function(df, col) {
+  if (length(col) != 1L || anyNA(col)) {
+    cli::cli_abort("Wavelength column must be a single non-missing index or name.")
+  }
   if (is.character(col)) {
     if (!col %in% names(df)) {
       cli::cli_abort("Column {.val {col}} not found.")
@@ -164,7 +149,7 @@ ls_read_csv <- function(path, ...) {
     return(df[[col]])
   }
   if (is.numeric(col)) {
-    if (col < 1 || col > ncol(df)) {
+    if (!is.finite(col) || col != trunc(col) || col < 1 || col > ncol(df)) {
       cli::cli_abort("Column index {.val {col}} out of range.")
     }
     return(df[[col]])
@@ -175,6 +160,9 @@ ls_read_csv <- function(path, ...) {
 #' @keywords internal
 #' @noRd
 .pick_cols <- function(df, cols) {
+  if (!length(cols) || anyNA(cols) || anyDuplicated(cols)) {
+    cli::cli_abort("Intensity columns must be non-empty, unique, non-missing indices or names.")
+  }
   if (is.character(cols)) {
     missing_cols <- setdiff(cols, names(df))
     if (length(missing_cols) > 0) {
@@ -186,11 +174,76 @@ ls_read_csv <- function(path, ...) {
     if (length(cols) == 1 && cols == 2 && ncol(df) > 2) {
       cols <- 2:ncol(df)
     }
-    bad <- cols < 1 | cols > ncol(df)
+    bad <- !is.finite(cols) | cols != trunc(cols) | cols < 1 | cols > ncol(df)
     if (any(bad)) {
       cli::cli_abort("Column index out of range: {.val {cols[bad]}}")
     }
     return(df[, cols, drop = FALSE])
   }
   cli::cli_abort("Intensity column index must be character or numeric.")
+}
+
+
+.check_input_file <- function(path) {
+  if (!is.character(path) || length(path) != 1L || is.na(path) ||
+      !nzchar(path) || !file.exists(path) || dir.exists(path)) {
+    cli::cli_abort("File not found or not a regular input file: {.val {path}}")
+  }
+}
+
+.numeric_column <- function(x, name) {
+  out <- suppressWarnings(as.numeric(as.character(x)))
+  if (any(!is.finite(out))) {
+    cli::cli_abort("The {name} column contains missing, non-numeric, or infinite values; no rows were discarded.")
+  }
+  out
+}
+
+.read_csv_metadata <- function(lines) {
+  prefix <- "# libscanR-json-v1: "
+  encoded <- lines[startsWith(lines, prefix)]
+  if (length(encoded) > 1L) cli::cli_abort("Duplicate libscanR metadata headers.")
+  if (length(encoded)) {
+    payload <- tryCatch(jsonlite::fromJSON(substring(encoded, nchar(prefix) + 1L),
+                                          simplifyDataFrame = FALSE,
+                                          simplifyMatrix = FALSE),
+                        error = function(e) cli::cli_abort("Invalid libscanR JSON metadata."))
+    if (!is.list(payload) || !all(c("metadata", "baseline") %in% names(payload))) {
+      cli::cli_abort("Invalid libscanR metadata structure.")
+    }
+    .check_metadata(payload$metadata)
+    return(payload)
+  }
+  # Read earlier scalar comment headers as text; never evaluate file contents.
+  comments <- grep("^# [^:]+: ", lines, value = TRUE)
+  keys <- sub("^# ([^:]+): .*", "\\1", comments)
+  values <- sub("^# [^:]+: ", "", comments)
+  if (anyDuplicated(keys)) cli::cli_abort("Duplicate metadata keys.")
+  list(metadata = stats::setNames(as.list(values), keys), baseline = NULL)
+}
+
+.read_spectral_table <- function(lines, delim = ",", header = NULL) {
+  lines <- lines[nzchar(trimws(lines)) & !grepl("^\\s*#", lines)]
+  if (!length(lines)) cli::cli_abort("No spectral table found.")
+  con <- textConnection(lines)
+  on.exit(close(con), add = TRUE)
+  counts <- utils::count.fields(con, sep = delim, comment.char = "")
+  if (anyNA(counts) || length(unique(counts)) != 1L) {
+    cli::cli_abort("Spectral table rows have inconsistent column counts; no rows were discarded.")
+  }
+  if (is.null(header)) {
+    first <- strsplit(lines[1], if (delim == "") "[[:space:]]+" else delim,
+                      fixed = delim != "")[[1]]
+    first <- gsub('^"|"$', "", trimws(first))
+    header <- !all(is.finite(suppressWarnings(as.numeric(first))))
+  }
+  df <- tryCatch(utils::read.table(text = lines, header = header, sep = delim,
+                                   stringsAsFactors = FALSE, check.names = FALSE,
+                                   comment.char = "", fill = FALSE,
+                                   row.names = NULL, colClasses = "character"),
+                 error = function(e) cli::cli_abort("Invalid spectral table: {conditionMessage(e)}"))
+  if (nrow(df) < 2L || ncol(df) < 2L || anyDuplicated(names(df))) {
+    cli::cli_abort("A spectral table needs at least two channels and two uniquely named columns.")
+  }
+  df
 }

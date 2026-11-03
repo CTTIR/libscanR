@@ -25,3 +25,9 @@
 ^cran-comments\.md$
 ^_pkgdown\.yml$
 ^tools/branding$
+
+^\.git$
+^CITATION\.cff$
+^\.zenodo\.json$
+^planning$
+^Rplots\.pdf$

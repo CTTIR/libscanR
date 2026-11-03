@@ -67,7 +67,18 @@ summary.libs_dataset <- function(object, ...) {
 #' @return A new `libs_dataset`.
 #' @export
 `[.libs_dataset` <- function(x, i) {
+  .validate_dataset(x)
   if (missing(i)) return(x)
+  if (!length(i) || anyNA(i) || !(is.logical(i) || is.numeric(i))) {
+    cli::cli_abort("Dataset index must be non-empty numeric or logical values without NA.")
+  }
+  if (is.logical(i) && length(i) != x$n_spectra) {
+    cli::cli_abort("Logical index must have one value per spectrum.")
+  }
+  if (is.numeric(i) && (is.complex(i) || any(!is.finite(i)) ||
+      any(i != trunc(i)) || any(abs(i) > x$n_spectra))) {
+    cli::cli_abort("Dataset index must contain whole in-range positions.")
+  }
   new_spectra <- x$spectra[i]
   new_info <- x$sample_info[i, , drop = FALSE]
   ls_dataset(new_spectra, sample_info = new_info)

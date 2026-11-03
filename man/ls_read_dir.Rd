@@ -20,7 +20,7 @@ ls_read_dir(
 \item{recursive}{Logical. Recurse into subdirectories. Default \code{FALSE}.}
 
 \item{sample_info}{data.frame/tibble. Optional sample metadata table.
-Must have a \code{sample_id} column matching (or being a subset of) the
+Must have a \code{sample_id} column matching all of the
 filenames without extension. Default \code{NULL}.}
 
 \item{...}{Additional arguments passed to \code{\link[=ls_read_spectrum]{ls_read_spectrum()}}.}

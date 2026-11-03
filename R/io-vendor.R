@@ -26,30 +26,19 @@
 #' unlink(tmp)
 #' @export
 ls_read_sciaps <- function(path, verbose = TRUE) {
-  if (!file.exists(path)) {
-    cli::cli_abort("File not found: {.path {path}}")
-  }
+  .check_input_file(path)
+  .check_flag(verbose, "verbose")
   lines <- readLines(path, warn = FALSE)
-  header_lines <- grep("^#|^\\s*[A-Za-z]", lines)
   data_start <- .detect_data_start(lines)
 
   header <- lines[seq_len(max(0, data_start - 1))]
   meta <- .parse_sciaps_header(header)
 
-  df <- utils::read.table(path, header = TRUE, sep = ",",
-                          skip = data_start - 1,
-                          stringsAsFactors = FALSE,
-                          fill = TRUE, comment.char = "#")
-  df <- df[stats::complete.cases(df), , drop = FALSE]
-
-  wl <- as.numeric(df[[1]])
-  int_df <- df[, -1, drop = FALSE]
-  int_df <- as.data.frame(lapply(int_df, as.numeric))
-  if (ncol(int_df) == 1) {
-    intensity <- as.numeric(int_df[[1]])
-  } else {
-    intensity <- t(as.matrix(int_df))
-  }
+  df <- .read_spectral_table(lines[seq.int(data_start, length(lines))])
+  wl <- .numeric_column(df[[1]], "wavelength")
+  intensity <- t(vapply(df[, -1, drop = FALSE], .numeric_column,
+                         numeric(nrow(df)), name = "intensity"))
+  dimnames(intensity) <- NULL
 
   meta$source_file <- path
   meta$vendor <- "SciAps"
@@ -88,9 +77,8 @@ ls_read_sciaps <- function(path, verbose = TRUE) {
 #' unlink(tmp)
 #' @export
 ls_read_aurora <- function(path, verbose = TRUE) {
-  if (!file.exists(path)) {
-    cli::cli_abort("File not found: {.path {path}}")
-  }
+  .check_input_file(path)
+  .check_flag(verbose, "verbose")
   lines <- readLines(path, warn = FALSE)
   data_start <- .detect_data_start(lines)
 
@@ -102,21 +90,11 @@ ls_read_aurora <- function(path, verbose = TRUE) {
     }
   }
 
-  df <- utils::read.table(path, header = TRUE, sep = ",",
-                          skip = data_start - 1,
-                          stringsAsFactors = FALSE,
-                          fill = TRUE, comment.char = "")
-  df <- df[stats::complete.cases(df), , drop = FALSE]
-
-  wl <- as.numeric(df[[1]])
-  int_df <- df[, -1, drop = FALSE]
-  int_df <- as.data.frame(lapply(int_df, as.numeric))
-
-  if (ncol(int_df) == 1) {
-    intensity <- as.numeric(int_df[[1]])
-  } else {
-    intensity <- t(as.matrix(int_df))
-  }
+  df <- .read_spectral_table(lines[seq.int(data_start, length(lines))])
+  wl <- .numeric_column(df[[1]], "wavelength")
+  intensity <- t(vapply(df[, -1, drop = FALSE], .numeric_column,
+                         numeric(nrow(df)), name = "intensity"))
+  dimnames(intensity) <- NULL
 
   meta$source_file <- path
   meta$vendor <- "Applied Spectra"
@@ -174,7 +152,7 @@ ls_read_auto <- function(path, verbose = TRUE) {
 .detect_data_start <- function(lines) {
   # Prefer header line containing "wavelength" / "wave"
   for (i in seq_along(lines)) {
-    if (grepl("[Ww]ave", lines[i])) {
+    if (grepl('^\\s*"?(wl|wave(length)?(_nm)?)("?[,\\t ]|$)', lines[i], ignore.case = TRUE)) {
       return(i)
     }
   }

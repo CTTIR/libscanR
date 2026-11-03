@@ -4,10 +4,12 @@
 #' more intensity vectors (shots).
 #'
 #' @param wavelength Numeric vector of wavelengths in nanometers. Must be
-#'   sortable and contain no NA.
+#'   contain at least two distinct, finite, positive values. Channels and the
+#'   optional baseline are sorted together in ascending wavelength order.
 #' @param intensity Numeric vector (single shot) or matrix (multiple shots)
 #'   of emission intensities. If matrix: rows = shots, columns = wavelength
-#'   channels, `ncol(intensity)` must equal `length(wavelength)`.
+#'   channels, `ncol(intensity)` must equal `length(wavelength)`. All values
+#'   must be finite; signed baseline-corrected intensities are supported.
 #' @param metadata Named list of metadata (e.g. `sample_id`, `material`,
 #'   `gate_delay_us`, `integration_time_us`, `laser_energy_mj`, `atmosphere`,
 #'   `date`). Default `list()`.
@@ -27,17 +29,13 @@
 #' @export
 ls_spectrum <- function(wavelength, intensity, metadata = list(),
                         baseline = NULL) {
-  if (!is.numeric(wavelength)) {
-    cli::cli_abort("{.arg wavelength} must be numeric.")
-  }
-  if (anyNA(wavelength)) {
-    cli::cli_abort("{.arg wavelength} must not contain NA values.")
-  }
+  .check_wavelength(wavelength)
   if (length(wavelength) < 2) {
     cli::cli_abort("{.arg wavelength} must have at least 2 channels.")
   }
-  if (!is.numeric(intensity)) {
-    cli::cli_abort("{.arg intensity} must be numeric.")
+  if (!is.numeric(intensity) || is.complex(intensity) ||
+      any(!is.finite(intensity))) {
+    cli::cli_abort("{.arg intensity} must be finite real numeric values.")
   }
 
   if (is.null(dim(intensity))) {
@@ -49,6 +47,9 @@ ls_spectrum <- function(wavelength, intensity, metadata = list(),
     }
     intensity <- matrix(intensity, nrow = 1)
   } else {
+    if (!is.matrix(intensity) || nrow(intensity) < 1L) {
+      cli::cli_abort("{.arg intensity} must be a vector or a non-empty two-dimensional matrix.")
+    }
     if (ncol(intensity) != length(wavelength)) {
       cli::cli_abort(c(
         "{.code ncol(intensity)} must equal {.code length(wavelength)}.",
@@ -58,16 +59,18 @@ ls_spectrum <- function(wavelength, intensity, metadata = list(),
   }
 
   if (!is.null(baseline)) {
-    if (length(baseline) != length(wavelength)) {
-      cli::cli_abort("{.arg baseline} must have same length as {.arg wavelength}.")
+    if (!is.numeric(baseline) || is.complex(baseline) ||
+        !is.null(dim(baseline)) || any(!is.finite(baseline)) ||
+        length(baseline) != length(wavelength)) {
+      cli::cli_abort("{.arg baseline} must be a finite numeric vector with the same length as {.arg wavelength}.")
     }
   }
 
-  if (!is.list(metadata)) {
-    cli::cli_abort("{.arg metadata} must be a list.")
-  }
+  .check_metadata(metadata)
 
+  ord <- order(wavelength)
   sorted <- .ensure_sorted(as.numeric(wavelength), intensity)
+  if (!is.null(baseline)) baseline <- baseline[ord]
 
   structure(
     list(

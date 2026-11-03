@@ -27,14 +27,19 @@ a focus on biomedical tissue analysis.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/r-heller/libscanR}
-  \item \url{https://r-heller.github.io/libscanR/}
-  \item Report bugs at \url{https://github.com/r-heller/libscanR/issues}
+  \item \url{https://github.com/cttir/libscanR}
+  \item \url{https://cttir.github.io/libscanR/}
+  \item Report bugs at \url{https://github.com/cttir/libscanR/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Raban Heller \email{raban.heller@charite.de} (\href{https://orcid.org/0000-0001-8006-9742}{ORCID})
+\strong{Maintainer}: R. Heller \email{raban.heller@charite.de} (\href{https://orcid.org/0000-0001-8006-9742}{ORCID})
+
+Authors:
+\itemize{
+  \item R. Heller \email{raban.heller@charite.de} (\href{https://orcid.org/0000-0001-8006-9742}{ORCID})
+}
 
 }
 \keyword{internal}

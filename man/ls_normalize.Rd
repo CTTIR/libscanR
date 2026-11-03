@@ -17,7 +17,10 @@ ls_normalize(x, method = "total", ref_wavelength = NULL, ref_window = 1)
 Default 1.}
 }
 \value{
-Same class as input with normalized intensities.
+Same class as input with normalized intensities. A zero or non-finite
+divisor is an error; a constant SNV shot becomes zero. Previous removed
+baselines are retained in \code{metadata$baseline_history} and cleared from
+\code{baseline}, because per-shot scaling changes their units.
 }
 \description{
 Normalizes intensity values. Methods:

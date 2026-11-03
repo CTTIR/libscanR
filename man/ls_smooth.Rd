@@ -20,8 +20,8 @@ Same class as input with smoothed intensities.
 }
 \description{
 Applies spectral smoothing. Methods: \code{"savgol"} (Savitzky-Golay, needs
-the \code{signal} package; otherwise falls back to moving average with a
-warning), \code{"moving_avg"}, \code{"gaussian"}, \code{"median"}.
+the \code{signal} package when available, otherwise uses local polynomial least
+squares with an intercept), \code{"moving_avg"}, \code{"gaussian"}, \code{"median"}.
 }
 \examples{
 spec <- ls_simulate_spectrum(seed = 1)

@@ -1,3 +1,18 @@
+# libscanR (development)
+
+* Keep channel baselines, sample IDs, sample tables and cached intensities aligned;
+  reject malformed spectra, duplicate IDs and different wavelength axes.
+* Round-trip default CSV exports and preserve the first vendor/headerless data row.
+  Validate all output filenames, stage exports, preserve existing bundles when
+  overwrite is false, and restore previous files on ordinary write failures.
+* Correct integer spectrum subsetting, combined baseline summaries, normalized
+  peak markers, constant-shot averaging and seeded example reproducibility.
+* Correct SNIP traversal dependence and the local Savitzky-Golay intercept;
+  use sparse ALS equations and retain preprocessing/baseline provenance.
+* Reject out-of-range peak centers and duplicate map coordinates. Calibrated maps
+  use the spectrum prediction path. Document coarse-channel integration expansion
+  and the Gaussian demonstration model's limits.
+
 # libscanR 0.1.0
 
 * Standardize the named v5 package logo across README, documentation pages

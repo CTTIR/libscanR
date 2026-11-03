@@ -25,6 +25,9 @@
 ls_find_peaks <- function(x, snr_threshold = 3, min_prominence = 0.01,
                           min_distance_nm = 0.5) {
   .validate_spectrum(x)
+  .check_number(snr_threshold, "snr_threshold", min = 0)
+  .check_number(min_prominence, "min_prominence", min = 0, max = 1)
+  .check_number(min_distance_nm, "min_distance_nm", min = 0)
   wl <- x$wavelength
   y <- .mean_intensity(x)
   n <- length(y)
@@ -36,7 +39,7 @@ ls_find_peaks <- function(x, snr_threshold = 3, min_prominence = 0.01,
 
   # Local maxima: strictly greater than neighbors
   is_peak <- rep(FALSE, n)
-  for (i in 2:(n - 1)) {
+  for (i in if (n >= 3L) seq.int(2L, n - 1L) else integer()) {
     if (y[i] > y[i - 1] && y[i] > y[i + 1]) is_peak[i] <- TRUE
   }
   idx <- which(is_peak)
@@ -117,6 +120,7 @@ ls_find_peaks <- function(x, snr_threshold = 3, min_prominence = 0.01,
 #' @export
 ls_identify_peaks <- function(peaks, elements = NULL, tolerance_nm = 0.2,
                               ionization = c(1L, 2L)) {
+  .check_number(tolerance_nm, "tolerance_nm", min = .Machine$double.eps)
   if (!inherits(peaks, "data.frame")) {
     cli::cli_abort("{.arg peaks} must be a data.frame/tibble from {.fn ls_find_peaks}.")
   }
@@ -125,17 +129,21 @@ ls_identify_peaks <- function(peaks, elements = NULL, tolerance_nm = 0.2,
   if (length(missing_cols) > 0) {
     cli::cli_abort("{.arg peaks} is missing columns: {.val {missing_cols}}")
   }
+  if (!is.numeric(peaks$wavelength_nm) || !is.numeric(peaks$intensity) ||
+      any(!is.finite(peaks$wavelength_nm)) || any(!is.finite(peaks$intensity))) {
+    cli::cli_abort("Peak wavelengths and intensities must be finite numeric values.")
+  }
 
   db <- ls_element_db(elements = elements, ionization = ionization)
   if (nrow(db) == 0) {
     cli::cli_warn("No lines match the filter criteria.")
     out <- peaks
-    out$element <- NA_character_
-    out$ionization <- NA_integer_
-    out$nist_wavelength_nm <- NA_real_
-    out$nist_aki <- NA_real_
-    out$deviation_nm <- NA_real_
-    out$confidence <- NA_real_
+    out$element <- rep(NA_character_, nrow(out))
+    out$ionization <- rep(NA_integer_, nrow(out))
+    out$nist_wavelength_nm <- rep(NA_real_, nrow(out))
+    out$nist_aki <- rep(NA_real_, nrow(out))
+    out$deviation_nm <- rep(NA_real_, nrow(out))
+    out$confidence <- rep(NA_real_, nrow(out))
     return(tibble::as_tibble(out))
   }
 
@@ -183,6 +191,10 @@ ls_identify_peaks <- function(peaks, elements = NULL, tolerance_nm = 0.2,
 #' @param x A [ls_spectrum()] object.
 #' @param center_nm Numeric. Peak center wavelength (nm).
 #' @param window_nm Numeric. Integration window width. Default 1.
+#'   To support coarsely sampled input, the effective window is at least five
+#'   median channel spacings, with up to five nearest channels used at edges.
+#'   This does not resolve overlapping lines; inspect instrument resolution
+#'   and the integration region before interpreting an area as an element.
 #' @param method Character. `"trapezoidal"` or `"gaussian_fit"`.
 #'   Default `"trapezoidal"`.
 #'
@@ -195,6 +207,9 @@ ls_identify_peaks <- function(peaks, elements = NULL, tolerance_nm = 0.2,
 ls_peak_area <- function(x, center_nm, window_nm = 1,
                          method = "trapezoidal") {
   .validate_spectrum(x)
+  .check_number(center_nm, "center_nm", min = min(x$wavelength),
+                max = max(x$wavelength))
+  .check_number(window_nm, "window_nm", min = .Machine$double.eps)
   method <- match.arg(method, c("trapezoidal", "gaussian_fit"))
   y <- .mean_intensity(x)
   wl <- x$wavelength
@@ -269,7 +284,9 @@ ls_peak_area <- function(x, center_nm, window_nm = 1,
 #' @noRd
 .peak_fwhm <- function(wl, y, i) {
   n <- length(y)
-  half <- y[i] / 2
+  if (i <= 1L || i >= n) return(NA_real_)
+  # Width at half prominence is invariant to a constant continuum offset.
+  half <- y[i] - .peak_prominence(y, i) / 2
   # Find left crossing
   left_x <- NA_real_
   for (j in (i - 1):1) {

@@ -3,10 +3,12 @@
 
 #' Simulate a LIBS Spectrum
 #'
-#' Generates a realistic synthetic LIBS spectrum with configurable elemental
+#' Generates a demonstration LIBS spectrum with configurable elemental
 #' composition, noise, and continuum background. Emission lines are drawn
 #' from the internal NIST database ([ls_element_db()]) and modelled as
-#' Lorentzian peaks.
+#' Gaussian peaks. Peak widths are at least 2.5 channel spacings so coarse
+#' demonstrations remain visible; this is not an instrument response model
+#' or validation of quantitative elemental concentrations or tissue identity.
 #'
 #' @param elements Named numeric vector. Element concentrations (arbitrary
 #'   units, interpreted as relative intensity scaling). Default
@@ -35,22 +37,25 @@ ls_simulate_spectrum <- function(elements = c(Ca = 5000, Fe = 200, Na = 1000),
                                  noise_level = 0.02, continuum_level = 100,
                                  shot_rsd = 0.1, fwhm_nm = 0.1,
                                  seed = NULL) {
-  if (!is.null(seed)) {
-    # Ensure reproducibility without altering user's RNG state
-    old_seed <- if (exists(".Random.seed", envir = .GlobalEnv)) {
-      get(".Random.seed", envir = .GlobalEnv)
-    } else NULL
-    on.exit({
-      if (!is.null(old_seed)) {
-        assign(".Random.seed", old_seed, envir = .GlobalEnv)
-      }
-    }, add = TRUE)
-    set.seed(seed)
+  .check_number(n_channels, "n_channels", min = 2, integer = TRUE)
+  .check_number(n_shots, "n_shots", min = 1, integer = TRUE)
+  .check_number(noise_level, "noise_level", min = 0)
+  .check_number(continuum_level, "continuum_level", min = 0)
+  .check_number(shot_rsd, "shot_rsd", min = 0, max = 1)
+  .check_number(fwhm_nm, "fwhm_nm", min = .Machine$double.eps)
+  if (!is.numeric(wavelength_range) || length(wavelength_range) != 2L ||
+      any(!is.finite(wavelength_range)) || any(wavelength_range <= 0) ||
+      wavelength_range[1] >= wavelength_range[2]) {
+    cli::cli_abort("wavelength_range must contain two finite positive, increasing limits.")
   }
-
-  if (is.null(names(elements)) || any(names(elements) == "")) {
-    cli::cli_abort("{.arg elements} must be a named numeric vector.")
+  if (!is.numeric(elements) || is.complex(elements) || !length(elements) ||
+      is.null(names(elements)) || anyNA(names(elements)) ||
+      any(names(elements) == "") || anyDuplicated(names(elements)) ||
+      any(!is.finite(elements)) || any(elements < 0)) {
+    cli::cli_abort("{.arg elements} must be a named, finite, non-negative numeric vector with unique names.")
   }
+  restore_seed <- .seed_scope(seed)
+  on.exit(restore_seed(), add = TRUE)
 
   wl <- seq(wavelength_range[1], wavelength_range[2], length.out = n_channels)
   channel_spacing <- diff(wavelength_range) / (n_channels - 1)
@@ -76,7 +81,7 @@ ls_simulate_spectrum <- function(elements = c(Ca = 5000, Fe = 200, Na = 1000),
       aki <- lines_el$aki[j]
       amp <- conc * aki * 1e-3
       if (amp <= 0) next
-      # Gaussian profile (Voigt approximation)
+      # Gaussian demonstration profile
       base_spec <- base_spec + amp * exp(-((wl - center)^2) / (2 * sigma^2))
     }
   }
@@ -139,6 +144,11 @@ ls_simulate_spectrum <- function(elements = c(Ca = 5000, Fe = 200, Na = 1000),
 #' @export
 ls_example_data <- function(scenario = c("tissue", "calibration", "spatial", "all"),
                             seed = 42, n_channels = 1024) {
+  .check_number(n_channels, "n_channels", min = 2, integer = TRUE)
+  .check_number(seed, "seed", min = -.Machine$integer.max,
+                max = .Machine$integer.max - 500, integer = TRUE)
+  restore_seed <- .seed_scope(seed)
+  on.exit(restore_seed(), add = TRUE)
   scenario <- match.arg(scenario)
   if (scenario == "all") {
     return(list(

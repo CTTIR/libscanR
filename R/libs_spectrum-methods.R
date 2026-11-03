@@ -75,11 +75,18 @@ plot.libs_spectrum <- function(x, y, ...) {
 #' @return A new `libs_spectrum` object.
 #' @export
 `[.libs_spectrum` <- function(x, i) {
+  .validate_spectrum(x)
   if (missing(i)) return(x)
+  if (!length(i) || anyNA(i)) cli::cli_abort("Subsetting index must be non-empty and non-missing.")
+  if (is.logical(i) && length(i) != x$n_channels) {
+    cli::cli_abort("Logical index must have one value per channel.")
+  }
+  if (is.numeric(i) && (is.complex(i) || any(!is.finite(i)))) {
+    cli::cli_abort("Numeric index must be finite real values.")
+  }
   if (is.logical(i) || (is.numeric(i) && all(i == round(i)) && all(i > 0) &&
                         length(i) <= x$n_channels && max(i) <= x$n_channels)) {
-    idx <- which(rep_len(i, x$n_channels))
-    if (is.numeric(i) && !is.logical(i)) idx <- as.integer(i)
+    idx <- if (is.logical(i)) which(i) else as.integer(i)
   } else if (is.numeric(i)) {
     lo <- min(i); hi <- max(i)
     idx <- which(x$wavelength >= lo & x$wavelength <= hi)
@@ -100,7 +107,9 @@ plot.libs_spectrum <- function(x, y, ...) {
 #' Combine Multiple LIBS Spectra by Stacking Shots
 #'
 #' Concatenates shots from multiple spectra. All spectra must share the same
-#' wavelength axis.
+#' wavelength axis. Shared metadata are retained; source metadata are stored
+#' in `combined_metadata`. If every input has a baseline, the output stores
+#' its shot-weighted mean; otherwise the aggregate baseline is unknown.
 #'
 #' @param ... Two or more `libs_spectrum` objects.
 #' @return A new `libs_spectrum` with combined shots.
@@ -108,23 +117,31 @@ plot.libs_spectrum <- function(x, y, ...) {
 c.libs_spectrum <- function(...) {
   args <- list(...)
   if (length(args) == 0) return(NULL)
+  invisible(lapply(args, .validate_spectrum))
   if (length(args) == 1) return(args[[1]])
 
   wl <- args[[1]]$wavelength
   for (a in args[-1]) {
-    if (length(a$wavelength) != length(wl) ||
-        max(abs(a$wavelength - wl)) > 0.1) {
+    if (!.same_axis(a$wavelength, wl)) {
       cli::cli_abort("All spectra must share the same wavelength axis.")
     }
   }
   mats <- lapply(args, function(a) a$intensity)
   combined <- do.call(rbind, mats)
-  ls_spectrum(
-    wavelength = wl,
-    intensity = combined,
-    metadata = args[[1]]$metadata,
-    baseline = args[[1]]$baseline
-  )
+  shared <- args[[1]]$metadata
+  for (key in names(shared)) {
+    if (!all(vapply(args, function(a) identical(a$metadata[[key]], shared[[key]]),
+                    logical(1)))) shared[[key]] <- NULL
+  }
+  shared$combined_metadata <- lapply(args, function(a) a$metadata)
+  baseline <- NULL
+  if (all(vapply(args, function(a) !is.null(a$baseline), logical(1)))) {
+    weights <- vapply(args, function(a) a$n_shots, numeric(1))
+    baseline <- Reduce(`+`, Map(function(a, n) a$baseline * (n / sum(weights)),
+                                args, weights))
+  }
+  ls_spectrum(wavelength = wl, intensity = combined,
+              metadata = shared, baseline = baseline)
 }
 
 #' Number of Channels in a LIBS Spectrum

@@ -5,6 +5,8 @@
 #'
 #' Constructs a spatial map from LIBS line-scan or raster-scan data. The
 #' dataset's `sample_info` must include `x_pos` and `y_pos` columns.
+#' Coordinates must be finite numeric values and each pair must be unique;
+#' aggregate replicate positions explicitly before mapping them.
 #'
 #' @param dataset A [ls_dataset()] object with spatial coordinates.
 #' @param element Character. Element label (for metadata).
@@ -31,6 +33,13 @@ ls_build_map <- function(dataset, element, line_nm,
   }
   xs <- info$x_pos
   ys <- info$y_pos
+  if (!is.numeric(xs) || !is.numeric(ys) ||
+      any(!is.finite(xs)) || any(!is.finite(ys))) {
+    cli::cli_abort("Map coordinates must be finite numeric values.")
+  }
+  if (anyDuplicated(info[, c("x_pos", "y_pos")])) {
+    cli::cli_abort("Map coordinate pairs must be unique; aggregate replicate positions explicitly.")
+  }
 
   intens <- vapply(dataset$spectra, function(s) {
     ls_peak_area(s, line_nm, window_nm)
@@ -38,7 +47,11 @@ ls_build_map <- function(dataset, element, line_nm,
 
   unit <- "a.u."
   if (!is.null(calibration)) {
-    intens <- as.numeric(predict(calibration, intens))
+    if (!identical(calibration$element, element) ||
+        !isTRUE(all.equal(calibration$wavelength_nm, line_nm, tolerance = 0))) {
+      cli::cli_abort("The calibration element and line must match the requested map.")
+    }
+    intens <- ls_quantify(calibration, dataset, window_nm = window_nm)$concentration
     unit <- calibration$unit
   }
 

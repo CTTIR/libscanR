@@ -12,7 +12,9 @@ ls_write_csv(x, path, include_metadata = TRUE)
 \item{path}{Character. Output file path.}
 
 \item{include_metadata}{Logical. Prepend metadata as comment lines.
-Default \code{TRUE}.}
+Default \code{TRUE}. JSON comments preserve scalar values, arrays, nested lists,
+and the baseline. Named vectors become JSON objects (lists on import);
+R-specific classes and attributes are not preserved.}
 }
 \value{
 Invisibly returns \code{path}.

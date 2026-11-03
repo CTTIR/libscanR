@@ -11,7 +11,11 @@ ls_peak_area(x, center_nm, window_nm = 1, method = "trapezoidal")
 
 \item{center_nm}{Numeric. Peak center wavelength (nm).}
 
-\item{window_nm}{Numeric. Integration window width. Default 1.}
+\item{window_nm}{Numeric. Integration window width. Default 1.
+To support coarsely sampled input, the effective window is at least five
+median channel spacings, with up to five nearest channels used at edges.
+This does not resolve overlapping lines; inspect instrument resolution
+and the integration region before interpreting an area as an element.}
 
 \item{method}{Character. \code{"trapezoidal"} or \code{"gaussian_fit"}.
 Default \code{"trapezoidal"}.}

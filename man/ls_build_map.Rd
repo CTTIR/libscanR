@@ -26,6 +26,8 @@ points form a regular grid.
 \description{
 Constructs a spatial map from LIBS line-scan or raster-scan data. The
 dataset's \code{sample_info} must include \code{x_pos} and \code{y_pos} columns.
+Coordinates must be finite numeric values and each pair must be unique;
+aggregate replicate positions explicitly before mapping them.
 }
 \examples{
 ds <- ls_example_data("spatial")

@@ -10,7 +10,7 @@ scale_color_wavelength(name = "Wavelength (nm)", ...)
 \item{name}{Character. Legend title. Default \code{"Wavelength (nm)"}.}
 
 \item{...}{Additional arguments passed to
-\code{\link[ggplot2:scale_gradient]{ggplot2::scale_color_gradientn()}}.}
+\code{\link[ggplot2:scale_color_gradientn]{ggplot2::scale_color_gradientn()}}.}
 }
 \value{
 A ggplot2 scale object.

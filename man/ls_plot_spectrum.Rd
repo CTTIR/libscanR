@@ -21,7 +21,7 @@ ls_plot_spectrum(
 \item{show_elements}{Character vector of element symbols to highlight
 as dashed vertical lines with labels. Default \code{NULL}.}
 
-\item{normalize}{Logical. Normalize intensity to \verb{[0, 1]} before plotting.
+\item{normalize}{Logical. Divide intensity by its positive maximum before plotting.
 Default \code{FALSE}.}
 
 \item{snr_threshold}{Numeric. SNR threshold for peak annotation when

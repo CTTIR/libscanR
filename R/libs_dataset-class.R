@@ -4,7 +4,8 @@
 #' sharing a common wavelength axis, plus a sample-info table.
 #'
 #' @param spectra List of `libs_spectrum` objects. All must share the same
-#'   wavelength axis (channels and values within 0.1 nm tolerance).
+#'   wavelength axis (exact channel values). Resample deliberately before
+#'   combining measurements on different axes; no channels are relabelled.
 #' @param sample_info Optional data.frame or tibble with one row per spectrum.
 #'   Must contain column `sample_id` matching `metadata$sample_id` in each
 #'   spectrum. Additional columns (e.g. `material`, `group`, `concentration`,
@@ -32,6 +33,7 @@ ls_dataset <- function(spectra, sample_info = NULL) {
   if (!all(ok)) {
     cli::cli_abort("All elements of {.arg spectra} must be {.cls libs_spectrum}.")
   }
+  invisible(lapply(spectra, .validate_spectrum))
 
   wl <- spectra[[1]]$wavelength
   n_ch <- length(wl)
@@ -43,22 +45,25 @@ ls_dataset <- function(spectra, sample_info = NULL) {
         "i" = "Spectrum 1: {n_ch} channels; spectrum {i}: {length(wl_i)} channels."
       ))
     }
-    if (max(abs(wl_i - wl)) > 0.1) {
-      cli::cli_abort("Spectra wavelength axes differ by > 0.1 nm.")
+    if (!.same_axis(wl_i, wl)) {
+      cli::cli_abort("Spectra wavelength axes differ; align them explicitly before combining.")
     }
   }
 
-  sample_ids <- vapply(spectra, function(s) {
-    id <- .meta_get(s$metadata, "sample_id", NA_character_)
-    as.character(id)
-  }, character(1))
+  sample_ids <- unname(vapply(spectra, function(s) {
+    .sample_id(s$metadata$sample_id)
+  }, character(1)))
 
-  if (anyNA(sample_ids) || any(sample_ids == "")) {
-    sample_ids[is.na(sample_ids) | sample_ids == ""] <-
-      paste0("sample_", which(is.na(sample_ids) | sample_ids == ""))
-    for (i in seq_along(spectra)) {
-      spectra[[i]]$metadata$sample_id <- sample_ids[i]
-    }
+  if (anyDuplicated(sample_ids[!is.na(sample_ids)])) {
+    cli::cli_abort("Spectrum sample_ids must be unique.")
+  }
+  for (i in which(is.na(sample_ids))) {
+    candidate <- paste0("sample_", i)
+    while (candidate %in% sample_ids) candidate <- paste0(candidate, "_")
+    sample_ids[i] <- candidate
+  }
+  for (i in seq_along(spectra)) {
+    spectra[[i]]$metadata$sample_id <- sample_ids[i]
   }
 
   if (is.null(sample_info)) {
@@ -70,6 +75,9 @@ ls_dataset <- function(spectra, sample_info = NULL) {
       material = materials
     )
   } else {
+    if (!is.data.frame(sample_info)) {
+      cli::cli_abort("{.arg sample_info} must be a data.frame or tibble.")
+    }
     sample_info <- tibble::as_tibble(sample_info)
     if (!"sample_id" %in% names(sample_info)) {
       cli::cli_abort("{.arg sample_info} must contain column {.val sample_id}.")
@@ -80,8 +88,12 @@ ls_dataset <- function(spectra, sample_info = NULL) {
         "i" = "{nrow(sample_info)} rows vs {length(spectra)} spectra."
       ))
     }
-    if (!setequal(sample_info$sample_id, sample_ids)) {
-      cli::cli_warn("sample_info$sample_id does not match all spectrum sample_ids.")
+    sample_info$sample_id <- vapply(as.list(sample_info$sample_id),
+                                    .sample_id, character(1),
+                                    allow_missing = FALSE)
+    if (anyDuplicated(sample_info$sample_id) ||
+        !setequal(sample_info$sample_id, sample_ids)) {
+      cli::cli_abort("sample_info$sample_id must match every spectrum sample_id exactly once.")
     }
     sample_info <- sample_info[match(sample_ids, sample_info$sample_id), ]
   }

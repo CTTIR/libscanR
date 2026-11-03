@@ -14,5 +14,7 @@ A new \code{libs_spectrum} with combined shots.
 }
 \description{
 Concatenates shots from multiple spectra. All spectra must share the same
-wavelength axis.
+wavelength axis. Shared metadata are retained; source metadata are stored
+in \code{combined_metadata}. If every input has a baseline, the output stores
+its shot-weighted mean; otherwise the aggregate baseline is unknown.
 }

@@ -36,6 +36,7 @@ ls_baseline <- function(x, method = "snip", iterations = 100,
   method <- match.arg(method, c("snip", "als", "rolling_ball",
                                 "linear", "polynomial"))
   if (inherits(x, "libs_dataset")) {
+    .validate_dataset(x)
     new_spectra <- lapply(x$spectra, ls_baseline, method = method,
                           iterations = iterations, order = order,
                           lambda = lambda, p = p, radius = radius)
@@ -43,6 +44,11 @@ ls_baseline <- function(x, method = "snip", iterations = 100,
   }
   .validate_spectrum(x)
 
+  .check_number(iterations, "iterations", min = 1, integer = TRUE)
+  .check_number(order, "order", min = 1, integer = TRUE)
+  .check_number(lambda, "lambda", min = .Machine$double.eps)
+  .check_number(p, "p", min = .Machine$double.eps, max = 1 - .Machine$double.eps)
+  .check_number(radius, "radius", min = 1, integer = TRUE)
   new_int <- x$intensity
   baselines <- matrix(0, nrow = nrow(new_int), ncol = ncol(new_int))
   for (i in seq_len(nrow(new_int))) {
@@ -51,7 +57,7 @@ ls_baseline <- function(x, method = "snip", iterations = 100,
                  snip = .baseline_snip(y, iterations),
                  als = .baseline_als(y, lambda, p, iterations),
                  rolling_ball = .baseline_rolling(y, radius),
-                 linear = .baseline_linear(y),
+                 linear = .baseline_linear(y, x$wavelength),
                  polynomial = .baseline_poly(x$wavelength, y, order))
     new_int[i, ] <- y - bg
     baselines[i, ] <- bg
@@ -60,7 +66,9 @@ ls_baseline <- function(x, method = "snip", iterations = 100,
   ls_spectrum(
     wavelength = x$wavelength,
     intensity = new_int,
-    metadata = x$metadata,
+    metadata = .record_processing(x$metadata, "baseline", list(
+      method = method, iterations = iterations, order = order,
+      lambda = lambda, p = p, radius = radius)),
     baseline = baseline_vec
   )
 }
@@ -80,7 +88,10 @@ ls_baseline <- function(x, method = "snip", iterations = 100,
 #' @param ref_window Numeric. Window width (nm) around `ref_wavelength`.
 #'   Default 1.
 #'
-#' @return Same class as input with normalized intensities.
+#' @return Same class as input with normalized intensities. A zero or non-finite
+#'   divisor is an error; a constant SNV shot becomes zero. Previous removed
+#'   baselines are retained in `metadata$baseline_history` and cleared from
+#'   `baseline`, because per-shot scaling changes their units.
 #'
 #' @examples
 #' spec <- ls_simulate_spectrum(seed = 1)
@@ -93,6 +104,7 @@ ls_normalize <- function(x, method = "total", ref_wavelength = NULL,
   method <- match.arg(method, c("total", "max", "snv",
                                 "internal_std", "area"))
   if (inherits(x, "libs_dataset")) {
+    .validate_dataset(x)
     new_spectra <- lapply(x$spectra, ls_normalize, method = method,
                           ref_wavelength = ref_wavelength,
                           ref_window = ref_window)
@@ -104,6 +116,10 @@ ls_normalize <- function(x, method = "total", ref_wavelength = NULL,
     cli::cli_abort("{.arg ref_wavelength} is required for method 'internal_std'.")
   }
 
+  if (method == "internal_std") {
+    .check_number(ref_wavelength, "ref_wavelength", min = .Machine$double.eps)
+    .check_number(ref_window, "ref_window", min = .Machine$double.eps)
+  }
   new_int <- x$intensity
   for (i in seq_len(nrow(new_int))) {
     y <- new_int[i, ]
@@ -127,24 +143,32 @@ ls_normalize <- function(x, method = "total", ref_wavelength = NULL,
       if (s == 0) s <- 1
       new_int[i, ] <- (y - m) / s
     } else {
-      if (is.na(denom) || denom == 0) denom <- 1
+      if (!is.finite(denom) || denom == 0) {
+        cli::cli_abort("Cannot normalize shot {i}: the normalization denominator is zero or non-finite.")
+      }
       new_int[i, ] <- y / denom
     }
   }
 
+  meta <- .record_processing(x$metadata, "normalize", list(
+    method = method, ref_wavelength = ref_wavelength, ref_window = ref_window))
+  if (!is.null(x$baseline)) {
+    meta$baseline_history <- c(meta$baseline_history,
+                              list(list(stage = "before normalization", values = x$baseline)))
+  }
   ls_spectrum(
     wavelength = x$wavelength,
     intensity = new_int,
-    metadata = x$metadata,
-    baseline = x$baseline
+    metadata = meta,
+    baseline = NULL
   )
 }
 
 #' Smooth Spectra
 #'
 #' Applies spectral smoothing. Methods: `"savgol"` (Savitzky-Golay, needs
-#' the `signal` package; otherwise falls back to moving average with a
-#' warning), `"moving_avg"`, `"gaussian"`, `"median"`.
+#' the `signal` package when available, otherwise uses local polynomial least
+#' squares with an intercept), `"moving_avg"`, `"gaussian"`, `"median"`.
 #'
 #' @param x A [ls_spectrum()] or [ls_dataset()] object.
 #' @param method Character. Default `"savgol"`.
@@ -161,12 +185,23 @@ ls_normalize <- function(x, method = "total", ref_wavelength = NULL,
 ls_smooth <- function(x, method = "savgol", window = 11, poly_order = 3) {
   method <- match.arg(method, c("savgol", "moving_avg", "gaussian", "median"))
   if (inherits(x, "libs_dataset")) {
+    .validate_dataset(x)
     new_spectra <- lapply(x$spectra, ls_smooth, method = method,
                           window = window, poly_order = poly_order)
     return(ls_dataset(new_spectra, sample_info = x$sample_info))
   }
   .validate_spectrum(x)
+  .check_number(window, "window", min = 1, integer = TRUE)
+  .check_number(poly_order, "poly_order", min = 0, integer = TRUE)
   if (window %% 2 == 0) window <- window + 1  # ensure odd
+  if (window > x$n_channels) cli::cli_abort("Smoothing window exceeds the number of channels.")
+  if (method == "savgol") {
+    if (poly_order >= window) cli::cli_abort("poly_order must be smaller than the smoothing window.")
+    spacing <- diff(x$wavelength)
+    if (max(abs(spacing / mean(spacing) - 1)) > 1e-7) {
+      cli::cli_abort("Savitzky-Golay smoothing requires an evenly spaced wavelength axis.")
+    }
+  }
 
   new_int <- x$intensity
   for (i in seq_len(nrow(new_int))) {
@@ -181,7 +216,8 @@ ls_smooth <- function(x, method = "savgol", window = 11, poly_order = 3) {
   ls_spectrum(
     wavelength = x$wavelength,
     intensity = new_int,
-    metadata = x$metadata,
+    metadata = .record_processing(x$metadata, "smooth", list(
+      method = method, window = window, poly_order = poly_order)),
     baseline = x$baseline
   )
 }
@@ -202,6 +238,7 @@ ls_smooth <- function(x, method = "savgol", window = 11, poly_order = 3) {
 #' @export
 ls_crop <- function(x, min_nm = NULL, max_nm = NULL) {
   if (inherits(x, "libs_dataset")) {
+    .validate_dataset(x)
     new_spectra <- lapply(x$spectra, ls_crop, min_nm = min_nm, max_nm = max_nm)
     return(ls_dataset(new_spectra, sample_info = x$sample_info))
   }
@@ -209,6 +246,8 @@ ls_crop <- function(x, min_nm = NULL, max_nm = NULL) {
   wl <- x$wavelength
   if (is.null(min_nm)) min_nm <- min(wl)
   if (is.null(max_nm)) max_nm <- max(wl)
+  .check_number(min_nm, "min_nm", min = 0)
+  .check_number(max_nm, "max_nm", min = min_nm)
   idx <- which(wl >= min_nm & wl <= max_nm)
   if (length(idx) == 0) {
     cli::cli_abort("No channels fall in [{min_nm}, {max_nm}] nm.")
@@ -216,7 +255,7 @@ ls_crop <- function(x, min_nm = NULL, max_nm = NULL) {
   ls_spectrum(
     wavelength = wl[idx],
     intensity = x$intensity[, idx, drop = FALSE],
-    metadata = x$metadata,
+    metadata = .record_processing(x$metadata, "crop", list(min_nm = min_nm, max_nm = max_nm)),
     baseline = if (is.null(x$baseline)) NULL else x$baseline[idx]
   )
 }
@@ -243,6 +282,8 @@ ls_average_shots <- function(x, method = "mean", trim = 0,
                              remove_outliers = FALSE) {
   .validate_spectrum(x)
   method <- match.arg(method, c("mean", "median"))
+  .check_number(trim, "trim", min = 0, max = 0.5)
+  .check_flag(remove_outliers, "remove_outliers")
   mat <- x$intensity
   if (nrow(mat) == 1) return(x)
 
@@ -250,7 +291,7 @@ ls_average_shots <- function(x, method = "mean", trim = 0,
   if (remove_outliers && nrow(mat) >= 4) {
     col_mean <- colMeans(mat)
     col_sd <- apply(mat, 2, stats::sd)
-    col_sd[col_sd == 0] <- stats::median(col_sd[col_sd > 0])
+    col_sd[col_sd == 0] <- 1
     z_scores <- apply(mat, 1, function(y) mean(abs((y - col_mean) / col_sd), na.rm = TRUE))
     keep <- z_scores <= 3
     if (sum(keep) == 0) keep <- rep(TRUE, nrow(mat))
@@ -262,7 +303,8 @@ ls_average_shots <- function(x, method = "mean", trim = 0,
     apply(submat, 2, stats::median, na.rm = TRUE)
   }
 
-  new_meta <- x$metadata
+  new_meta <- .record_processing(x$metadata, "average_shots", list(
+    method = method, trim = trim, remove_outliers = remove_outliers))
   new_meta$averaged_shots <- sum(keep)
   new_meta$averaged_method <- method
 
@@ -350,10 +392,11 @@ ls_gate_optimize <- function(spectra, element, line_nm, window_nm = 1) {
   y_log <- log(log(sqrt(abs(y) + 1) + 1) + 1)
   n <- length(y_log)
   for (m in seq_len(n_iter)) {
+    previous <- y_log
     for (i in seq_len(n)) {
       lo <- max(1, i - m)
       hi <- min(n, i + m)
-      y_log[i] <- min(y_log[i], (y_log[lo] + y_log[hi]) / 2)
+      y_log[i] <- min(previous[i], (previous[lo] + previous[hi]) / 2)
     }
   }
   bg <- (exp(exp(y_log) - 1) - 1)^2 - 1
@@ -364,15 +407,20 @@ ls_gate_optimize <- function(spectra, element, line_nm, window_nm = 1) {
 #' @noRd
 .baseline_als <- function(y, lambda = 1e5, p = 0.01, n_iter = 10) {
   n <- length(y)
-  # Difference matrix D of order 2
-  D <- diff(diag(n), differences = 2)
+  if (n < 3L) return(y)
+  rows <- seq_len(n - 2L)
+  D <- Matrix::sparseMatrix(i = rep(rows, 3),
+                            j = c(rows, rows + 1L, rows + 2L),
+                            x = rep(c(1, -2, 1), each = n - 2L),
+                            dims = c(n - 2L, n))
+  penalty <- lambda * Matrix::crossprod(D)
   w <- rep(1, n)
-  z <- y
   for (i in seq_len(n_iter)) {
-    W <- diag(w)
-    A <- W + lambda * crossprod(D)
-    z <- tryCatch(solve(A, w * y), error = function(e) z)
-    w <- ifelse(y > z, p, 1 - p)
+    A <- Matrix::Diagonal(x = w) + penalty
+    z <- as.numeric(Matrix::solve(A, w * y))
+    next_w <- ifelse(y > z, p, 1 - p)
+    if (identical(w, next_w)) break
+    w <- next_w
   }
   z
 }
@@ -398,12 +446,12 @@ ls_gate_optimize <- function(spectra, element, line_nm, window_nm = 1) {
 
 #' @keywords internal
 #' @noRd
-.baseline_linear <- function(y) {
+.baseline_linear <- function(y, wl = seq_along(y)) {
   n <- length(y)
   if (n < 2) return(rep(y[1], n))
   y_start <- stats::median(y[seq_len(max(1, floor(n * 0.02)))])
   y_end <- stats::median(y[(n - max(0, floor(n * 0.02))):n])
-  stats::approx(x = c(1, n), y = c(y_start, y_end), xout = seq_len(n))$y
+  stats::approx(x = c(wl[1], wl[n]), y = c(y_start, y_end), xout = wl)$y
 }
 
 #' @keywords internal
@@ -437,22 +485,18 @@ ls_gate_optimize <- function(spectra, element, line_nm, window_nm = 1) {
   if (requireNamespace("signal", quietly = TRUE)) {
     return(as.numeric(signal::sgolayfilt(y, p = poly_order, n = window)))
   }
-  # Fallback: fit local polynomial via matrix operations
+  .savgol_local(y, window, poly_order)
+}
+
+.savgol_local <- function(y, window, poly_order) {
   n <- length(y)
-  half <- (window - 1) / 2
-  out <- y
-  for (i in seq_len(n)) {
-    lo <- max(1, i - half)
-    hi <- min(n, i + half)
-    xs <- seq(lo, hi) - i
-    ys <- y[lo:hi]
-    if (length(xs) <= poly_order) next
-    fit <- tryCatch(stats::lm.fit(stats::poly(xs, degree = min(poly_order, length(xs) - 1),
-                                              simple = TRUE), ys),
-                    error = function(e) NULL)
-    if (!is.null(fit)) out[i] <- fit$fitted.values[which(xs == 0)]
-  }
-  out
+  half <- (window - 1L) / 2L
+  vapply(seq_len(n), function(i) {
+    lo <- max(1L, min(i - half, n - window + 1L))
+    idx <- seq.int(lo, length.out = window)
+    design <- outer(idx - i, 0:poly_order, `^`)
+    as.numeric(stats::lm.fit(design, y[idx])$coefficients[1])
+  }, numeric(1))
 }
 
 #' @keywords internal
@@ -475,4 +519,11 @@ ls_gate_optimize <- function(spectra, element, line_nm, window_nm = 1) {
   smooth <- stats::filter(y, k, sides = 2)
   smooth[is.na(smooth)] <- y[is.na(smooth)]
   as.numeric(smooth)
+}
+
+
+.record_processing <- function(metadata, operation, parameters) {
+  metadata$processing <- c(metadata$processing,
+                           list(list(operation = operation, parameters = parameters)))
+  metadata
 }

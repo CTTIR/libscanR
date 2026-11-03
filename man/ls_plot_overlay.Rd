@@ -12,7 +12,7 @@ ls_plot_overlay(dataset, color_by = NULL, normalize = FALSE, alpha = 0.5)
 \item{color_by}{Character. Column in \code{sample_info} for color mapping.
 Default \code{NULL}.}
 
-\item{normalize}{Logical. Normalize each spectrum to \verb{[0, 1]}. Default \code{FALSE}.}
+\item{normalize}{Logical. Divide each spectrum by its positive maximum. Default \code{FALSE}.}
 
 \item{alpha}{Numeric. Line alpha. Default 0.5.}
 }

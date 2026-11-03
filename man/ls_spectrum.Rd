@@ -8,11 +8,13 @@ ls_spectrum(wavelength, intensity, metadata = list(), baseline = NULL)
 }
 \arguments{
 \item{wavelength}{Numeric vector of wavelengths in nanometers. Must be
-sortable and contain no NA.}
+contain at least two distinct, finite, positive values. Channels and the
+optional baseline are sorted together in ascending wavelength order.}
 
 \item{intensity}{Numeric vector (single shot) or matrix (multiple shots)
 of emission intensities. If matrix: rows = shots, columns = wavelength
-channels, \code{ncol(intensity)} must equal \code{length(wavelength)}.}
+channels, \code{ncol(intensity)} must equal \code{length(wavelength)}. All values
+must be finite; signed baseline-corrected intensities are supported.}
 
 \item{metadata}{Named list of metadata (e.g. \code{sample_id}, \code{material},
 \code{gate_delay_us}, \code{integration_time_us}, \code{laser_energy_mj}, \code{atmosphere},

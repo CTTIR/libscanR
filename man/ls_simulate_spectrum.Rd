@@ -44,10 +44,12 @@ intensity variation (0-1). Default 0.1.}
 A \code{\link[=ls_spectrum]{ls_spectrum()}} object.
 }
 \description{
-Generates a realistic synthetic LIBS spectrum with configurable elemental
+Generates a demonstration LIBS spectrum with configurable elemental
 composition, noise, and continuum background. Emission lines are drawn
 from the internal NIST database (\code{\link[=ls_element_db]{ls_element_db()}}) and modelled as
-Lorentzian peaks.
+Gaussian peaks. Peak widths are at least 2.5 channel spacings so coarse
+demonstrations remain visible; this is not an instrument response model
+or validation of quantitative elemental concentrations or tissue identity.
 }
 \examples{
 spec <- ls_simulate_spectrum(elements = c(Ca = 1000, Na = 500), seed = 1)
