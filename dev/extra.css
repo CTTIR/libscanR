@@ -1,0 +1,16 @@
+/* Preserve scientific colour scales and readable labels in both site themes. */
+html[data-bs-theme] img.r-plt {
+  filter: none !important;
+  background-color: #fff;
+}
+
+/* Keep actual code comments and printed output readable on code panels. */
+html[data-bs-theme="light"] pre code span.co { color: #505b66; }
+html[data-bs-theme="dark"] pre code span.co { color: #adb5bd; }
+
+/* Retain warm syntax categories with sufficient contrast on light code panels. */
+html[data-bs-theme="light"] pre code span.va { color: #a04400; }
+html[data-bs-theme="light"] pre code span.kw,
+html[data-bs-theme="light"] pre code span.at,
+html[data-bs-theme="light"] pre code span.ex,
+html[data-bs-theme="light"] pre code span.dt { color: #a22c3b; }

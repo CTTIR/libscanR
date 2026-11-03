@@ -1,0 +1,13 @@
+pandoc: 3.8.3
+pkgdown: 2.2.1
+pkgdown_sha: ~
+articles:
+  calibration-quantification: calibration-quantification.html
+  getting-started: getting-started.html
+  preprocessing-workflow: preprocessing-workflow.html
+  spatial-mapping: spatial-mapping.html
+  tissue-classification: tissue-classification.html
+last_built: 2026-11-03T13:09Z
+urls:
+  reference: https://cttir.github.io/libscanR/reference
+  article: https://cttir.github.io/libscanR/articles

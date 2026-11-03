@@ -1,0 +1,55 @@
+# Build a Spatial Elemental Map
+
+Constructs a spatial map from LIBS line-scan or raster-scan data. The
+dataset's `sample_info` must include `x_pos` and `y_pos` columns.
+Coordinates must be finite numeric values and each pair must be unique;
+aggregate replicate positions explicitly before mapping them.
+
+## Usage
+
+``` r
+ls_build_map(dataset, element, line_nm, calibration = NULL, window_nm = NULL)
+```
+
+## Arguments
+
+- dataset:
+
+  A
+  [`ls_dataset()`](https://cttir.github.io/libscanR/dev/reference/ls_dataset.md)
+  object with spatial coordinates.
+
+- element:
+
+  Character. Element label (for metadata).
+
+- line_nm:
+
+  Numeric. Emission line wavelength (nm).
+
+- calibration:
+
+  Optional
+  [`ls_calibration()`](https://cttir.github.io/libscanR/dev/reference/ls_calibration.md).
+  If provided, intensities are converted to concentration. Default
+  `NULL`.
+
+- window_nm:
+
+  Optional integration window. `NULL` reuses the calibration's fitted
+  window, or 1 nm for an uncalibrated map.
+
+## Value
+
+A list with S3 class `libs_map` containing `x`, `y`, `values`,
+`element`, `line_nm`, `unit`, and a rasterized `grid` matrix when the
+points form a regular grid.
+
+## Examples
+
+``` r
+ds <- ls_example_data("spatial")
+m <- ls_build_map(ds, "Ca", 393.37)
+dim(m$grid)
+#> [1] 20 20
+```
