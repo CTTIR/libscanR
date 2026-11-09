@@ -16,7 +16,7 @@ navbar:
   components:
     github:
       icon: fa-github
-      href: https://github.com/cttir/libscanR
+      href: https://github.com/CTTIR/libscanR
 
 reference:
   - title: "Package"

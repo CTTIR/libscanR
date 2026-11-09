@@ -18,3 +18,8 @@ wavelength axis. Shared metadata are retained; source metadata are stored
 in \code{combined_metadata}. If every input has a baseline, the output stores
 its shot-weighted mean; otherwise the aggregate baseline is unknown.
 }
+\examples{
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+combined <- c(spec, spec)
+dim(combined)
+}

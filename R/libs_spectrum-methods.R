@@ -3,6 +3,9 @@
 #' @param x A `libs_spectrum` object.
 #' @param ... Unused.
 #' @return Invisibly returns `x`.
+#' @examples
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+#' print(spec)
 #' @export
 print.libs_spectrum <- function(x, ...) {
   sid <- .meta_get(x$metadata, "sample_id", "unnamed")
@@ -23,6 +26,9 @@ print.libs_spectrum <- function(x, ...) {
 #' @param n_peaks Integer. Number of top peaks to show. Default 5.
 #' @param ... Unused.
 #' @return Invisibly returns a list with summary statistics.
+#' @examples
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+#' summary(spec, n_peaks = 3)
 #' @export
 summary.libs_spectrum <- function(object, n_peaks = 5, ...) {
   inten <- .mean_intensity(object)
@@ -59,6 +65,9 @@ summary.libs_spectrum <- function(object, n_peaks = 5, ...) {
 #' @param y Ignored.
 #' @param ... Arguments passed to [ls_plot_spectrum()].
 #' @return A `ggplot` object.
+#' @examples
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+#' p <- plot(spec)
 #' @export
 plot.libs_spectrum <- function(x, y, ...) {
   ls_plot_spectrum(x, ...)
@@ -73,6 +82,10 @@ plot.libs_spectrum <- function(x, y, ...) {
 #' @param i Numeric vector. Wavelengths are kept if they fall in
 #'   `[min(i), max(i)]`. Can also be a logical or integer index into channels.
 #' @return A new `libs_spectrum` object.
+#' @examples
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+#' ca_region <- spec[c(380, 420)]
+#' length(ca_region)
 #' @export
 `[.libs_spectrum` <- function(x, i) {
   .validate_spectrum(x)
@@ -113,6 +126,10 @@ plot.libs_spectrum <- function(x, y, ...) {
 #'
 #' @param ... Two or more `libs_spectrum` objects.
 #' @return A new `libs_spectrum` with combined shots.
+#' @examples
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+#' combined <- c(spec, spec)
+#' dim(combined)
 #' @export
 c.libs_spectrum <- function(...) {
   args <- list(...)
@@ -148,6 +165,9 @@ c.libs_spectrum <- function(...) {
 #'
 #' @param x A `libs_spectrum` object.
 #' @return Integer scalar.
+#' @examples
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+#' length(spec)
 #' @export
 length.libs_spectrum <- function(x) {
   x$n_channels
@@ -157,6 +177,9 @@ length.libs_spectrum <- function(x) {
 #'
 #' @param x A `libs_spectrum` object.
 #' @return Integer vector of length 2.
+#' @examples
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+#' dim(spec)
 #' @export
 dim.libs_spectrum <- function(x) {
   c(x$n_shots, x$n_channels)

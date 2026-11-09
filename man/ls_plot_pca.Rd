@@ -14,7 +14,7 @@ ls_plot_pca(pca, pc_x = 1, pc_y = 2, color_by = NULL, ellipses = TRUE)
 \item{pc_y}{Integer. PC for y-axis. Default 2.}
 
 \item{color_by}{Character. Sample-info column. Numeric values use a continuous
-colour scale; other values define discrete groups. Default \code{NULL}.}
+color scale; other values define discrete groups. Default \code{NULL}.}
 
 \item{ellipses}{Logical. Draw nominal 95\% normal-theory data ellipses for
 discrete groups with at least four non-collinear points. They describe score

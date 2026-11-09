@@ -17,3 +17,7 @@ Invisibly returns a list with per-group statistics.
 \description{
 Summary of a LIBS Dataset
 }
+\examples{
+ds <- ls_example_data("calibration")
+summary(ds)
+}

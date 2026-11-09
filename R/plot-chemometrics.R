@@ -7,7 +7,7 @@
 #' @param pc_x Integer. PC for x-axis. Default 1.
 #' @param pc_y Integer. PC for y-axis. Default 2.
 #' @param color_by Character. Sample-info column. Numeric values use a continuous
-#'   colour scale; other values define discrete groups. Default `NULL`.
+#'   color scale; other values define discrete groups. Default `NULL`.
 #' @param ellipses Logical. Draw nominal 95% normal-theory data ellipses for
 #'   discrete groups with at least four non-collinear points. They describe score
 #'   dispersion, not confidence intervals for a group mean. Default `TRUE`.

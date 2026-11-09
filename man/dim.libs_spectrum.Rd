@@ -15,3 +15,7 @@ Integer vector of length 2.
 \description{
 Dimensions of a LIBS Spectrum (shots x channels)
 }
+\examples{
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+dim(spec)
+}

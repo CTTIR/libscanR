@@ -17,3 +17,7 @@ Invisibly returns \code{x}.
 \description{
 Print a LIBS Spectrum
 }
+\examples{
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+print(spec)
+}

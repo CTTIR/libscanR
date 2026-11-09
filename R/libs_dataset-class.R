@@ -5,7 +5,7 @@
 #'
 #' @param spectra List of `libs_spectrum` objects. All must share the same
 #'   wavelength axis (exact channel values). Resample deliberately before
-#'   combining measurements on different axes; no channels are relabelled.
+#'   combining measurements on different axes; no channels are relabeled.
 #' @param sample_info Optional data.frame or tibble with one row per spectrum.
 #'   Must contain column `sample_id` matching `metadata$sample_id` in each
 #'   spectrum. Additional columns (e.g. `material`, `group`, `concentration`,
@@ -116,6 +116,10 @@ ls_dataset <- function(spectra, sample_info = NULL) {
 #'
 #' @param x Object to test.
 #' @return Logical scalar.
+#' @examples
+#' ds <- ls_example_data("calibration")
+#' is_libs_dataset(ds)
+#' is_libs_dataset(list())
 #' @export
 is_libs_dataset <- function(x) {
   inherits(x, "libs_dataset")

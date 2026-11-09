@@ -19,3 +19,7 @@ A \code{ggplot} object.
 \description{
 Plot a LIBS Spectrum
 }
+\examples{
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+p <- plot(spec)
+}

@@ -9,7 +9,7 @@ ls_dataset(spectra, sample_info = NULL)
 \arguments{
 \item{spectra}{List of \code{libs_spectrum} objects. All must share the same
 wavelength axis (exact channel values). Resample deliberately before
-combining measurements on different axes; no channels are relabelled.}
+combining measurements on different axes; no channels are relabeled.}
 
 \item{sample_info}{Optional data.frame or tibble with one row per spectrum.
 Must contain column \code{sample_id} matching \code{metadata$sample_id} in each

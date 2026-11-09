@@ -45,7 +45,7 @@
   local spectral coverage unclassified. Replace ambiguous confidence values with
   labelled scores; remove the unit-dependent fold-change pseudocount.
 * Show actual linear prediction intervals and full-model PLS training predictions;
-  keep numeric PCA colours continuous and distinguish dispersion from uncertainty.
+  keep numeric PCA colors continuous and distinguish dispersion from uncertainty.
 * Preserve uploads and processing state on failures; invalidate stale analyses
   and exports after data or setting changes. Export every shot with metadata in
   ZIP bundles and label mean-spectrum and calibration-summary CSV files clearly.

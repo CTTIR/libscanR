@@ -3,6 +3,9 @@
 #' @param x A `libs_dataset` object.
 #' @param ... Unused.
 #' @return Invisibly returns `x`.
+#' @examples
+#' ds <- ls_example_data("calibration")
+#' print(ds)
 #' @export
 print.libs_dataset <- function(x, ...) {
   group_col <- intersect(c("group", "material", "tissue", "class"),
@@ -26,6 +29,9 @@ print.libs_dataset <- function(x, ...) {
 #' @param object A `libs_dataset` object.
 #' @param ... Unused.
 #' @return Invisibly returns a list with per-group statistics.
+#' @examples
+#' ds <- ls_example_data("calibration")
+#' summary(ds)
 #' @export
 summary.libs_dataset <- function(object, ...) {
   group_col <- intersect(c("group", "material", "tissue", "class"),
@@ -65,6 +71,10 @@ summary.libs_dataset <- function(object, ...) {
 #' @param x A `libs_dataset` object.
 #' @param i Integer or logical index of spectra to keep.
 #' @return A new `libs_dataset`.
+#' @examples
+#' ds <- ls_example_data("calibration")
+#' first_two <- ds[1:2]
+#' length(first_two)
 #' @export
 `[.libs_dataset` <- function(x, i) {
   .validate_dataset(x)
@@ -87,6 +97,9 @@ summary.libs_dataset <- function(object, ...) {
 #' Number of Spectra in a Dataset
 #' @param x A `libs_dataset` object.
 #' @return Integer scalar.
+#' @examples
+#' ds <- ls_example_data("calibration")
+#' length(ds)
 #' @export
 length.libs_dataset <- function(x) {
   x$n_spectra
@@ -95,6 +108,9 @@ length.libs_dataset <- function(x) {
 #' Dimensions of a Dataset (spectra x channels)
 #' @param x A `libs_dataset` object.
 #' @return Integer vector of length 2.
+#' @examples
+#' ds <- ls_example_data("calibration")
+#' dim(ds)
 #' @export
 dim.libs_dataset <- function(x) {
   c(x$n_spectra, x$n_channels)
@@ -105,6 +121,9 @@ dim.libs_dataset <- function(x) {
 #' @param y Ignored.
 #' @param ... Passed to [ls_plot_overlay()].
 #' @return A `ggplot` object.
+#' @examples
+#' ds <- ls_example_data("calibration")
+#' p <- plot(ds[1:3])
 #' @export
 plot.libs_dataset <- function(x, y, ...) {
   ls_plot_overlay(x, ...)

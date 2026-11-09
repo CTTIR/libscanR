@@ -19,3 +19,8 @@ A new \code{libs_spectrum} object.
 Returns a new \code{libs_spectrum} with channels whose wavelengths fall in the
 supplied numeric vector's range.
 }
+\examples{
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+ca_region <- spec[c(380, 420)]
+length(ca_region)
+}

@@ -15,3 +15,7 @@ Integer vector of length 2.
 \description{
 Dimensions of a Dataset (spectra x channels)
 }
+\examples{
+ds <- ls_example_data("calibration")
+dim(ds)
+}

@@ -17,3 +17,8 @@ A new \code{libs_dataset}.
 \description{
 Subset a LIBS Dataset
 }
+\examples{
+ds <- ls_example_data("calibration")
+first_two <- ds[1:2]
+length(first_two)
+}

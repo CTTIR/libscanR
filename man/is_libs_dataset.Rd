@@ -15,3 +15,8 @@ Logical scalar.
 \description{
 Test whether an object is a libs_dataset
 }
+\examples{
+ds <- ls_example_data("calibration")
+is_libs_dataset(ds)
+is_libs_dataset(list())
+}

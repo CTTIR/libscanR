@@ -17,3 +17,9 @@ Invisibly a list of key figures of merit.
 \description{
 Summary of a LIBS Calibration
 }
+\examples{
+ds <- ls_example_data("calibration")
+cal <- ls_calibrate(ds, "Ca", 393.37, ds$sample_info$concentration,
+                    verbose = FALSE)
+summary(cal)
+}

@@ -15,3 +15,7 @@ Integer scalar.
 \description{
 Number of Spectra in a Dataset
 }
+\examples{
+ds <- ls_example_data("calibration")
+length(ds)
+}

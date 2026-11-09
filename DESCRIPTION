@@ -1,9 +1,9 @@
 Package: libscanR
 Type: Package
-Title: Analysis and Visualization of Laser-Induced Breakdown Spectroscopy Data
+Title: Analyze and Visualize Laser-Induced Breakdown Spectroscopy Data
 Version: 0.1.0.9001
 Authors@R:
-    person("R.", "Heller", email = "raban.heller@charite.de",
+    person("R.", "Heller", email = "raban.heller@uni-ulm.de",
            role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))
 Description: Provides a vendor-agnostic pipeline for importing, preprocessing,
     calibrating, and visualizing Laser-Induced Breakdown Spectroscopy (LIBS)
@@ -13,14 +13,16 @@ Description: Provides a vendor-agnostic pipeline for importing, preprocessing,
     two-stage Saha-Boltzmann model, and calibration-based detection-limit
     estimates. Includes exploratory chemometric analysis (principal component
     analysis, partial least squares discriminant analysis, clustering),
-    heuristic tissue classification, and spatial elemental mapping. Includes an interactive 'shiny' application
-    for spectral exploration. Designed for biomedical tissue analysis,
-    environmental monitoring, and materials characterization workflows.
+    heuristic tissue classification, and spatial elemental mapping. Includes
+    an interactive 'shiny' application for spectral exploration. Designed for
+    biomedical tissue analysis, environmental monitoring, and materials
+    characterization workflows.
 License: MIT + file LICENSE
-URL: https://github.com/cttir/libscanR,
+URL: https://github.com/CTTIR/libscanR,
     https://cttir.github.io/libscanR/
-BugReports: https://github.com/cttir/libscanR/issues
+BugReports: https://github.com/CTTIR/libscanR/issues
 Encoding: UTF-8
+Language: en-US
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
 Depends:
@@ -55,6 +57,5 @@ Suggests:
     pkgdown,
     covr
 VignetteBuilder: knitr
-LazyData: false
 Config/Needs/website: CTTIR/themakR
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.1

@@ -94,6 +94,11 @@ ls_calibration <- function(element, wavelength_nm, concentrations, intensities,
 #' @param x A `libs_calibration` object.
 #' @param ... Unused.
 #' @return Invisibly `x`.
+#' @examples
+#' ds <- ls_example_data("calibration")
+#' cal <- ls_calibrate(ds, "Ca", 393.37, ds$sample_info$concentration,
+#'                     verbose = FALSE)
+#' print(cal)
 #' @export
 print.libs_calibration <- function(x, ...) {
   cli::cli_inform(c(
@@ -114,6 +119,11 @@ print.libs_calibration <- function(x, ...) {
 #' @param object A `libs_calibration` object.
 #' @param ... Unused.
 #' @return Invisibly a list of key figures of merit.
+#' @examples
+#' ds <- ls_example_data("calibration")
+#' cal <- ls_calibrate(ds, "Ca", 393.37, ds$sample_info$concentration,
+#'                     verbose = FALSE)
+#' summary(cal)
 #' @export
 summary.libs_calibration <- function(object, ...) {
   print(object)
@@ -143,6 +153,11 @@ summary.libs_calibration <- function(object, ...) {
 #'   use [ls_quantify()] for spectra with checked feature identity.
 #' @param ... Unused.
 #' @return Numeric vector of predicted concentrations.
+#' @examples
+#' ds <- ls_example_data("calibration")
+#' cal <- ls_calibrate(ds, "Ca", 393.37, ds$sample_info$concentration,
+#'                     verbose = FALSE)
+#' predict(cal, newdata = cal$intensities[1:3])
 #' @export
 predict.libs_calibration <- function(object, newdata, ...) {
   if (!inherits(object, "libs_calibration")) cli::cli_abort("{.arg object} must be a {.cls libs_calibration}.")
@@ -188,6 +203,11 @@ predict.libs_calibration <- function(object, newdata, ...) {
 #' Test whether an object is a libs_calibration
 #' @param x Object to test.
 #' @return Logical scalar.
+#' @examples
+#' ds <- ls_example_data("calibration")
+#' cal <- ls_calibrate(ds, "Ca", 393.37, ds$sample_info$concentration,
+#'                     verbose = FALSE)
+#' is_libs_calibration(cal)
 #' @export
 is_libs_calibration <- function(x) {
   inherits(x, "libs_calibration")

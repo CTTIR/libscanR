@@ -22,3 +22,9 @@ Numeric vector of predicted concentrations.
 \description{
 Predict Concentrations from a Calibration Model
 }
+\examples{
+ds <- ls_example_data("calibration")
+cal <- ls_calibrate(ds, "Ca", 393.37, ds$sample_info$concentration,
+                    verbose = FALSE)
+predict(cal, newdata = cal$intensities[1:3])
+}

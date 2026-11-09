@@ -19,3 +19,7 @@ Invisibly returns a list with summary statistics.
 \description{
 Summary of a LIBS Spectrum
 }
+\examples{
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+summary(spec, n_peaks = 3)
+}

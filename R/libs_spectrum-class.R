@@ -90,6 +90,10 @@ ls_spectrum <- function(wavelength, intensity, metadata = list(),
 #'
 #' @param x Object to test.
 #' @return Logical scalar.
+#' @examples
+#' spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+#' is_libs_spectrum(spec)
+#' is_libs_spectrum(1:3)
 #' @export
 is_libs_spectrum <- function(x) {
   inherits(x, "libs_spectrum")

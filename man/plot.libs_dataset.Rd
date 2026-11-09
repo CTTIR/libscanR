@@ -19,3 +19,7 @@ A \code{ggplot} object.
 \description{
 Plot a LIBS Dataset
 }
+\examples{
+ds <- ls_example_data("calibration")
+p <- plot(ds[1:3])
+}

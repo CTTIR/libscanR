@@ -17,3 +17,12 @@ A \code{libs_spectrum} object.
 \description{
 Read a LIBS Spectrum from CSV (Convenience Wrapper)
 }
+\examples{
+tmp <- tempfile(fileext = ".csv")
+wl <- seq(200, 900, length.out = 100)
+utils::write.csv(data.frame(wavelength = wl,
+                            intensity = exp(-((wl - 393)^2) / 2)),
+                 tmp, row.names = FALSE)
+spec <- ls_read_csv(tmp, verbose = FALSE)
+unlink(tmp)
+}
