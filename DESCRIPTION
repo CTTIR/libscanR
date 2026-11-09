@@ -1,7 +1,7 @@
 Package: libscanR
 Type: Package
 Title: Analyze and Visualize Laser-Induced Breakdown Spectroscopy Data
-Version: 0.1.0.9001
+Version: 0.2.0
 Authors@R:
     person("R.", "Heller", email = "raban.heller@uni-ulm.de",
            role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8006-9742"))

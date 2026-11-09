@@ -1,4 +1,8 @@
-# libscanR (development)
+# libscanR 0.2.0
+
+* Prepare the first CRAN submission: every exported function and S3 method now
+  has a runnable example, the title fits CRAN's 65-character limit, the
+  maintainer address is updated and `Language: en-US` is declared.
 
 * Keep channel baselines, sample IDs, sample tables and cached intensities aligned;
   reject malformed spectra, duplicate IDs and different wavelength axes.
