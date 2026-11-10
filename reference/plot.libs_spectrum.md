@@ -27,3 +27,10 @@ plot(x, y, ...)
 ## Value
 
 A `ggplot` object.
+
+## Examples
+
+``` r
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+p <- plot(spec)
+```

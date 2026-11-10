@@ -50,7 +50,7 @@ baselines are retained in `metadata$baseline_history` and cleared from
 ## Examples
 
 ``` r
-spec <- ls_simulate_spectrum(seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 spec_n <- ls_normalize(spec, method = "total")
 sum(spec_n$intensity[1, ])  # ~1
 #> [1] 1

@@ -1,6 +1,10 @@
 # Plot a Spectral Region in Detail
 
-Zooms into a specified wavelength range and annotates peaks.
+Zooms into a specified wavelength range and annotates peaks when a user
+reference is configured. With default `elements = NULL` and no
+reference, the spectrum remains visible and a subtitle reports
+unavailable annotations. Explicitly requesting element labels requires a
+configured reference.
 
 ## Usage
 
@@ -42,6 +46,6 @@ A ggplot2 object.
 ## Examples
 
 ``` r
-spec <- ls_simulate_spectrum(seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 ls_plot_region(spec, 380, 410)
 ```

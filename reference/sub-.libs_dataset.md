@@ -22,3 +22,12 @@ x[i]
 ## Value
 
 A new `libs_dataset`.
+
+## Examples
+
+``` r
+ds <- ls_example_data("calibration")
+first_two <- ds[1:2]
+length(first_two)
+#> [1] 2
+```

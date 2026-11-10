@@ -22,3 +22,15 @@ print(x, ...)
 ## Value
 
 Invisibly returns `x`.
+
+## Examples
+
+``` r
+ds <- ls_example_data("calibration")
+print(ds)
+#> <libs_dataset>
+#> • Spectra: 27
+#> • Channels: 1024
+#> • Range: 200-900 nm
+#> • Groups: 1 (group)
+```

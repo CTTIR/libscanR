@@ -27,3 +27,10 @@ plot(x, y, ...)
 ## Value
 
 A `ggplot` object.
+
+## Examples
+
+``` r
+ds <- ls_example_data("calibration")
+p <- plot(ds[1:3])
+```

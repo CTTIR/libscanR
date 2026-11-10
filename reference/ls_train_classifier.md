@@ -30,7 +30,12 @@ ls_train_classifier(dataset, grouping, method = "svm", ...)
 
 ## Value
 
-An S3 object of class `libs_classifier`.
+An S3 object of class `libs_classifier`, including predictions, a square
+confusion matrix, the fitted `feature_contract`, and `evaluation_basis`:
+`"training"` for SVM or `"out_of_bag"` for RF. SVM evaluation uses the
+same probability-based class decision as
+[`ls_classify()`](https://cttir.github.io/libscanR/reference/ls_classify.md).
+Training accuracy is not an independent estimate of generalization.
 
 ## Examples
 
@@ -41,6 +46,6 @@ if (requireNamespace("e1071", quietly = TRUE)) {
   clf <- ls_train_classifier(ds, "tissue", method = "svm")
   clf$accuracy
 }
-#> [1] 0.62
+#> [1] 0.5
 # }
 ```

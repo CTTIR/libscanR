@@ -2,7 +2,12 @@
 
 Identifies emission channels that best discriminate two tissue types via
 per-wavelength t-tests with Benjamini-Hochberg FDR correction, plus log2
-fold-change. Optionally matches significant channels to NIST elements.
+fold-change. Element annotations are nearest wavelength candidates, not
+established elemental identities; `candidate_count` records ambiguity.
+Without a configured atomic reference, statistical results remain
+available, with missing element annotations and
+`annotation_status = "reference_unavailable"`. A configured but
+unreadable or invalid reference raises an error.
 
 ## Usage
 
@@ -57,13 +62,15 @@ with columns `wavelength_nm`, `mean_a`, `mean_b`, `p_value`,
 ``` r
 ds <- ls_example_data("tissue")
 head(ls_tissue_discriminate(ds, "tissue", "bone", "muscle"))
-#> # A tibble: 6 × 8
-#>   wavelength_nm mean_a mean_b  p_value fold_change      fdr significant element
-#>           <dbl>  <dbl>  <dbl>    <dbl>       <dbl>    <dbl> <lgl>       <chr>  
-#> 1          866.   48.8   32.1 1.43e-13       0.588 1.46e-10 FALSE       NA     
-#> 2          716.   63.0   41.7 1.10e-11       0.583 5.63e- 9 FALSE       NA     
-#> 3          422.  491.    69.0 5.51e- 9       2.81  2.26e- 7 TRUE        NA     
-#> 4          423.  460.    69.6 3.85e- 9       2.71  2.26e- 7 TRUE        NA     
-#> 5          488.  352.    62.0 5.84e- 9       2.49  2.26e- 7 TRUE        NA     
-#> 6          487.  327.    61.9 5.62e- 9       2.38  2.26e- 7 TRUE        NA     
+#> # A tibble: 6 × 11
+#>   wavelength_nm mean_a mean_b    p_value fold_change     fdr significant element
+#>           <dbl>  <dbl>  <dbl>      <dbl>       <dbl>   <dbl> <lgl>       <chr>  
+#> 1          394.   265.   73.0    6.55e-9       1.86  3.35e-6 TRUE        NA     
+#> 2          393.   250.   72.7    4.20e-9       1.78  3.35e-6 TRUE        NA     
+#> 3          394.   160.   72.3    1.27e-8       1.14  4.31e-6 TRUE        NA     
+#> 4          392.   139.   73.0    1.69e-8       0.934 4.31e-6 FALSE       NA     
+#> 5          214.   199.   99.2    1.71e-7       1.00  2.72e-5 TRUE        NA     
+#> 6          213.   169.   98.5    1.86e-7       0.775 2.72e-5 FALSE       NA     
+#> # ℹ 3 more variables: candidate_count <int>, matched_wavelength_nm <dbl>,
+#> #   annotation_status <chr>
 ```

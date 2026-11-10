@@ -25,11 +25,14 @@ ls_plot_pca(pca, pc_x = 1, pc_y = 2, color_by = NULL, ellipses = TRUE)
 
 - color_by:
 
-  Character. Grouping variable. Default `NULL`.
+  Character. Sample-info column. Numeric values use a continuous color
+  scale; other values define discrete groups. Default `NULL`.
 
 - ellipses:
 
-  Logical. Draw 95% confidence ellipses per group. Default `TRUE`.
+  Logical. Draw nominal 95% normal-theory data ellipses for discrete
+  groups with at least four non-collinear points. They describe score
+  dispersion, not confidence intervals for a group mean. Default `TRUE`.
 
 ## Value
 

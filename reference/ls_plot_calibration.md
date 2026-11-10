@@ -19,7 +19,8 @@ ls_plot_calibration(
 
   A
   [`ls_calibration()`](https://cttir.github.io/libscanR/reference/ls_calibration.md)
-  object (univariate/internal_std).
+  object. PLS shows fitted training concentrations against known
+  concentrations, not a one-feature curve.
 
 - show_lod:
 
@@ -31,7 +32,10 @@ ls_plot_calibration(
 
 - show_prediction_interval:
 
-  Logical. Show 95% prediction band. Default `TRUE`.
+  Logical. Show 95% prediction band. Default `TRUE`. For
+  univariate/internal-standard fits this is the fitted model's interval
+  for a new observation, not a confidence band for its mean. PLS plots
+  do not supply a prediction interval.
 
 ## Value
 

@@ -30,7 +30,9 @@ ls_plot_spectrum(
 - show_elements:
 
   Character vector of element symbols to highlight as dashed vertical
-  lines with labels. Default `NULL`.
+  lines from the configured reference. All matching rows in the
+  displayed range are used; no persistent-line status is inferred.
+  Default `NULL`.
 
 - normalize:
 
@@ -53,6 +55,8 @@ A ggplot2 object.
 ## Examples
 
 ``` r
-spec <- ls_simulate_spectrum(seed = 1)
-ls_plot_spectrum(spec, show_elements = "Ca")
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+ls_plot_spectrum(spec)
+
+# Element overlays require a configured reference; see ls_element_db().
 ```

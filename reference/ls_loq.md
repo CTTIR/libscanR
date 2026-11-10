@@ -5,7 +5,7 @@ Calculates LOQ using the 10-sigma criterion.
 ## Usage
 
 ``` r
-ls_loq(calibration, blank = NULL, window_nm = 1)
+ls_loq(calibration, blank = NULL, window_nm = NULL)
 ```
 
 ## Arguments
@@ -24,7 +24,7 @@ ls_loq(calibration, blank = NULL, window_nm = 1)
 
 - window_nm:
 
-  Numeric. Integration window. Default 1.
+  Optional window; `NULL` uses the fitted window.
 
 ## Value
 
@@ -37,5 +37,5 @@ ds <- ls_example_data("calibration")
 conc <- ds$sample_info$concentration
 cal <- ls_calibrate(ds, "Ca", 393.37, conc, verbose = FALSE)
 ls_loq(cal)
-#> [1] 13.19152
+#> [1] 11203.54
 ```

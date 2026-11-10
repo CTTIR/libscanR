@@ -3,15 +3,6 @@
 ![libscanR logo](figures/logo.svg)![libscanR
 logo](figures/logo-dark.svg)
 
-[![R-CMD-check](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml)
-[![pkgdown](https://github.com/CTTIR/libscanR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/libscanR/)
-[![Codecov test
-coverage](https://codecov.io/gh/CTTIR/libscanR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/libscanR?branch=main)
-[![License:
-MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-
 ``` r
 
 library(libscanR)
@@ -22,9 +13,10 @@ library(libscanR)
 `libscanR` provides a vendor-agnostic pipeline for Laser-Induced
 Breakdown Spectroscopy (LIBS) data, including import, preprocessing,
 peak detection, calibration, quantification, chemometrics, spatial
-mapping, and visualization. It ships with a curated NIST emission line
-database and example datasets so every feature is runnable without real
-instrument data.
+mapping, and visualization. It includes explicitly fictional teaching
+datasets. Atomic-line identification requires a separately downloaded,
+user-configured reference; no NIST compilation is bundled. See the
+README for local download/import configuration.
 
 ## Core data structures
 
@@ -40,7 +32,7 @@ instrument data.
 
 ``` r
 
-spec <- ls_simulate_spectrum(
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
   elements = c(Ca = 5000, Na = 1000, Fe = 200),
   n_channels = 1024,
   seed = 1
@@ -57,10 +49,12 @@ spec
 
 ``` r
 
-ls_plot_spectrum(spec, show_elements = c("Ca", "Na"))
+ls_plot_spectrum(spec)
 ```
 
-![](getting-started_files/figure-html/plot-raw-1.png)
+![Fictional teaching spectrum: mean intensity across wavelengths from
+200 to 900 nm, including simulated peaks and a continuum
+background.](getting-started_files/figure-html/plot-raw-1.png)
 
 ### Preprocess: baseline, smooth, normalize
 
@@ -73,24 +67,37 @@ spec_proc <- spec |>
 ls_plot_spectrum(spec_proc)
 ```
 
-![](getting-started_files/figure-html/preprocess-1.png)
+![The same fictional spectrum after SNIP baseline correction,
+five-channel moving-average smoothing and total normalization; the
+vertical scale is normalized
+intensity.](getting-started_files/figure-html/preprocess-1.png)
 
-### Detect and identify peaks
+### Detect peaks without an atomic reference
 
 ``` r
 
 peaks <- ls_find_peaks(spec_proc, snr_threshold = 3)
+head(peaks)
+#> # A tibble: 6 × 6
+#>   wavelength_nm intensity   snr prominence fwhm_nm      area
+#>           <dbl>     <dbl> <dbl>      <dbl>   <dbl>     <dbl>
+#> 1          201.   0.00271  82.6  0.0000910   0.805 0        
+#> 2          212.   0.00238  68.0  0.0000943   1.67  0.0000265
+#> 3          218.   0.00225  62.0  0.0000563   1.96  0.0000346
+#> 4          223.   0.00214  57.3  0.0000348   1.37  0.0000140
+#> 5          231.   0.00201  51.1  0.0000384   1.28  0.0000151
+#> 6          236.   0.00199  50.3  0.000126    2.62  0.0000874
+```
+
+Atomic identification is a separate, optional step. First configure a
+reference using the README instructions. These candidates are wavelength
+matches, not proof of an element’s presence:
+
+``` r
+
+options(libscanR.element_db = "local-data/atomic-lines.csv")
 id <- ls_identify_peaks(peaks, elements = c("Ca", "Na", "Fe"))
-head(id[, c("wavelength_nm", "element", "ionization", "nist_aki", "confidence")])
-#> # A tibble: 6 × 5
-#>   wavelength_nm element ionization nist_aki confidence
-#>           <dbl> <chr>        <int>    <dbl>      <dbl>
-#> 1          201. NA              NA    NA        NA    
-#> 2          240. Ca               1     1.87      0.134
-#> 3          212. NA              NA    NA        NA    
-#> 4          218. NA              NA    NA        NA    
-#> 5          223. NA              NA    NA        NA    
-#> 6          231. NA              NA    NA        NA
+ls_plot_spectrum(spec_proc, show_elements = c("Ca", "Na"))
 ```
 
 ### Read from a file
@@ -109,7 +116,7 @@ spec_in
 #> <libs_spectrum>
 #> • Range: 200-900 nm (1024 channels)
 #> • Shots: 1
-#> • Sample: "file1f3e7e7381ac"
+#> • Sample: "file1d0c7468fcea"
 #> • Baseline corrected: FALSE
 ```
 
@@ -131,7 +138,7 @@ summary(ds)
 #>     liver 10
 #>    muscle 10
 #> ℹ Per-spectrum max intensity: median = 103.79, range =
-#> 94.1-596.38
+#> 94.1-319.22
 ```
 
 ## Next steps

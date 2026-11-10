@@ -64,14 +64,14 @@
 - [`ls_peak_area()`](https://cttir.github.io/libscanR/reference/ls_peak_area.md)
   : Calculate Peak Area
 - [`ls_element_db()`](https://cttir.github.io/libscanR/reference/ls_element_db.md)
-  : NIST Emission Line Database
+  : Read a User-Supplied Atomic Line Reference
 
 ## Calibration & Quantification
 
 - [`ls_calibrate()`](https://cttir.github.io/libscanR/reference/ls_calibrate.md)
   : Build Calibration Curve
 - [`ls_saha_boltzmann()`](https://cttir.github.io/libscanR/reference/ls_saha_boltzmann.md)
-  : Calibration-Free LIBS via Saha-Boltzmann
+  : Relative Elemental Amounts under a Two-Stage LTE Model
 - [`ls_quantify()`](https://cttir.github.io/libscanR/reference/ls_quantify.md)
   : Quantify Element Concentration
 - [`ls_lod()`](https://cttir.github.io/libscanR/reference/ls_lod.md) :
@@ -148,6 +148,8 @@
   : Simulate a LIBS Spectrum
 - [`ls_example_data()`](https://cttir.github.io/libscanR/reference/ls_example_data.md)
   : Generate Example LIBS Dataset
+- [`ls_demo_peaks()`](https://cttir.github.io/libscanR/reference/ls_demo_peaks.md)
+  : Fictional Peaks for Software Demonstrations
 
 ## S3 Methods
 

@@ -40,6 +40,6 @@ Same class as input with smoothed intensities.
 ## Examples
 
 ``` r
-spec <- ls_simulate_spectrum(seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 sm <- ls_smooth(spec, method = "moving_avg", window = 9)
 ```

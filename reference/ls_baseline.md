@@ -69,7 +69,7 @@ baseline is stored in the `baseline` element for inspection.
 ## Examples
 
 ``` r
-spec <- ls_simulate_spectrum(seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 corr <- ls_baseline(spec, method = "snip")
 is.null(corr$baseline)
 #> [1] FALSE

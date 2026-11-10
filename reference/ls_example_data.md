@@ -1,7 +1,11 @@
 # Generate Example LIBS Dataset
 
 Creates a synthetic `libs_dataset` suitable for demonstrating package
-features. Scenarios:
+features without an atomic reference download. All scenarios use
+explicit fictional peaks from
+[`ls_demo_peaks()`](https://cttir.github.io/libscanR/reference/ls_demo_peaks.md);
+component names and tissue labels are teaching labels, not measured
+concentrations or biological ground truth. Scenarios:
 
 ## Usage
 
@@ -36,7 +40,8 @@ A `libs_dataset` object (or named list for `"all"`).
 ## Details
 
 - `"tissue"` — 50 spectra from 5 tissue types (bone, liver, kidney,
-  muscle, fat), 10 per type, with tissue-typical elemental signatures.
+  muscle, fat), 10 per type, with deliberately different synthetic
+  profiles.
 
 - `"calibration"` — 27 spectra of Ca standards (9 concentrations x 3
   replicates) with constant matrix (Na, K, Mg).

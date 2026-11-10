@@ -17,3 +17,13 @@ is_libs_dataset(x)
 ## Value
 
 Logical scalar.
+
+## Examples
+
+``` r
+ds <- ls_example_data("calibration")
+is_libs_dataset(ds)
+#> [1] TRUE
+is_libs_dataset(list())
+#> [1] FALSE
+```

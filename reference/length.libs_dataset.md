@@ -18,3 +18,11 @@ length(x)
 ## Value
 
 Integer scalar.
+
+## Examples
+
+``` r
+ds <- ls_example_data("calibration")
+length(ds)
+#> [1] 27
+```

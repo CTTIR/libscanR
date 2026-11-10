@@ -42,7 +42,8 @@ Numeric. Baseline-subtracted integrated peak area.
 ## Examples
 
 ``` r
-spec <- ls_simulate_spectrum(elements = c(Ca = 5000), seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
+                             elements = c(Ca = 5000), seed = 1)
 ls_peak_area(spec, 393.37)
-#> [1] 3.466782
+#> [1] 2.250182
 ```

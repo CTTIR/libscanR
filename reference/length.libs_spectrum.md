@@ -18,3 +18,11 @@ length(x)
 ## Value
 
 Integer scalar.
+
+## Examples
+
+``` r
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+length(spec)
+#> [1] 2048
+```

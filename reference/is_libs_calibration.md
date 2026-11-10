@@ -17,3 +17,13 @@ is_libs_calibration(x)
 ## Value
 
 Logical scalar.
+
+## Examples
+
+``` r
+ds <- ls_example_data("calibration")
+cal <- ls_calibrate(ds, "Ca", 393.37, ds$sample_info$concentration,
+                    verbose = FALSE)
+is_libs_calibration(cal)
+#> [1] TRUE
+```

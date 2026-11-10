@@ -10,7 +10,7 @@ ls_map_elements(
   elements,
   lines_nm,
   calibrations = NULL,
-  window_nm = 1
+  window_nm = NULL
 )
 ```
 
@@ -39,7 +39,8 @@ ls_map_elements(
 
 - window_nm:
 
-  Numeric. Integration window. Default 1.
+  Optional integration window. `NULL` reuses each calibration's fitted
+  window, or 1 nm for uncalibrated maps.
 
 ## Value
 
@@ -56,7 +57,7 @@ ls_map_elements(ds, c("Ca", "Fe"),
 #> • Element: "Ca"
 #> • Line: 393.37 nm
 #> • Points: 400
-#> • Range: 0-13 a.u.
+#> • Range: 0-10.7 a.u. nm
 #> • Grid: 20x20
 #> 
 #> $Fe
@@ -64,7 +65,7 @@ ls_map_elements(ds, c("Ca", "Fe"),
 #> • Element: "Fe"
 #> • Line: 371.99 nm
 #> • Points: 400
-#> • Range: 0-5.43 a.u.
+#> • Range: 0-7.84 a.u. nm
 #> • Grid: 20x20
 #> 
 ```

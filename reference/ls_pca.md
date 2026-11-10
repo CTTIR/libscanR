@@ -42,5 +42,5 @@ PCs), `loadings` (matrix: channels x PCs), `sdev`, `variance_explained`
 ds <- ls_example_data("tissue")
 pca <- ls_pca(ds, n_components = 5)
 pca$variance_explained
-#> [1] 0.51450354 0.14516973 0.04068399 0.03770808 0.03645458
+#> [1] 0.75250760 0.02479559 0.01915871 0.01750302 0.01722408
 ```

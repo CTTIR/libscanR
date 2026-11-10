@@ -33,7 +33,7 @@ Same class as input, cropped.
 ## Examples
 
 ``` r
-spec <- ls_simulate_spectrum(seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
 ls_crop(spec, 380, 450)
 #> <libs_spectrum>
 #> • Range: 380.21-449.98 nm (205 channels)

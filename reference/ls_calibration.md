@@ -16,7 +16,11 @@ ls_calibration(
   lod = NULL,
   loq = NULL,
   r_squared = NULL,
-  unit = "ppm"
+  unit = "ppm",
+  feature_contract = NULL,
+  response_model = NULL,
+  lod_basis = NULL,
+  training_rmse = NULL
 )
 ```
 
@@ -41,7 +45,9 @@ ls_calibration(
 
 - model:
 
-  Fitted model object (e.g. `lm`, `mvr`).
+  Fitted model object (`lm` with one plain numeric predictor and an
+  intercept, or `mvr` for PLS). Transformed terms and offsets are
+  rejected by univariate prediction.
 
 - method:
 
@@ -64,6 +70,26 @@ ls_calibration(
 
   Character. Concentration unit, e.g. `"ppm"`, `"wt_pct"`, `"mg_kg"`.
   Default `"ppm"`.
+
+- feature_contract:
+
+  Optional fitted wavelength/preprocessing and extraction contract,
+  normally populated by
+  [`ls_calibrate()`](https://cttir.github.io/libscanR/reference/ls_calibrate.md).
+
+- response_model:
+
+  Optional response-on-concentration regression used to estimate
+  univariate detection limits.
+
+- lod_basis:
+
+  Character description of the limit estimate, or `NULL`.
+
+- training_rmse:
+
+  Numeric training prediction error, or `NULL`. This is not a detection
+  limit or a held-out estimate.
 
 ## Value
 

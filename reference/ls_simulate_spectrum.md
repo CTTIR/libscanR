@@ -2,7 +2,7 @@
 
 Generates a demonstration LIBS spectrum with configurable elemental
 composition, noise, and continuum background. Emission lines are drawn
-from the internal NIST database
+from the user-configured atomic reference
 ([`ls_element_db()`](https://cttir.github.io/libscanR/reference/ls_element_db.md))
 and modelled as Gaussian peaks. Peak widths are at least 2.5 channel
 spacings so coarse demonstrations remain visible; this is not an
@@ -21,7 +21,8 @@ ls_simulate_spectrum(
   continuum_level = 100,
   shot_rsd = 0.1,
   fwhm_nm = 0.1,
-  seed = NULL
+  seed = NULL,
+  line_data = NULL
 )
 ```
 
@@ -67,6 +68,16 @@ ls_simulate_spectrum(
 
   Optional integer random seed for reproducibility.
 
+- line_data:
+
+  Optional explicit teaching peak table, with `component`,
+  `wavelength_nm` and `relative_strength` columns. Strengths are
+  arbitrary intensity multipliers, not atomic transition probabilities.
+  Use
+  [`ls_demo_peaks()`](https://cttir.github.io/libscanR/reference/ls_demo_peaks.md)
+  for a fictional fixture. `NULL` uses the configured atomic reference
+  and retains the transition-rate scaling convention.
+
 ## Value
 
 A
@@ -76,7 +87,8 @@ object.
 ## Examples
 
 ``` r
-spec <- ls_simulate_spectrum(elements = c(Ca = 1000, Na = 500), seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
+                             elements = c(Ca = 1000, Na = 500), seed = 1)
 print(spec)
 #> <libs_spectrum>
 #> • Range: 200-900 nm (2048 channels)

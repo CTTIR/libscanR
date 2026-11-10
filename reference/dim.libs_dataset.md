@@ -18,3 +18,11 @@ dim(x)
 ## Value
 
 Integer vector of length 2.
+
+## Examples
+
+``` r
+ds <- ls_example_data("calibration")
+dim(ds)
+#> [1]   27 1024
+```

@@ -22,3 +22,15 @@ print(x, ...)
 ## Value
 
 Invisibly returns `x`.
+
+## Examples
+
+``` r
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+print(spec)
+#> <libs_spectrum>
+#> • Range: 200-900 nm (2048 channels)
+#> • Shots: 10
+#> • Sample: "simulated" (synthetic)
+#> • Baseline corrected: FALSE
+```

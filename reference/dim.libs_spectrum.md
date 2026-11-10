@@ -18,3 +18,11 @@ dim(x)
 ## Value
 
 Integer vector of length 2.
+
+## Examples
+
+``` r
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+dim(spec)
+#> [1]   10 2048
+```

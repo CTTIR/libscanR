@@ -37,7 +37,7 @@ A `libs_spectrum` with a single averaged shot.
 ## Examples
 
 ``` r
-spec <- ls_simulate_spectrum(n_shots = 10, seed = 1)
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), n_shots = 10, seed = 1)
 ls_average_shots(spec, remove_outliers = TRUE)
 #> <libs_spectrum>
 #> • Range: 200-900 nm (2048 channels)

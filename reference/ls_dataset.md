@@ -16,7 +16,7 @@ ls_dataset(spectra, sample_info = NULL)
 
   List of `libs_spectrum` objects. All must share the same wavelength
   axis (exact channel values). Resample deliberately before combining
-  measurements on different axes; no channels are relabelled.
+  measurements on different axes; no channels are relabeled.
 
 - sample_info:
 
@@ -33,7 +33,7 @@ A `libs_dataset` S3 object.
 
 ``` r
 specs <- lapply(1:3, function(i) {
-  ls_simulate_spectrum(elements = c(Ca = 1000 * i, Na = 500), seed = i)
+  ls_simulate_spectrum(line_data = ls_demo_peaks(), elements = c(Ca = 1000 * i, Na = 500), seed = i)
 })
 specs <- Map(function(s, id) {
   s$metadata$sample_id <- paste0("s", id)

@@ -22,3 +22,12 @@ c(...)
 ## Value
 
 A new `libs_spectrum` with combined shots.
+
+## Examples
+
+``` r
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+combined <- c(spec, spec)
+dim(combined)
+#> [1]   20 2048
+```

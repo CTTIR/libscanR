@@ -3,15 +3,6 @@
 ![libscanR logo](figures/logo.svg)![libscanR
 logo](figures/logo-dark.svg)
 
-[![R-CMD-check](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml)
-[![pkgdown](https://github.com/CTTIR/libscanR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/libscanR/)
-[![Codecov test
-coverage](https://codecov.io/gh/CTTIR/libscanR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/libscanR?branch=main)
-[![License:
-MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-
 ``` r
 
 library(libscanR)
@@ -39,7 +30,10 @@ m_ca <- ls_build_map(ds, "Ca", 393.37)
 ls_plot_map(m_ca)
 ```
 
-![](spatial-mapping_files/figure-html/single-1.png)
+![A 20 by 20 fictional raster map of integrated response near 393.37 nm.
+The viridis legend ranges from low purple to high yellow; values are
+peak area, not calibrated
+concentration.](spatial-mapping_files/figure-html/single-1.png)
 
 ## Multi-element panel
 
@@ -50,7 +44,9 @@ maps <- ls_map_elements(ds, c("Ca", "Fe", "Zn"),
 ls_plot_map_panel(maps)
 ```
 
-![](spatial-mapping_files/figure-html/panel-1.png)
+![Three fictional raster maps labelled Ca, Fe and Zn, each showing
+integrated response at its specified teaching wavelength and its own
+colour scale.](spatial-mapping_files/figure-html/panel-1.png)
 
 ## Applying a calibration to the map
 
@@ -64,7 +60,10 @@ m_cal <- ls_build_map(ds, "Ca", 393.37, calibration = cal)
 ls_plot_map(m_cal)
 ```
 
-![](spatial-mapping_files/figure-html/calib-1.png)
+![The fictional Ca-labelled raster map after applying the teaching
+calibration, with predicted concentration in ppm. This demonstrates
+model application, not validated tissue
+concentrations.](spatial-mapping_files/figure-html/calib-1.png)
 
 ## Hotspot detection
 
@@ -75,11 +74,11 @@ hot_idx <- which(zn$values > stats::quantile(zn$values, 0.9))
 head(data.frame(x = zn$x[hot_idx],
                 y = zn$y[hot_idx],
                 zn = round(zn$values[hot_idx], 1)))
-#>    x y   zn
-#> 1  8 3  9.5
-#> 2  8 4  9.9
-#> 3 10 4  9.1
-#> 4  6 5 10.7
-#> 5  9 5 11.3
-#> 6  5 6  9.8
+#>    x y  zn
+#> 1  7 2 5.4
+#> 2 10 2 3.8
+#> 3  7 3 4.7
+#> 4  8 3 5.3
+#> 5 16 3 4.8
+#> 6 17 3 4.1
 ```

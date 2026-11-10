@@ -3,15 +3,6 @@
 ![libscanR logo](figures/logo.svg)![libscanR
 logo](figures/logo-dark.svg)
 
-[![R-CMD-check](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml)
-[![pkgdown](https://github.com/CTTIR/libscanR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/libscanR/)
-[![Codecov test
-coverage](https://codecov.io/gh/CTTIR/libscanR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/libscanR?branch=main)
-[![License:
-MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-
 ``` r
 
 library(libscanR)
@@ -30,7 +21,7 @@ removal.
 
 ``` r
 
-spec <- ls_simulate_spectrum(
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
   elements = c(Ca = 5000, Na = 1000, K = 800, Fe = 200),
   n_channels = 1024, seed = 1
 )
@@ -53,7 +44,9 @@ ggplot2::ggplot(df, ggplot2::aes(w, y, colour = method)) +
   ggplot2::labs(x = "Wavelength (nm)", y = "Intensity (a.u.)")
 ```
 
-![](preprocessing-workflow_files/figure-html/baseline-1.png)
+![Three curves compare the raw fictional spectrum with SNIP and ALS
+baseline-corrected intensities on the same wavelength
+axis.](preprocessing-workflow_files/figure-html/baseline-1.png)
 
 ## Normalization
 
@@ -77,13 +70,15 @@ sm <- ls_smooth(snip, method = "moving_avg", window = 7)
 ls_plot_region(sm, 380, 410)
 ```
 
-![](preprocessing-workflow_files/figure-html/smooth-1.png)
+![The 380 to 410 nm region of the fictional spectrum after SNIP baseline
+correction and seven-channel moving-average
+smoothing.](preprocessing-workflow_files/figure-html/smooth-1.png)
 
 ## Averaging replicate shots with outlier removal
 
 ``` r
 
-multi <- ls_simulate_spectrum(seed = 1, n_channels = 512, n_shots = 20,
+multi <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1, n_channels = 512, n_shots = 20,
                               noise_level = 0.05)
 avg <- ls_average_shots(multi, remove_outliers = TRUE)
 avg$n_shots
@@ -95,10 +90,12 @@ avg$n_shots
 ``` r
 
 ca_region <- ls_crop(snip, 380, 450)
-ls_plot_spectrum(ca_region, show_elements = "Ca")
+ls_plot_spectrum(ca_region)
 ```
 
-![](preprocessing-workflow_files/figure-html/crop-1.png)
+![SNIP-corrected fictional spectrum cropped to 380 through 450 nm,
+showing the simulated peak near the Ca-labelled teaching
+window.](preprocessing-workflow_files/figure-html/crop-1.png)
 
 ## Recommended pipeline
 
@@ -111,4 +108,6 @@ processed <- spec |>
 ls_plot_spectrum(processed)
 ```
 
-![](preprocessing-workflow_files/figure-html/pipeline-1.png)
+![Fictional spectrum after the recommended SNIP, five-channel
+moving-average and total-normalization pipeline, plotted against
+wavelength.](preprocessing-workflow_files/figure-html/pipeline-1.png)

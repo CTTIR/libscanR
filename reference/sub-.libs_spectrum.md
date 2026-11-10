@@ -25,3 +25,12 @@ x[i]
 ## Value
 
 A new `libs_spectrum` object.
+
+## Examples
+
+``` r
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+ca_region <- spec[c(380, 420)]
+length(ca_region)
+#> [1] 2
+```

@@ -1,7 +1,12 @@
 # Identify Peaks Against the NIST Line Database
 
 Matches detected peaks to known atomic emission lines. Each peak is
-assigned its best-scoring candidate from the curated NIST database.
+assigned its nearest wavelength candidate from the user-configured
+reference. No atomic reference is bundled; configure
+[`ls_element_db()`](https://cttir.github.io/libscanR/reference/ls_element_db.md)
+first. This is a candidate identification, not proof of elemental
+presence or resolution of blended transitions. Check the measured
+air/vacuum convention.
 
 ## Usage
 
@@ -36,24 +41,18 @@ ls_identify_peaks(
 ## Value
 
 A tibble with all peak columns plus: `element`, `ionization`,
-`nist_wavelength_nm`, `nist_aki`, `deviation_nm`, `confidence` (0-1).
+`nist_wavelength_nm`, `nist_aki`, `deviation_nm`, `confidence` (0-1),
+`n_candidates`, and `wavelength_medium`. The legacy `confidence` name
+denotes only `1 - abs(deviation_nm) / tolerance_nm`, not a probability.
 
 ## Examples
 
 ``` r
-spec <- ls_simulate_spectrum(elements = c(Ca = 5000, Na = 1000), seed = 1)
+if (FALSE) { # !is.null(getOption("libscanR.element_db")) || nzchar(Sys.getenv("LIBSCANR_ELEMENT_DB"))
+spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
+                             elements = c(Ca = 5000, Na = 1000), seed = 1)
 pk <- ls_find_peaks(spec, snr_threshold = 5)
 id <- ls_identify_peaks(pk, elements = c("Ca", "Na"))
 head(id)
-#> # A tibble: 6 × 12
-#>   wavelength_nm intensity   snr prominence fwhm_nm  area element ionization
-#>           <dbl>     <dbl> <dbl>      <dbl>   <dbl> <dbl> <chr>        <int>
-#> 1          240.      98.7  67.4       9.70   0.913 5.58  Ca               1
-#> 2          202.      97.1  65.1       2.03   2.18  1.07  NA              NA
-#> 3          206.      95.7  63.0       1.56   1.39  0     NA              NA
-#> 4          208.      95.7  63.0       1.04   0.467 0.280 NA              NA
-#> 5          205.      95.4  62.6       1.23   0.628 0.267 NA              NA
-#> 6          212.      94.9  61.8       1.59   0.653 0.307 NA              NA
-#> # ℹ 4 more variables: nist_wavelength_nm <dbl>, nist_aki <dbl>,
-#> #   deviation_nm <dbl>, confidence <dbl>
+}
 ```

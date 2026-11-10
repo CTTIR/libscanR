@@ -8,7 +8,7 @@ aggregate replicate positions explicitly before mapping them.
 ## Usage
 
 ``` r
-ls_build_map(dataset, element, line_nm, calibration = NULL, window_nm = 1)
+ls_build_map(dataset, element, line_nm, calibration = NULL, window_nm = NULL)
 ```
 
 ## Arguments
@@ -36,7 +36,8 @@ ls_build_map(dataset, element, line_nm, calibration = NULL, window_nm = 1)
 
 - window_nm:
 
-  Numeric. Peak integration window. Default 1.
+  Optional integration window. `NULL` reuses the calibration's fitted
+  window, or 1 nm for an uncalibrated map.
 
 ## Value
 

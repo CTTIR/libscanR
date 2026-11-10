@@ -1,6 +1,9 @@
 # Quantify Element Concentration
 
-Applies a calibration model to unknown spectra.
+Applies a calibration model using its saved wavelength axis,
+preprocessing and extraction contract. Legacy models without this
+contract must be refitted. Unavailable detection-limit flags are `NA`,
+not FALSE.
 
 ## Usage
 
@@ -26,7 +29,8 @@ ls_quantify(calibration, x, window_nm = NULL)
 
 - window_nm:
 
-  Numeric. Peak integration window. Defaults to 1 if NULL.
+  Optional numeric integration window. `NULL` reuses the fitted window;
+  a different supplied value is rejected.
 
 ## Value
 
@@ -45,15 +49,15 @@ ls_quantify(cal, ds)
 #> # A tibble: 27 × 6
 #>    sample_id    element concentration unit  below_lod below_loq
 #>    <chr>        <chr>           <dbl> <chr> <lgl>     <lgl>    
-#>  1 std_00000_r1 Ca             1227.  ppm   FALSE     FALSE    
-#>  2 std_00000_r2 Ca               12.3 ppm   FALSE     TRUE     
-#>  3 std_00000_r3 Ca              483.  ppm   FALSE     FALSE    
-#>  4 std_00100_r1 Ca               12.3 ppm   FALSE     TRUE     
-#>  5 std_00100_r2 Ca               12.3 ppm   FALSE     TRUE     
-#>  6 std_00100_r3 Ca               12.3 ppm   FALSE     TRUE     
-#>  7 std_00250_r1 Ca               12.3 ppm   FALSE     TRUE     
-#>  8 std_00250_r2 Ca              826.  ppm   FALSE     FALSE    
-#>  9 std_00250_r3 Ca               12.3 ppm   FALSE     TRUE     
-#> 10 std_00500_r1 Ca             1467.  ppm   FALSE     FALSE    
+#>  1 std_00000_r1 Ca             1708.  ppm   TRUE      TRUE     
+#>  2 std_00000_r2 Ca               27.1 ppm   TRUE      TRUE     
+#>  3 std_00000_r3 Ca              679.  ppm   TRUE      TRUE     
+#>  4 std_00100_r1 Ca               27.1 ppm   TRUE      TRUE     
+#>  5 std_00100_r2 Ca               27.1 ppm   TRUE      TRUE     
+#>  6 std_00100_r3 Ca               27.1 ppm   TRUE      TRUE     
+#>  7 std_00250_r1 Ca               27.1 ppm   TRUE      TRUE     
+#>  8 std_00250_r2 Ca             1057.  ppm   TRUE      TRUE     
+#>  9 std_00250_r3 Ca               27.1 ppm   TRUE      TRUE     
+#> 10 std_00500_r1 Ca             1858.  ppm   TRUE      TRUE     
 #> # ℹ 17 more rows
 ```

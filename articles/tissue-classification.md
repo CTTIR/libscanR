@@ -3,19 +3,14 @@
 ![libscanR logo](figures/logo.svg)![libscanR
 logo](figures/logo-dark.svg)
 
-[![R-CMD-check](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml)
-[![pkgdown](https://github.com/CTTIR/libscanR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/libscanR/)
-[![Codecov test
-coverage](https://codecov.io/gh/CTTIR/libscanR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/libscanR?branch=main)
-[![License:
-MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-
 ``` r
 
 library(libscanR)
 ```
+
+This vignette uses synthetic spectra. It illustrates exploratory
+calculations; it does not validate tissue identity, diagnostic
+thresholds or clinical performance.
 
 ## Example: 5 simulated tissue types
 
@@ -36,14 +31,20 @@ pca <- ls_pca(ds, n_components = 4)
 ls_plot_pca(pca, color_by = "tissue")
 ```
 
-![](tissue-classification_files/figure-html/pca-1.png)
+![PC1 versus PC2 scores for 50 fictional spectra, coloured by five
+teaching tissue labels with group ellipses; this exploratory separation
+does not validate tissue
+identity.](tissue-classification_files/figure-html/pca-1.png)
 
 ``` r
 
 ls_plot_scree(pca)
 ```
 
-![](tissue-classification_files/figure-html/scree-1.png)
+![Explained variance for four principal components of the fictional
+spectra: bars show each component percentage and the line shows
+cumulative
+percentage.](tissue-classification_files/figure-html/scree-1.png)
 
 ## Identifying discriminating elements
 
@@ -56,52 +57,61 @@ head(d[!is.na(d$element) & d$significant, c("wavelength_nm",
                                             "element",
                                             "fold_change",
                                             "fdr")], 15)
-#> # A tibble: 13 × 4
-#>    wavelength_nm element fold_change         fdr
-#>            <dbl> <chr>         <dbl>       <dbl>
-#>  1          240. Ca             2.30 0.000000226
-#>  2          657. Ca             1.94 0.000000226
-#>  3          446. Ca             1.86 0.000000226
-#>  4          644. Ca             1.70 0.000000226
-#>  5          646. Ca             1.65 0.000000226
-#>  6          616. Ca             1.52 0.000000226
-#>  7          650. Ca             1.52 0.000000226
-#>  8          444. Ca             1.58 0.000000231
-#>  9          422. Sr             1.86 0.000000280
-#> 10          720. Ca             1.56 0.000000280
-#> 11          394. Al             1.46 0.000000327
-#> 12          586. Ca             1.45 0.000000327
-#> 13          656. H              1.27 0.000000564
+#> # A tibble: 0 × 4
+#> # ℹ 4 variables: wavelength_nm <dbl>, element <chr>, fold_change <dbl>,
+#> #   fdr <dbl>
 ```
+
+`fold_change` is log2(mean intensity in group A / mean intensity in
+group B). Channels with nonpositive means have no defined logarithmic
+fold change and retain `NA`. Element annotations are wavelength
+candidates; inspect `candidate_count` and instrument resolution before
+attributing a difference to an element.
 
 ## PLS-DA classification
 
+The confusion matrix below uses held-out sample-level predictions. Its
+basis is recorded in `evaluation_basis`; `validation = "none"` instead
+reports optimistic training performance. Patient- or site-level
+separation must be designed outside this illustrative sample-level
+evaluation.
+
 ``` r
 
+set.seed(21)
 plsda <- ls_plsda(ds, grouping = "tissue",
-                  n_components = 5, validation = "none")
+                  n_components = 5, validation = "CV")
 plsda
 ls_plot_plsda(plsda, type = "confusion")
 ```
 
-![](tissue-classification_files/figure-html/plsda-1.png)
+![Cross-validated PLS-DA confusion matrix for five fictional teaching
+labels. Columns are predicted labels, rows are observed labels, and each
+tile shows its sample count; this is not clinical
+validation.](tissue-classification_files/figure-html/plsda-1.png)
 
 ## Rule-based classification with elemental ratios
+
+These rules produce relative heuristic scores, not calibrated
+probabilities. The output separates `score_type` and `status`; missing
+line coverage or undefined ratios produce an unclassified row. The
+previous `confidence` column has been replaced. A PLS-DA prediction
+score is likewise an unrestricted discriminant score.
 
 ``` r
 
 ls_tissue_classify(ds[1:10], method = "ratio")
-#> # A tibble: 10 × 3
-#>    sample_id predicted_tissue confidence
-#>    <chr>     <chr>                 <dbl>
-#>  1 bone_01   bone                  0.999
-#>  2 bone_02   bone                  1.000
-#>  3 bone_03   bone                  1.000
-#>  4 bone_04   bone                  1.000
-#>  5 bone_05   bone                  0.999
-#>  6 bone_06   bone                  1.000
-#>  7 bone_07   bone                  1.000
-#>  8 bone_08   bone                  1.000
-#>  9 bone_09   bone                  0.999
-#> 10 bone_10   bone                  1.000
+#> # A tibble: 10 × 5
+#>    sample_id predicted_tissue  score score_type               status            
+#>    <chr>     <chr>             <dbl> <chr>                    <chr>             
+#>  1 bone_01   bone              0.999 heuristic_relative_score heuristic         
+#>  2 bone_02   bone              1.000 heuristic_relative_score heuristic         
+#>  3 bone_03   bone              1.000 heuristic_relative_score heuristic         
+#>  4 bone_04   bone              0.999 heuristic_relative_score heuristic         
+#>  5 bone_05   bone              0.997 heuristic_relative_score heuristic         
+#>  6 bone_06   bone              0.998 heuristic_relative_score heuristic         
+#>  7 bone_07   bone              0.999 heuristic_relative_score heuristic         
+#>  8 bone_08   NA               NA     heuristic_relative_score insufficient_sign…
+#>  9 bone_09   bone              0.999 heuristic_relative_score heuristic         
+#> 10 bone_10   bone              0.999 heuristic_relative_score heuristic
 ```

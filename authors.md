@@ -8,16 +8,16 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/cttir/libscanR/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/CTTIR/libscanR/blob/main/DESCRIPTION)
 
-Heller R (2026). *libscanR: Analysis and Visualization of Laser-Induced
-Breakdown Spectroscopy Data*. R package version 0.1.0,
-<https://github.com/cttir/libscanR>.
+Heller R (2026). *libscanR: Analyze and Visualize Laser-Induced
+Breakdown Spectroscopy Data*. R package version 0.2.0,
+<https://github.com/CTTIR/libscanR>.
 
     @Manual{,
-      title = {libscanR: Analysis and Visualization of Laser-Induced Breakdown Spectroscopy Data},
+      title = {libscanR: Analyze and Visualize Laser-Induced Breakdown Spectroscopy Data},
       author = {R. Heller},
       year = {2026},
-      note = {R package version 0.1.0},
-      url = {https://github.com/cttir/libscanR},
+      note = {R package version 0.2.0},
+      url = {https://github.com/CTTIR/libscanR},
     }
