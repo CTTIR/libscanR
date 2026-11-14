@@ -63,7 +63,8 @@ ls_build_map <- function(dataset, element, line_nm,
   grid_mat <- NULL
   ux <- sort(unique(xs))
   uy <- sort(unique(ys))
-  if (length(ux) * length(uy) == length(xs)) {
+  # Irregular scans can have a coordinate cross-product beyond integer range.
+  if (as.double(length(ux)) * length(uy) == length(xs)) {
     grid_mat <- matrix(NA_real_, nrow = length(uy), ncol = length(ux))
     for (k in seq_along(xs)) {
       ix <- match(xs[k], ux)

@@ -15,12 +15,13 @@ This is a new submission.
 ## Test environments
 
 * Local: macOS (aarch64-apple-darwin), R 4.6.1,
-  `R CMD check --as-cran --no-manual`. The PDF manual was built locally
-  with TinyTeX (TeX Live 2026) via `R CMD Rd2pdf` without errors; the check
-  run itself used `--no-manual`.
-* GitHub Actions (r-lib/actions v2, `--as-cran`): macos-latest (release),
+  full `R CMD check --as-cran` with all Suggests available and PDF manuals
+  enabled through TinyTeX (TeX Live 2026). The checked source archive passed
+  829 test assertions with no failures, warnings or skips.
+* Configured GitHub Actions matrix (r-lib/actions v2, `--as-cran`): macos-latest (release),
   windows-latest (release), ubuntu-latest (devel, release, oldrel-1), plus an
-  informational ubuntu-latest oldrel-3 row.
+  informational ubuntu-latest oldrel-3 row. Exact-commit hosted results must
+  be verified after publication.
 
 ## Notes
 
@@ -32,3 +33,7 @@ This is a new submission.
   run during checks.
 * Optional model back-ends (e1071, ranger, pls, dbscan, signal) are in
   Suggests and used conditionally.
+
+* Large irregular-map validation also exercised 47,000 synthetic spectra through
+  the public mapping API, avoiding integer overflow when the coordinate
+  cross-product exceeds the integer range.
