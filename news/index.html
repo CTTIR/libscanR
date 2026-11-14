@@ -42,7 +42,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="libscanr-020">libscanR 0.2.0<a class="anchor" aria-label="anchor" href="#libscanr-020"></a></h2>
-<ul><li><p>Prepare the first CRAN submission: every exported function and S3 method now has a runnable example, the title fits CRAN’s 65-character limit, the maintainer address is updated and <code>Language: en-US</code> is declared.</p></li>
+<ul><li><p>Preserve large irregular spatial maps when the cross-product of distinct coordinates exceeds the integer range; avoid an overflow error while deciding whether a raster grid exists.</p></li>
+<li><p>Prepare the first CRAN submission: every exported function and S3 method now has a runnable example, the title fits CRAN’s 65-character limit, the maintainer address is updated and <code>Language: en-US</code> is declared.</p></li>
 <li><p>Keep channel baselines, sample IDs, sample tables and cached intensities aligned; reject malformed spectra, duplicate IDs and different wavelength axes.</p></li>
 <li><p>Round-trip default CSV exports and preserve the first vendor/headerless data row. Validate all output filenames, stage exports, preserve existing bundles when overwrite is false, and restore previous files on ordinary write failures.</p></li>
 <li><p>Correct integer spectrum subsetting, combined baseline summaries, normalized peak markers, constant-shot averaging and seeded example reproducibility.</p></li>
