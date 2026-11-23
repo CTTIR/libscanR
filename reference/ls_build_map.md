@@ -42,7 +42,7 @@ ls_build_map(dataset, element, line_nm, calibration = NULL, window_nm = NULL)
 ## Value
 
 A list with S3 class `libs_map` containing `x`, `y`, `values`,
-`element`, `line_nm`, `unit`, and a rasterized `grid` matrix when the
+`element`, `line_nm`, `unit`, and a rasterised `grid` matrix when the
 points form a regular grid.
 
 ## Examples

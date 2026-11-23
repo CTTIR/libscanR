@@ -1,6 +1,6 @@
-# Gate Delay Optimization
+# Gate Delay Optimisation
 
-Analyzes SNR and signal-to-background ratios across spectra acquired at
+Analyses SNR and signal-to-background ratios across spectra acquired at
 different gate delays to recommend optimal timing for a target line.
 
 ## Usage

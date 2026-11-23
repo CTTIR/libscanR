@@ -35,7 +35,7 @@ confusion matrix, the fitted `feature_contract`, and `evaluation_basis`:
 `"training"` for SVM or `"out_of_bag"` for RF. SVM evaluation uses the
 same probability-based class decision as
 [`ls_classify()`](https://cttir.github.io/libscanR/reference/ls_classify.md).
-Training accuracy is not an independent estimate of generalization.
+Training accuracy is not an independent estimate of generalisation.
 
 ## Examples
 

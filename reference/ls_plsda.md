@@ -29,9 +29,9 @@ ls_plsda(dataset, grouping, n_components = 5, validation = "CV")
   Character. `"CV"` (10-fold), `"LOO"`, or `"none"`. Default `"CV"`.
   Accuracy and predictions use held-out predictions for CV/LOO and
   fitted predictions only for `"none"`. Components are capped at the
-  centered feature rank and training-sample bound of every fold. Every
+  centred feature rank and training-sample bound of every fold. Every
   training fold must retain at least two classes. These sample-level
-  folds do not establish patient/site-level generalization.
+  folds do not establish patient/site-level generalisation.
 
 ## Value
 

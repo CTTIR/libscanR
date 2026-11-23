@@ -10,12 +10,12 @@ library(libscanR)
 
 LIBS spectra typically contain a continuum background, electronic noise,
 and shot-to-shot intensity variation. `libscanR` provides chainable
-preprocessing primitives: baseline correction, normalization, smoothing,
+preprocessing primitives: baseline correction, normalisation, smoothing,
 cropping, and shot averaging.
 
 ## Baseline correction
 
-Four methods are supported: `snip`, `als`, `rolling_ball`, `linear`,
+Five methods are supported: `snip`, `als`, `rolling_ball`, `linear`,
 `polynomial`. SNIP and ALS are the workhorses for LIBS continuum
 removal.
 
@@ -39,8 +39,8 @@ df <- rbind(
              y = libscanR:::.mean_intensity(als),
              method = "ALS")
 )
-# Okabe-Ito colors from grDevices keep the three curves distinguishable
-# for readers with color-vision deficiencies.
+# Okabe-Ito colours from grDevices keep the three curves distinguishable
+# for readers with colour-vision deficiencies.
 okabe_ito <- unname(grDevices::palette.colors(9, palette = "Okabe-Ito"))
 ggplot2::ggplot(df, ggplot2::aes(w, y, colour = method)) +
   ggplot2::geom_line() + theme_libs() +
@@ -51,21 +51,21 @@ ggplot2::ggplot(df, ggplot2::aes(w, y, colour = method)) +
   ggplot2::labs(x = "Wavelength (nm)", y = "Intensity (a.u.)")
 ```
 
-![Three curves compare the raw fictional spectrum (gray) with SNIP
+![Three curves compare the raw fictional spectrum (grey) with SNIP
 (blue) and ALS (vermillion) baseline-corrected intensities on the same
 wavelength
 axis.](preprocessing-workflow_files/figure-html/baseline-1.png)
 
-## Normalization
+## Normalisation
 
 Five options:
 
 ``` r
 
 norm_total <- ls_normalize(snip, method = "total")
-cat("sum after total normalization:",
+cat("sum after total normalisation:",
     round(sum(norm_total$intensity[1, ]), 2), "\n")
-#> sum after total normalization: 1
+#> sum after total normalisation: 1
 
 norm_is <- ls_normalize(snip, method = "internal_std", ref_wavelength = 589)
 ```
@@ -117,5 +117,5 @@ ls_plot_spectrum(processed)
 ```
 
 ![Fictional spectrum after the recommended SNIP, five-channel
-moving-average and total-normalization pipeline, plotted against
+moving-average and total-normalisation pipeline, plotted against
 wavelength.](preprocessing-workflow_files/figure-html/pipeline-1.png)

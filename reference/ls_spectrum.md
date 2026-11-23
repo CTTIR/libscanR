@@ -13,7 +13,7 @@ ls_spectrum(wavelength, intensity, metadata = list(), baseline = NULL)
 
 - wavelength:
 
-  Numeric vector of wavelengths in nanometers. Must be contain at least
+  Numeric vector of wavelengths in nanometres. Must be contain at least
   two distinct, finite, positive values. Channels and the optional
   baseline are sorted together in ascending wavelength order.
 

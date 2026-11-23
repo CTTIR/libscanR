@@ -21,7 +21,10 @@ ls_plot_loadings(pca, pc = 1, n_top = 10)
 
 - n_top:
 
-  Integer. Number of top-absolute contributors to annotate. Default 10.
+  Integer. Number of top-absolute contributors to mark with a point.
+  Each is labelled with its wavelength unless that label would overlap
+  the label of a stronger contributor, in which case it is omitted.
+  Default 10.
 
 ## Value
 

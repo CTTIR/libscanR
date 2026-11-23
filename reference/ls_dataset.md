@@ -16,7 +16,7 @@ ls_dataset(spectra, sample_info = NULL)
 
   List of `libs_spectrum` objects. All must share the same wavelength
   axis (exact channel values). Resample deliberately before combining
-  measurements on different axes; no channels are relabeled.
+  measurements on different axes; no channels are relabelled.
 
 - sample_info:
 

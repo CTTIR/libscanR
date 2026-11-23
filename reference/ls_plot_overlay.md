@@ -1,6 +1,6 @@
 # Overlay Multiple Spectra
 
-Plots multiple spectra on the same axes, optionally colored by a
+Plots multiple spectra on the same axes, optionally coloured by a
 grouping variable.
 
 ## Usage
@@ -19,7 +19,7 @@ ls_plot_overlay(dataset, color_by = NULL, normalize = FALSE, alpha = 0.5)
 
 - color_by:
 
-  Character. Column in `sample_info` for color mapping. Default `NULL`.
+  Character. Column in `sample_info` for colour mapping. Default `NULL`.
 
 - normalize:
 

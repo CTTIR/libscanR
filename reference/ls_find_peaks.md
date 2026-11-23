@@ -47,10 +47,14 @@ with columns `wavelength_nm`, `intensity`, `snr`, `prominence`,
 
 The signal-to-noise ratio is the height of a local maximum above the
 median intensity of the whole spectrum, divided by a robust noise
-estimate (the median absolute deviation of first differences divided by
-`sqrt(2)`). Because the reference level is the spectrum median rather
-than the local background, noise maxima on the high side of a sloping
-plasma continuum, and on the positive noise floor left by
+estimate: the [`stats::mad()`](https://rdrr.io/r/stats/mad.html) of the
+first differences divided by `sqrt(2)` (the standard deviation of the
+intensities for spectra with fewer than five channels). When that
+estimate is zero or undefined the noise is set to 1, so the ratio is the
+height above the median in intensity units. Because the reference level
+is the spectrum median rather than the local background, noise maxima on
+the high side of a sloping plasma continuum, and on the positive noise
+floor left by
 [`ls_baseline()`](https://cttir.github.io/libscanR/reference/ls_baseline.md),
 can pass the SNR threshold. Use `min_prominence`, a higher
 `snr_threshold` or the `prominence` column to separate emission lines

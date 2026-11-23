@@ -1,6 +1,6 @@
 # libscanR ![libscanR logo](reference/figures/logo-with-name.png)
 
-Vendor-agnostic analysis and visualization of **Laser-Induced Breakdown
+Vendor-agnostic analysis and visualisation of **Laser-Induced Breakdown
 Spectroscopy (LIBS)** data in R, with a focus on biomedical tissue
 research. This is experimental research software. Synthetic examples and
 heuristic tissue labels do not establish clinical performance.
@@ -9,10 +9,10 @@ heuristic tissue labels do not establish clinical performance.
 
 - **Import**: Generic CSV/TSV/TXT, SciAps Z-series, Applied Spectra
   J200/Aurora, auto-detection.
-- **Preprocessing**: SNIP/ALS baseline correction, five normalization
+- **Preprocessing**: SNIP/ALS baseline correction, five normalisation
   modes, Savitzky-Golay / Gaussian / moving-average / median smoothing,
   shot averaging with outlier removal, wavelength cropping, gate delay
-  optimization.
+  optimisation.
 - **Peak analysis**: SNR+prominence peak detection; identification
   against a user-supplied local atomic reference. No NIST compilation is
   bundled. Missing transition rates and ambiguous candidates remain
@@ -28,9 +28,9 @@ heuristic tissue labels do not establish clinical performance.
   elemental ratios; discriminating-line analysis with FDR correction.
 - **Spatial mapping**: Single-element and multi-element 2-D maps from
   raster-scan datasets.
-- **Visualization**: Publication-ready ggplot2 plots; custom
+- **Visualisation**: Publication-ready ggplot2 plots; custom
   [`theme_libs()`](https://cttir.github.io/libscanR/reference/theme_libs.md)
-  and wavelength color scale.
+  and wavelength colour scale.
 - **Shiny app**: Six-tab interactive explorer
   ([`ls_run_app()`](https://cttir.github.io/libscanR/reference/ls_run_app.md)).
 - **Reproducible examples**:
@@ -81,7 +81,7 @@ spec <- ls_simulate_spectrum(
   seed = 1
 )
 
-# Preprocess: baseline, smooth, normalize
+# Preprocess: baseline, smooth, normalise
 spec_proc <- spec |>
   ls_baseline(method = "snip") |>
   ls_smooth(method = "moving_avg", window = 5) |>
@@ -218,12 +218,12 @@ Saha-Boltzmann implementation must be recalculated.
 citation("libscanR")
 ```
 
-## License
+## Licence
 
-Software: MIT © Raban Heller. No NIST reference compilation, selected
+Software: MIT © R. Heller. No NIST reference compilation, selected
 source rows or legacy atomic table is distributed in this source tree or
 package. References downloaded by users retain their providers’ terms;
-the software license grants no rights in those files. See
+the software licence grants no rights in those files. See
 `inst/NOTICE-NIST.md`.
 
 ## Use of LLM tools

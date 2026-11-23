@@ -10,12 +10,12 @@
 Source:
 [`DESCRIPTION`](https://github.com/CTTIR/libscanR/blob/main/DESCRIPTION)
 
-Heller R (2026). *libscanR: Analyze and Visualize Laser-Induced
+Heller R (2026). *libscanR: Analyse and Visualise Laser-Induced
 Breakdown Spectroscopy Data*. R package version 0.2.0,
 <https://github.com/CTTIR/libscanR>.
 
     @Manual{,
-      title = {libscanR: Analyze and Visualize Laser-Induced Breakdown Spectroscopy Data},
+      title = {libscanR: Analyse and Visualise Laser-Induced Breakdown Spectroscopy Data},
       author = {R. Heller},
       year = {2026},
       note = {R package version 0.2.0},

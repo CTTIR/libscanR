@@ -37,7 +37,7 @@ ls_element_db(
 
 - ionization:
 
-  Ionization states: 1 = neutral, 2 = singly ionized, or `NULL` for all
+  Ionisation states: 1 = neutral, 2 = singly ionised, or `NULL` for all
   supplied positive integer stages.
 
 - persistent_only:
@@ -61,7 +61,7 @@ establish its scientific validity or reuse rights.
 
 The table must contain `element`, `ionization`, `wavelength_nm`, `aki`
 (transition probability in units of 10^8 s^-1), `wavelength_medium`
-(`"air"` or `"vacuum"`) and a nonempty `source` attribution per row.
+(`"air"` or `"vacuum"`) and a non-empty `source` attribution per row.
 Missing transition rates remain missing. Optional `ei_ev`, `ek_ev` and
 `persistent` columns default to missing energies and `FALSE`; no
 persistent line designation is inferred. Other columns and provenance

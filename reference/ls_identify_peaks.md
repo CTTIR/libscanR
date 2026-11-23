@@ -36,7 +36,7 @@ ls_identify_peaks(
 
 - ionization:
 
-  Integer vector of ionization states. Default `c(1L, 2L)`.
+  Integer vector of ionisation states. Default `c(1L, 2L)`.
 
 ## Value
 

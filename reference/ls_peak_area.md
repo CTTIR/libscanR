@@ -19,7 +19,7 @@ ls_peak_area(x, center_nm, window_nm = 1, method = "trapezoidal")
 
 - center_nm:
 
-  Numeric. Peak center wavelength (nm).
+  Numeric. Peak centre wavelength (nm).
 
 - window_nm:
 

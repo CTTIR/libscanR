@@ -27,7 +27,7 @@ ls_pca(dataset, n_components = 10, scale = TRUE, center = TRUE)
 
 - center:
 
-  Logical. Center variables. Default `TRUE`.
+  Logical. Centre variables. Default `TRUE`.
 
 ## Value
 

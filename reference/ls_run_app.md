@@ -1,7 +1,7 @@
 # Launch the libscanR Shiny Application
 
 Starts an interactive Shiny application for exploring, preprocessing,
-and analyzing LIBS spectral data. The app provides six tabs: Import,
+and analysing LIBS spectral data. The app provides six tabs: Import,
 Preprocessing, Peaks, Calibration, Chemometrics, and Export.
 
 ## Usage
@@ -46,7 +46,7 @@ baseline and supported metadata through
 [`ls_write_csv()`](https://cttir.github.io/libscanR/reference/ls_write_csv.md).
 ZIP creation requires an external `zip` command on `PATH` (or configured
 through `R_ZIPCMD`), including on Windows. The separate wide dataset CSV
-contains mean intensities only. Calibration CSV files summarize figures
+contains mean intensities only. Calibration CSV files summarise figures
 of merit rather than storing reusable prediction models. Load a labelled
 [`ls_dataset()`](https://cttir.github.io/libscanR/reference/ls_dataset.md)
 through `data` for analyses requiring concentration or class columns in

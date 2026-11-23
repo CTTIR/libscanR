@@ -34,7 +34,7 @@ cal <- ls_calibrate(cal_ds, element = "Ca", line_nm = 393.37,
 cal
 ```
 
-### Visualize
+### Visualise
 
 ``` r
 
@@ -175,7 +175,7 @@ ls_loq(cal)
 ## Relative elemental amounts under a two-stage LTE model
 
 This calculation requires independently justified electron density,
-first ionization energies, partition functions, resolved transitions and
+first ionisation energies, partition functions, resolved transitions and
 instrument-response factors. The line wavelengths must use the same air
 or vacuum convention as the measured axis. A good fit does not establish
 LTE, optical thinness or stoichiometric ablation.
@@ -215,9 +215,9 @@ attr(result, "line_diagnostics")
 ```
 
 The expected temperature is 10000 K and the relative elemental number
-fractions are X = 0.7 and Y = 0.3. Fractions are normalized over the
+fractions are X = 0.7 and Y = 0.3. Fractions are normalised over the
 supplied elements only; they are not mass fractions or absolute
-concentrations. The model includes neutral and singly ionized stages,
+concentrations. The model includes neutral and singly ionised stages,
 excluding molecules and higher charge states. No real instrument or
 tissue data were used to qualify this example.
 

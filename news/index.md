@@ -2,18 +2,20 @@
 
 ## libscanR 0.2.0
 
-- Discrete colors in
+- Discrete colours in
   [`ls_plot_overlay()`](https://cttir.github.io/libscanR/reference/ls_plot_overlay.md),
   [`ls_plot_pca()`](https://cttir.github.io/libscanR/reference/ls_plot_pca.md),
   `ls_plot_plsda(type = "scores")` and the element overlay of
   [`ls_plot_spectrum()`](https://cttir.github.io/libscanR/reference/ls_plot_spectrum.md)
-  now use the color-blind-safe Okabe-Ito palette for up to eight groups
+  now use the colour-blind-safe Okabe-Ito palette for up to eight groups
   and a viridis scale beyond that.
   [`ls_plot_overlay()`](https://cttir.github.io/libscanR/reference/ls_plot_overlay.md)
-  no longer drops the color of groups beyond the ninth.
+  no longer drops the colour of groups beyond the ninth.
 
-- `ls_plot_plsda(type = "confusion")` prints counts in black on light
-  tiles so they stay legible, and titles the legend “Count”.
+- `ls_plot_plsda(type = "confusion")` prints each count in black or
+  white according to the lightness of the tile it sits on, so counts
+  stay legible also when no cell is empty, and titles the legend
+  “Count”.
 
 - [`ls_plot_residuals()`](https://cttir.github.io/libscanR/reference/ls_plot_residuals.md)
   labels both axes with the concentration unit;
@@ -29,11 +31,11 @@
   PLS-DA plots at 96 dpi so their text matches the surrounding
   interface.
 
-- Reference-page example figures keep their true colors and full opacity
-  in the dark site theme; the spatial-mapping article states how faint
-  its designed gradients and hotspot are relative to the simulated
+- Reference-page example figures keep their true colours and full
+  opacity in the dark site theme; the spatial-mapping article states how
+  faint its designed gradients and hotspot are relative to the simulated
   noise, and the preprocessing article’s baseline comparison uses
-  color-blind-safe colors.
+  colour-blind-safe colours.
 
 - [`ls_find_peaks()`](https://cttir.github.io/libscanR/reference/ls_find_peaks.md)
   documents how its signal-to-noise ratio is defined and why noise
@@ -58,14 +60,14 @@
   restore previous files on ordinary write failures.
 
 - Correct integer spectrum subsetting, combined baseline summaries,
-  normalized peak markers, constant-shot averaging and seeded example
+  normalised peak markers, constant-shot averaging and seeded example
   reproducibility.
 
 - Correct SNIP traversal dependence and the local Savitzky-Golay
   intercept; use sparse ALS equations and retain preprocessing/baseline
   provenance.
 
-- Reject out-of-range peak centers and duplicate map coordinates.
+- Reject out-of-range peak centres and duplicate map coordinates.
   Calibrated maps use the spectrum prediction path. Document
   coarse-channel integration expansion and the Gaussian demonstration
   model’s limits.
@@ -121,7 +123,7 @@
   fold-change pseudocount.
 
 - Show actual linear prediction intervals and full-model PLS training
-  predictions; keep numeric PCA colors continuous and distinguish
+  predictions; keep numeric PCA colours continuous and distinguish
   dispersion from uncertainty.
 
 - Preserve uploads and processing state on failures; invalidate stale
@@ -133,7 +135,7 @@
 
 ## libscanR 0.1.0
 
-- Standardize the named v5 package logo across README, documentation
+- Standardise the named v5 package logo across README, documentation
   pages and available application headers, with matching light and dark
   artwork.
 
@@ -178,7 +180,7 @@
 - [`ls_crop()`](https://cttir.github.io/libscanR/reference/ls_crop.md):
   Spectral range subsetting.
 - [`ls_gate_optimize()`](https://cttir.github.io/libscanR/reference/ls_gate_optimize.md):
-  Optimize acquisition gate delay.
+  Optimise acquisition gate delay.
 
 #### Peak Analysis
 
@@ -230,7 +232,7 @@
 - [`ls_tissue_discriminate()`](https://cttir.github.io/libscanR/reference/ls_tissue_discriminate.md):
   Identify discriminating emission lines.
 
-#### Visualization
+#### Visualisation
 
 - [`ls_plot_spectrum()`](https://cttir.github.io/libscanR/reference/ls_plot_spectrum.md),
   [`ls_plot_overlay()`](https://cttir.github.io/libscanR/reference/ls_plot_overlay.md),

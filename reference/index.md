@@ -4,7 +4,7 @@
 
 - [`libscanR`](https://cttir.github.io/libscanR/reference/libscanR-package.md)
   [`libscanR-package`](https://cttir.github.io/libscanR/reference/libscanR-package.md)
-  : libscanR: Analysis and Visualization of LIBS Spectra
+  : libscanR: Analysis and Visualisation of LIBS Spectra
 
 ## Import & Export
 
@@ -45,7 +45,7 @@
 - [`ls_baseline()`](https://cttir.github.io/libscanR/reference/ls_baseline.md)
   : Baseline Correction
 - [`ls_normalize()`](https://cttir.github.io/libscanR/reference/ls_normalize.md)
-  : Normalize Spectra
+  : Normalise Spectra
 - [`ls_smooth()`](https://cttir.github.io/libscanR/reference/ls_smooth.md)
   : Smooth Spectra
 - [`ls_crop()`](https://cttir.github.io/libscanR/reference/ls_crop.md) :
@@ -53,7 +53,7 @@
 - [`ls_average_shots()`](https://cttir.github.io/libscanR/reference/ls_average_shots.md)
   : Average Replicate Shots
 - [`ls_gate_optimize()`](https://cttir.github.io/libscanR/reference/ls_gate_optimize.md)
-  : Gate Delay Optimization
+  : Gate Delay Optimisation
 
 ## Peak Analysis
 
@@ -106,7 +106,7 @@
 - [`ls_tissue_discriminate()`](https://cttir.github.io/libscanR/reference/ls_tissue_discriminate.md)
   : Tissue Discrimination Analysis
 
-## Visualization
+## Visualisation
 
 - [`ls_plot_spectrum()`](https://cttir.github.io/libscanR/reference/ls_plot_spectrum.md)
   : Plot a LIBS Spectrum
@@ -135,7 +135,7 @@
 - [`theme_libs()`](https://cttir.github.io/libscanR/reference/theme_libs.md)
   : LIBS Theme for ggplot2
 - [`scale_color_wavelength()`](https://cttir.github.io/libscanR/reference/scale_color_wavelength.md)
-  : Wavelength-Based Color Scale
+  : Wavelength-Based Colour Scale
 
 ## Shiny Application
 

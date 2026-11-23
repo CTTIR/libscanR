@@ -25,7 +25,7 @@ ls_plot_pca(pca, pc_x = 1, pc_y = 2, color_by = NULL, ellipses = TRUE)
 
 - color_by:
 
-  Character. Sample-info column. Numeric values use a continuous color
+  Character. Sample-info column. Numeric values use a continuous colour
   scale; other values define discrete groups. Default `NULL`.
 
 - ellipses:

@@ -1,7 +1,7 @@
-# Wavelength-Based Color Scale
+# Wavelength-Based Colour Scale
 
-Maps wavelength values (nm) to approximate visible-light colors for
-intuitive spectral visualization. Below 380 nm: UV purple; above 780 nm:
+Maps wavelength values (nm) to approximate visible-light colours for
+intuitive spectral visualisation. Below 380 nm: UV purple; above 780 nm:
 deep red.
 
 ## Usage
