@@ -16,7 +16,8 @@
   plots at 96 dpi so their text matches the surrounding interface.
 * Reference-page example figures keep their true colors and full opacity in
   the dark site theme; the spatial-mapping article states how faint its
-  designed gradients and hotspot are relative to the simulated noise.
+  designed gradients and hotspot are relative to the simulated noise, and the
+  preprocessing article's baseline comparison uses color-blind-safe colors.
 * `ls_find_peaks()` documents how its signal-to-noise ratio is defined and why
   noise maxima on a continuum or baseline-corrected noise floor can pass it.
 

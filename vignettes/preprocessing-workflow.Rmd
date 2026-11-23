@@ -56,7 +56,7 @@ cropping, and shot averaging.
 Four methods are supported: `snip`, `als`, `rolling_ball`, `linear`,
 `polynomial`. SNIP and ALS are the workhorses for LIBS continuum removal.
 
-```{r baseline, fig.alt="Three curves compare the raw fictional spectrum with SNIP and ALS baseline-corrected intensities on the same wavelength axis."}
+```{r baseline, fig.alt="Three curves compare the raw fictional spectrum (gray) with SNIP (blue) and ALS (vermillion) baseline-corrected intensities on the same wavelength axis."}
 spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),
   elements = c(Ca = 5000, Na = 1000, K = 800, Fe = 200),
   n_channels = 1024, seed = 1
@@ -75,8 +75,15 @@ df <- rbind(
              y = libscanR:::.mean_intensity(als),
              method = "ALS")
 )
+# Okabe-Ito colors from grDevices keep the three curves distinguishable
+# for readers with color-vision deficiencies.
+okabe_ito <- unname(grDevices::palette.colors(9, palette = "Okabe-Ito"))
 ggplot2::ggplot(df, ggplot2::aes(w, y, colour = method)) +
   ggplot2::geom_line() + theme_libs() +
+  ggplot2::scale_colour_manual(
+    values = c(raw = okabe_ito[9], SNIP = okabe_ito[6], ALS = okabe_ito[7]),
+    name = "Spectrum"
+  ) +
   ggplot2::labs(x = "Wavelength (nm)", y = "Intensity (a.u.)")
 ```
 
