@@ -286,7 +286,7 @@ ls_example_data <- function(scenario = c("tissue", "calibration", "spatial", "al
     xp <- coords$x[k]
     yp <- coords$y[k]
     counter <- counter + 1
-    # Ca: decreases L -> R, Fe: increases top -> bottom
+    # Ca decreases with x; Fe increases with y (upwards in ls_plot_map())
     ca_val <- 5000 - (xp - 1) * 200
     fe_val <- 100 + (yp - 1) * 80
     # Zn hotspot centered at (8,8), width 3

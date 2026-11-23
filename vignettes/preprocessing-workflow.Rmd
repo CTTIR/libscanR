@@ -53,7 +53,7 @@ cropping, and shot averaging.
 
 ## Baseline correction
 
-Four methods are supported: `snip`, `als`, `rolling_ball`, `linear`,
+Five methods are supported: `snip`, `als`, `rolling_ball`, `linear`,
 `polynomial`. SNIP and ALS are the workhorses for LIBS continuum removal.
 
 ```{r baseline, fig.alt="Three curves compare the raw fictional spectrum (gray) with SNIP (blue) and ALS (vermillion) baseline-corrected intensities on the same wavelength axis."}
