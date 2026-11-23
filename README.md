@@ -201,7 +201,7 @@ citation("libscanR")
 
 ## Licence
 
-Software: MIT © Raban Heller. No NIST reference compilation, selected source
+Software: MIT © R. Heller. No NIST reference compilation, selected source
 rows or legacy atomic table is distributed in this source tree or package.
 References downloaded by users retain their providers' terms; the software
 licence grants no rights in those files. See `inst/NOTICE-NIST.md`.
