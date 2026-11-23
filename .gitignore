@@ -21,3 +21,6 @@ inst/extdata/nist*
 data-raw/nist-*
 
 __pycache__/
+
+# Local maintenance notes stay out of the repository
+/planning/
