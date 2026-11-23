@@ -122,7 +122,10 @@ ls_plot_loadings <- function(pca, pc = 1, n_top = 10) {
                                       y = .data$loading,
                                       label = round(.data$wavelength_nm, 1)),
                          size = 3, vjust = -0.8, colour = "#A23B72",
-                         check_overlap = TRUE)
+                         check_overlap = TRUE) +
+      # Head room so labels above the largest loadings are not clipped.
+      ggplot2::scale_y_continuous(
+        expand = ggplot2::expansion(mult = c(0.05, 0.12)))
   }
   p
 }

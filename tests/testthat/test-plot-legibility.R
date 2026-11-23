@@ -45,6 +45,9 @@ test_that("loading labels skip overlapping text", {
   p <- ls_plot_loadings(pca, pc = 1, n_top = 5)
   text_layer <- p$layers[[length(p$layers)]]
   expect_true(isTRUE(text_layer$geom_params$check_overlap))
+  y_range <- ggplot2::ggplot_build(p)$layout$panel_params[[1]]$y.range
+  expect_gt(y_range[2], max(pca$loadings[, 1]) +
+              0.1 * diff(range(pca$loadings[, 1])))
 })
 
 test_that("peak SNR follows the documented median-referenced definition", {

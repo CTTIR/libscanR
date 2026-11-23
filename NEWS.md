@@ -8,7 +8,8 @@
 * `ls_plot_plsda(type = "confusion")` prints counts in black on light tiles so
   they stay legible, and titles the legend "Count".
 * `ls_plot_residuals()` labels both axes with the concentration unit;
-  `ls_plot_loadings()` skips overlapping wavelength labels;
+  `ls_plot_loadings()` skips overlapping wavelength labels and leaves room
+  for them above the largest loadings;
   `ls_plot_map_panel()` names its axes and explains its per-map scaling;
   `theme_libs()` adds right margin so the last axis label is not clipped.
 * The Shiny app renders its static calibration, scree, loading and PLS-DA
