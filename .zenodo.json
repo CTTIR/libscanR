@@ -1,11 +1,11 @@
 {
   "upload_type": "software",
-  "title": "libscanR: Analysis and visualisation of laser-induced breakdown spectroscopy data",
+  "title": "libscanR: Analyse and Visualise Laser-Induced Breakdown Spectroscopy Data",
   "version": "0.2.0",
   "description": "<p>libscanR provides a research workflow for importing, preprocessing, calibrating and visualising laser-induced breakdown spectroscopy measurements. It supports matching against user-supplied atomic-line references, univariate and multivariate calibration, exploratory chemometrics, heuristic tissue classification and spatial mapping. An explicit two-stage Saha-Boltzmann calculation requires user-supplied physical and instrument-response inputs. Detection-limit estimates and model performance retain their calculation and evaluation basis. Synthetic examples verify software behaviour; they do not establish instrument or clinical validity.</p>",
   "creators": [
     {
-      "name": "Heller, Raban",
+      "name": "Heller, R.",
       "orcid": "0000-0001-8006-9742"
     }
   ],
