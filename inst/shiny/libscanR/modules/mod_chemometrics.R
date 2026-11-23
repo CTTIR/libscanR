@@ -112,7 +112,7 @@ mod_chemometrics_server <- function(id, rv) {
     output$pca_scree <- shiny::renderPlot({
       shiny::req(rv$pca_result)
       libscanR::ls_plot_scree(rv$pca_result)
-    }, alt = function() {
+    }, res = 96, alt = function() {
       if (is.null(rv$pca_result)) return("No current PCA result.")
       sprintf("PCA scree plot: variance explained by the first %d components of the current dataset.",
               rv$pca_result$n_components)
@@ -120,7 +120,7 @@ mod_chemometrics_server <- function(id, rv) {
     output$pca_loadings <- shiny::renderPlot({
       shiny::req(rv$pca_result)
       libscanR::ls_plot_loadings(rv$pca_result, pc = 1, n_top = 5)
-    }, alt = "First principal-component loadings against wavelength, with the five strongest loadings labelled.")
+    }, res = 96, alt = "First principal-component loadings against wavelength, with the five strongest loadings labelled.")
 
     shiny::observeEvent(input$run_plsda, {
       rv$plsda_result <- NULL
@@ -141,11 +141,11 @@ mod_chemometrics_server <- function(id, rv) {
     output$plsda_scores <- shiny::renderPlot({
       shiny::req(rv$plsda_result)
       libscanR::ls_plot_plsda(rv$plsda_result, type = "scores")
-    }, alt = "PLS-DA component scores for the fitted dataset, coloured by its observed classes.")
+    }, res = 96, alt = "PLS-DA component scores for the fitted dataset, coloured by its observed classes.")
     output$plsda_cm <- shiny::renderPlot({
       shiny::req(rv$plsda_result)
       libscanR::ls_plot_plsda(rv$plsda_result, type = "confusion")
-    }, alt = function() {
+    }, res = 96, alt = function() {
       if (is.null(rv$plsda_result)) return("No current PLS-DA result.")
       sprintf("PLS-DA confusion matrix comparing observed and predicted classes. Evaluation basis: %s; accuracy %.1f percent.",
               gsub("_", " ", rv$plsda_result$evaluation_basis %||% "unspecified"),

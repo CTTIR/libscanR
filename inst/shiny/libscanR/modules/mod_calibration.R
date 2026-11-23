@@ -78,7 +78,7 @@ mod_calibration_server <- function(id, rv) {
       plot <- libscanR::ls_plot_calibration(cal)
       plot + ggplot2::labs(subtitle = paste(strwrap(plot$labels$subtitle,
         width = 40), collapse = "\n"))
-    }, alt = function() {
+    }, res = 96, alt = function() {
       cal <- rv$calibrations[[input$element %||% ""]]
       if (is.null(cal)) return("No current calibration fit.")
       paste(c(.ls_app_teaching_note(rv$processed_data %||% rv$raw_data),
