@@ -22,7 +22,9 @@ theme_libs <- function(base_size = 12) {
       legend.position = "right",
       plot.title = ggplot2::element_text(face = "bold"),
       axis.line = ggplot2::element_line(colour = "grey30"),
-      axis.ticks = ggplot2::element_line(colour = "grey30")
+      axis.ticks = ggplot2::element_line(colour = "grey30"),
+      # Extra right margin keeps the last x-axis tick label inside the device.
+      plot.margin = ggplot2::margin(5.5, 14, 5.5, 5.5)
     )
 }
 
@@ -67,4 +69,21 @@ scale_color_wavelength <- function(name = "Wavelength (nm)", ...) {
 #' @noRd
 scales_rescale <- function(x) {
   (x - min(x)) / (max(x) - min(x))
+}
+
+# Colour-blind-safe discrete colour scale used by the package's plots.
+# Up to eight groups use the Okabe-Ito colours shipped with grDevices
+# (`grDevices::palette.colors(palette = "Okabe-Ito")`, R >= 4.0.0), with
+# low-contrast yellow and black moved to the end; more groups fall back to
+# the viridis discrete scale so no group is left without a colour.
+#' @keywords internal
+#' @noRd
+.libs_discrete_colour <- function(n, name = ggplot2::waiver(), ...) {
+  if (n <= 8L) {
+    okabe_ito <- unname(grDevices::palette.colors(9L, palette = "Okabe-Ito"))
+    values <- okabe_ito[c(2L, 3L, 4L, 6L, 7L, 8L, 5L, 1L)]
+    ggplot2::scale_colour_manual(values = values, name = name, ...)
+  } else {
+    ggplot2::scale_colour_viridis_d(name = name, end = 0.9, ...)
+  }
 }

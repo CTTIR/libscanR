@@ -68,7 +68,7 @@ ls_plot_map(m_ca)
 
 ## Multi-element panel
 
-```{r panel, fig.alt="Three fictional raster maps labelled Ca, Fe and Zn, each showing integrated response at its specified teaching wavelength and its own colour scale."}
+```{r panel, fig.alt="Three fictional raster maps labelled Ca, Fe and Zn, each showing integrated response at its specified teaching wavelength, min-max scaled within each map to a shared 0 to 1 viridis colour scale."}
 maps <- ls_map_elements(ds, c("Ca", "Fe", "Zn"),
                         c(Ca = 393.37, Fe = 371.99, Zn = 213.86))
 ls_plot_map_panel(maps)

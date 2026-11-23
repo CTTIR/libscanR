@@ -124,7 +124,8 @@ ls_plot_residuals <- function(calibration) {
     ggplot2::geom_point(colour = "#2E86AB", size = 2, alpha = 0.8) +
     ggplot2::geom_hline(yintercept = 0, linetype = "dashed",
                         colour = "grey30") +
-    ggplot2::labs(x = "Fitted", y = "Residual",
+    ggplot2::labs(x = paste0("Fitted concentration (", calibration$unit, ")"),
+                  y = paste0("Residual (", calibration$unit, ")"),
                   title = paste0("Residuals: ", calibration$element)) +
     theme_libs()
 }

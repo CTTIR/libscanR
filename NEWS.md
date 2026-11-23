@@ -1,5 +1,17 @@
 # libscanR 0.2.0
 
+* Discrete colours in `ls_plot_overlay()`, `ls_plot_pca()`,
+  `ls_plot_plsda(type = "scores")` and the element overlay of
+  `ls_plot_spectrum()` now use the colour-blind-safe Okabe-Ito palette for up
+  to eight groups and a viridis scale beyond that. `ls_plot_overlay()` no
+  longer drops the colour of groups beyond the ninth.
+* `ls_plot_plsda(type = "confusion")` prints counts in black on light tiles so
+  they stay legible, and titles the legend "Count".
+* `ls_plot_residuals()` labels both axes with the concentration unit;
+  `ls_plot_loadings()` skips overlapping wavelength labels;
+  `ls_plot_map_panel()` names its axes and explains its per-map scaling;
+  `theme_libs()` adds right margin so the last axis label is not clipped.
+
 * Preserve large irregular spatial maps when the cross-product of distinct
   coordinates exceeds the integer range; avoid an overflow error while
   deciding whether a raster grid exists.

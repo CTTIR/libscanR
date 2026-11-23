@@ -55,9 +55,9 @@ ls_plot_pca <- function(pca, pc_x = 1, pc_y = 2, color_by = NULL,
     p <- p + ggplot2::geom_point(size = 2.5, alpha = 0.8)
     if (numeric_colour) {
       p <- p + ggplot2::scale_colour_viridis_c(name = color_by)
-    } else if (nlevels(df$group) <= 9L) {
-      p <- p + ggplot2::scale_colour_brewer(palette = "Set1", name = color_by)
-    } else p <- p + ggplot2::scale_colour_viridis_d(name = color_by)
+    } else {
+      p <- p + .libs_discrete_colour(nlevels(df$group), name = color_by)
+    }
   } else {
     p <- ggplot2::ggplot(df, ggplot2::aes(x = .data$PC_x, y = .data$PC_y)) +
       ggplot2::geom_point(size = 2.5, colour = "#2E86AB", alpha = 0.8)
@@ -121,7 +121,8 @@ ls_plot_loadings <- function(pca, pc = 1, n_top = 10) {
                          ggplot2::aes(x = .data$wavelength_nm,
                                       y = .data$loading,
                                       label = round(.data$wavelength_nm, 1)),
-                         size = 3, vjust = -0.8, colour = "#A23B72")
+                         size = 3, vjust = -0.8, colour = "#A23B72",
+                         check_overlap = TRUE)
   }
   p
 }
@@ -196,9 +197,7 @@ ls_plot_plsda <- function(plsda, type = "scores") {
     eligible <- .ellipse_groups(df$LV1, df$LV2, df$class)
     if (any(eligible)) p <- p + ggplot2::stat_ellipse(
       data = df[eligible, , drop = FALSE], type = "norm", level = 0.95)
-    p <- if (length(unique(df$class)) <= 9L) {
-      p + ggplot2::scale_colour_brewer(palette = "Set1")
-    } else p + ggplot2::scale_colour_viridis_d()
+    p <- p + .libs_discrete_colour(length(unique(df$class)), name = "Class")
     return(p + ggplot2::labs(x = "LV1", y = "LV2", title = "PLS-DA training scores",
                              subtitle = sprintf("%s accuracy: %.1f%%", basis, plsda$accuracy * 100)) +
              theme_libs())
@@ -207,13 +206,18 @@ ls_plot_plsda <- function(plsda, type = "scores") {
     cm <- plsda$confusion_matrix
     df <- as.data.frame(cm)
     names(df) <- c("observed", "predicted", "count")
+    # Dark labels on the light (upper) half of the viridis scale keep counts legible.
+    max_count <- max(df$count, 0)
+    df$label_colour <- ifelse(max_count > 0 & df$count > max_count / 2,
+                              "black", "white")
     return(ggplot2::ggplot(df, ggplot2::aes(x = .data$predicted,
                                             y = .data$observed,
                                             fill = .data$count)) +
              ggplot2::geom_tile() +
-             ggplot2::geom_text(ggplot2::aes(label = .data$count),
-                                colour = "white") +
-             ggplot2::scale_fill_viridis_c(option = "viridis") +
+             ggplot2::geom_text(ggplot2::aes(label = .data$count,
+                                             colour = .data$label_colour)) +
+             ggplot2::scale_colour_identity() +
+             ggplot2::scale_fill_viridis_c(option = "viridis", name = "Count") +
              ggplot2::labs(x = "Predicted", y = "Observed",
                            title = "Confusion matrix",
                            subtitle = sprintf("%s accuracy: %.1f%%", basis, plsda$accuracy * 100)) +

@@ -89,8 +89,9 @@ ls_plot_map_panel <- function(maps, ncol = 3) {
 
   p +
     ggplot2::facet_wrap(~ .data$element, ncol = ncol) +
-    ggplot2::scale_fill_viridis_c(name = "Relative", option = "viridis") +
-    ggplot2::labs(x = "x", y = "y") +
+    ggplot2::scale_fill_viridis_c(name = "Relative\n(min-max\nper map)",
+                                  option = "viridis") +
+    ggplot2::labs(x = "x position", y = "y position") +
     ggplot2::coord_equal() +
     theme_libs()
 }

@@ -62,7 +62,7 @@ ls_plot_spectrum <- function(x, show_peaks = FALSE, show_elements = NULL,
                             ggplot2::aes(xintercept = .data$wavelength_nm,
                                          colour = .data$element),
                             linetype = "dashed", alpha = 0.5) +
-        ggplot2::scale_colour_brewer(palette = "Dark2", name = "Element")
+        .libs_discrete_colour(length(unique(el$element)), name = "Element")
     }
   }
 
@@ -84,7 +84,10 @@ ls_plot_spectrum <- function(x, show_peaks = FALSE, show_elements = NULL,
 #'
 #' @examples
 #' ds <- ls_example_data("tissue")
-#' ls_plot_overlay(ds[1:10], color_by = "tissue")
+#' # Three spectra from each of the five fictional tissue labels
+#' keep <- unlist(lapply(split(seq_len(length(ds)), ds$sample_info$tissue),
+#'                       utils::head, 3))
+#' ls_plot_overlay(ds[keep], color_by = "tissue")
 #' @export
 ls_plot_overlay <- function(dataset, color_by = NULL, normalize = FALSE,
                             alpha = 0.5) {
@@ -120,7 +123,8 @@ ls_plot_overlay <- function(dataset, color_by = NULL, normalize = FALSE,
       ggplot2::geom_line(alpha = alpha, linewidth = 0.3) +
       ggplot2::labs(x = "Wavelength (nm)", y = "Intensity (a.u.)",
                     colour = color_by) +
-      ggplot2::scale_colour_brewer(palette = "Set1", na.value = "grey50") +
+      .libs_discrete_colour(length(unique(stats::na.omit(df$group))),
+                            na.value = "grey50") +
       theme_libs()
   } else {
     p <- ggplot2::ggplot(df, ggplot2::aes(x = .data$wavelength_nm,
