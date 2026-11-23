@@ -77,9 +77,9 @@ scales_rescale <- function(x) {
 # low-contrast yellow and black moved to the end; more groups fall back to
 # the viridis discrete scale so no group is left without a colour.
 # Palette source: Okabe M, Ito K (2008) Color Universal Design (CUD),
-# https://jfly.uni-koeln.de/color/; reproduced in Wong B (2011) Points of
-# view: Color blindness. Nat Methods 8(6):441, Fig. 2, p. 441,
-# doi:10.1038/nmeth.1618.
+# https://jfly.uni-koeln.de/color/; reproduced as Fig. 2 in Wong B (2011)
+# Points of view: Color blindness. Nature Methods, volume 8, issue 6,
+# page 441, doi:10.1038/nmeth.1618.
 #' @keywords internal
 #' @noRd
 .libs_discrete_colour <- function(n, name = ggplot2::waiver(), ...) {

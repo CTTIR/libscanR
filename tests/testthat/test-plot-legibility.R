@@ -45,8 +45,9 @@ expect_legible_counts <- function(p) {
 
 with_confusion <- function(plsda, counts) {
   lv <- c("a", "b")
-  plsda$confusion_matrix <- as.table(matrix(
-    as.integer(counts), 2L, dimnames = list(observed = lv, predicted = lv)))
+  cm <- matrix(as.integer(counts), 2L,
+               dimnames = list(observed = lv, predicted = lv))
+  plsda$confusion_matrix <- as.table(cm)
   plsda
 }
 
