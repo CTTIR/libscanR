@@ -38,7 +38,7 @@ least three measured channels each.}
 \item{verbose}{Logical. Report the temperature and scope of the result.}
 
 \item{atomic_data}{A data.frame with one unambiguous record per selected
-transition: \code{element}, \code{ionization} (1 = neutral, 2 = singly ionized),
+transition: \code{element}, \code{ionization} (1 = neutral, 2 = singly ionised),
 \code{wavelength_nm}, \code{wavelength_medium} (\code{"air"} or \code{"vacuum"}),
 \code{wavelength_vacuum_nm}, \code{A_s} (transition rate in s^-1), \code{g_upper}
 (statistical weight), \code{energy_upper_ev} (relative to that ion's ground
@@ -54,7 +54,7 @@ in kelvin returning the partition function, or an explicitly chosen positive
 constant approximation. Use the same statistical-weight convention as
 \code{g_upper} and include the relevant energy levels.}
 
-\item{ionization_energies_ev}{Named positive numeric vector of first ionization
+\item{ionization_energies_ev}{Named positive numeric vector of first ionisation
 energies in eV, one per element.}
 
 \item{temperature_k}{Optional independently estimated common temperature in
@@ -75,7 +75,7 @@ wavelengths. Default 0.01. Multiple possible transitions are an error.}
 \value{
 A tibble with \code{element}, \code{temperature_k}, \code{concentration_rel},
 \code{electron_density}, \code{n_lines}, \code{r_squared} and \code{log_population_sd}.
-Fractions are normalized only over the supplied elements, under a model
+Fractions are normalised only over the supplied elements, under a model
 that excludes molecules and charge states above +1; they are neither mass
 fractions nor absolute sample concentrations. \code{log_population_sd} measures
 line/stage disagreement on the log population scale, not calibrated
@@ -85,7 +85,7 @@ uncertainty. Attributes \code{line_diagnostics}, \code{assumptions}, and
 \description{
 Estimates a common Boltzmann temperature and relative elemental number
 fractions using explicit atomic and instrumental inputs. The Saha equation
-accounts for the neutral/singly-ionized balance. This research calculation
+accounts for the neutral/singly-ionised balance. This research calculation
 requires optically thin emission, local thermodynamic equilibrium (LTE), a
 common sampled plasma, stoichiometric ablation and corrected spectral response.
 It does not establish those assumptions from an observed spectrum.

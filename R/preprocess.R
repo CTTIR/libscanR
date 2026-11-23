@@ -73,9 +73,9 @@ ls_baseline <- function(x, method = "snip", iterations = 100,
   )
 }
 
-#' Normalize Spectra
+#' Normalise Spectra
 #'
-#' Normalizes intensity values. Methods:
+#' Normalises intensity values. Methods:
 #' * `"total"` — divide each shot by total intensity
 #' * `"max"` — divide by per-shot maximum
 #' * `"snv"` — Standard Normal Variate: `(x - mean) / sd`
@@ -83,12 +83,12 @@ ls_baseline <- function(x, method = "snip", iterations = 100,
 #' * `"area"` — divide by integrated (trapezoidal) area
 #'
 #' @param x A [ls_spectrum()] or [ls_dataset()] object.
-#' @param method Character. Normalization method. Default `"total"`.
+#' @param method Character. Normalisation method. Default `"total"`.
 #' @param ref_wavelength Numeric. Required for `method = "internal_std"`.
 #' @param ref_window Numeric. Window width (nm) around `ref_wavelength`.
 #'   Default 1.
 #'
-#' @return Same class as input with normalized intensities. A zero or non-finite
+#' @return Same class as input with normalised intensities. A zero or non-finite
 #'   divisor is an error; a constant SNV shot becomes zero. Previous removed
 #'   baselines are retained in `metadata$baseline_history` and cleared from
 #'   `baseline`, because per-shot scaling changes their units.
@@ -316,9 +316,9 @@ ls_average_shots <- function(x, method = "mean", trim = 0,
   )
 }
 
-#' Gate Delay Optimization
+#' Gate Delay Optimisation
 #'
-#' Analyzes SNR and signal-to-background ratios across spectra acquired at
+#' Analyses SNR and signal-to-background ratios across spectra acquired at
 #' different gate delays to recommend optimal timing for a target line.
 #'
 #' @param spectra List of [ls_spectrum()] objects. Each spectrum's metadata

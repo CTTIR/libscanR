@@ -50,7 +50,7 @@ library(libscanR)
 `libscanR` provides a vendor-agnostic pipeline for Laser-Induced Breakdown
 Spectroscopy (LIBS) data, including import, preprocessing, peak detection,
 calibration, quantification, chemometrics, spatial mapping, and
-visualization. It includes explicitly fictional teaching datasets. Atomic-line identification
+visualisation. It includes explicitly fictional teaching datasets. Atomic-line identification
 requires a separately downloaded, user-configured reference; no NIST compilation
 is bundled. See the README for local download/import configuration.
 
@@ -81,9 +81,9 @@ spec
 ls_plot_spectrum(spec)
 ```
 
-### Preprocess: baseline, smooth, normalize
+### Preprocess: baseline, smooth, normalise
 
-```{r preprocess, fig.alt="The same fictional spectrum after SNIP baseline correction, five-channel moving-average smoothing and total normalization; the vertical scale is normalized intensity."}
+```{r preprocess, fig.alt="The same fictional spectrum after SNIP baseline correction, five-channel moving-average smoothing and total normalisation; the vertical scale is normalised intensity."}
 spec_proc <- spec |>
   ls_baseline(method = "snip", iterations = 40) |>
   ls_smooth(method = "moving_avg", window = 5) |>

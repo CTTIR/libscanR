@@ -13,7 +13,7 @@ ls_pca(dataset, n_components = 10, scale = TRUE, center = TRUE)
 
 \item{scale}{Logical. Scale variables to unit variance. Default \code{TRUE}.}
 
-\item{center}{Logical. Center variables. Default \code{TRUE}.}
+\item{center}{Logical. Centre variables. Default \code{TRUE}.}
 }
 \value{
 A list with S3 class \code{libs_pca} containing:

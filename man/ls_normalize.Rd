@@ -2,14 +2,14 @@
 % Please edit documentation in R/preprocess.R
 \name{ls_normalize}
 \alias{ls_normalize}
-\title{Normalize Spectra}
+\title{Normalise Spectra}
 \usage{
 ls_normalize(x, method = "total", ref_wavelength = NULL, ref_window = 1)
 }
 \arguments{
 \item{x}{A \code{\link[=ls_spectrum]{ls_spectrum()}} or \code{\link[=ls_dataset]{ls_dataset()}} object.}
 
-\item{method}{Character. Normalization method. Default \code{"total"}.}
+\item{method}{Character. Normalisation method. Default \code{"total"}.}
 
 \item{ref_wavelength}{Numeric. Required for \code{method = "internal_std"}.}
 
@@ -17,13 +17,13 @@ ls_normalize(x, method = "total", ref_wavelength = NULL, ref_window = 1)
 Default 1.}
 }
 \value{
-Same class as input with normalized intensities. A zero or non-finite
+Same class as input with normalised intensities. A zero or non-finite
 divisor is an error; a constant SNV shot becomes zero. Previous removed
 baselines are retained in \code{metadata$baseline_history} and cleared from
 \code{baseline}, because per-shot scaling changes their units.
 }
 \description{
-Normalizes intensity values. Methods:
+Normalises intensity values. Methods:
 \itemize{
 \item \code{"total"} — divide each shot by total intensity
 \item \code{"max"} — divide by per-shot maximum

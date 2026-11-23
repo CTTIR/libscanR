@@ -21,7 +21,7 @@ a square confusion matrix, the fitted \code{feature_contract}, and
 \code{evaluation_basis}: \code{"training"} for SVM or \code{"out_of_bag"} for RF.
 SVM evaluation uses the same probability-based class decision as
 \code{\link[=ls_classify]{ls_classify()}}. Training accuracy is not an independent estimate of
-generalization.
+generalisation.
 }
 \description{
 Trains SVM or Random Forest on spectral intensity features.

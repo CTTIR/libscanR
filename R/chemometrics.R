@@ -8,7 +8,7 @@
 #' @param dataset A [ls_dataset()] object.
 #' @param n_components Integer. Number of PCs to retain. Default 10.
 #' @param scale Logical. Scale variables to unit variance. Default `TRUE`.
-#' @param center Logical. Center variables. Default `TRUE`.
+#' @param center Logical. Centre variables. Default `TRUE`.
 #'
 #' @return A list with S3 class `libs_pca` containing:
 #'   `scores` (matrix: spectra x PCs), `loadings` (matrix: channels x PCs),
@@ -102,9 +102,9 @@ print.libs_pca <- function(x, ...) {
 #' @param validation Character. `"CV"` (10-fold), `"LOO"`, or `"none"`.
 #'   Default `"CV"`. Accuracy and predictions use held-out predictions for
 #'   CV/LOO and fitted predictions only for `"none"`. Components are capped at
-#'   the centered feature rank and training-sample bound of every fold.
+#'   the centred feature rank and training-sample bound of every fold.
 #'   Every training fold must retain at least two classes. These sample-level
-#'   folds do not establish patient/site-level generalization.
+#'   folds do not establish patient/site-level generalisation.
 #'
 #' @return An S3 object of class `libs_plsda` with elements `model`,
 #'   `predictions` (tibble with predicted/observed class), `confusion_matrix`,
@@ -316,7 +316,7 @@ print.libs_clusters <- function(x, ...) {
 #'   `evaluation_basis`: `"training"` for SVM or `"out_of_bag"` for RF.
 #'   SVM evaluation uses the same probability-based class decision as
 #'   [ls_classify()]. Training accuracy is not an independent estimate of
-#'   generalization.
+#'   generalisation.
 #'
 #' @examples
 #' ds <- ls_example_data("tissue")

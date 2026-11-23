@@ -7,7 +7,7 @@
 ls_spectrum(wavelength, intensity, metadata = list(), baseline = NULL)
 }
 \arguments{
-\item{wavelength}{Numeric vector of wavelengths in nanometers. Must be
+\item{wavelength}{Numeric vector of wavelengths in nanometres. Must be
 contain at least two distinct, finite, positive values. Channels and the
 optional baseline are sorted together in ascending wavelength order.}
 

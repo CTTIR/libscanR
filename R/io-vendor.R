@@ -1,6 +1,6 @@
 #' Read SciAps LIBS Data
 #'
-#' Parses output files from SciAps handheld LIBS analyzers (Z-series).
+#' Parses output files from SciAps handheld LIBS analysers (Z-series).
 #' The SciAps export format typically includes metadata lines preceded by
 #' `#` or a keyword header, followed by a wavelength/intensity table.
 #'

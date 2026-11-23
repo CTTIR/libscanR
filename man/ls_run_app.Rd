@@ -20,7 +20,7 @@ Invisible \code{NULL}. Launches a Shiny application as a side effect.
 }
 \description{
 Starts an interactive Shiny application for exploring, preprocessing, and
-analyzing LIBS spectral data. The app provides six tabs: Import,
+analysing LIBS spectral data. The app provides six tabs: Import,
 Preprocessing, Peaks, Calibration, Chemometrics, and Export.
 }
 \details{
@@ -35,7 +35,7 @@ The complete ZIP download contains one CSV per spectrum and, for a dataset,
 supported metadata through \code{\link[=ls_write_csv]{ls_write_csv()}}. ZIP creation requires an
 external \code{zip} command on \code{PATH} (or configured through \code{R_ZIPCMD}),
 including on Windows. The separate wide dataset CSV
-contains mean intensities only. Calibration CSV files summarize figures of
+contains mean intensities only. Calibration CSV files summarise figures of
 merit rather than storing reusable prediction models. Load a labelled
 \code{\link[=ls_dataset]{ls_dataset()}} through \code{data} for analyses requiring concentration or class
 columns in \code{sample_info}.

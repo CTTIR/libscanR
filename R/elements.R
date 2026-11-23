@@ -8,7 +8,7 @@
 #'
 #' The table must contain `element`, `ionization`, `wavelength_nm`, `aki`
 #' (transition probability in units of 10^8 s^-1), `wavelength_medium`
-#' (`"air"` or `"vacuum"`) and a nonempty `source` attribution per row.
+#' (`"air"` or `"vacuum"`) and a non-empty `source` attribution per row.
 #' Missing transition rates remain missing. Optional `ei_ev`, `ek_ev` and
 #' `persistent` columns default to missing energies and `FALSE`; no persistent
 #' line designation is inferred. Other columns and provenance are retained.
@@ -19,7 +19,7 @@
 #' @param range_nm Two ordered finite wavelength limits, or `NULL` for all.
 #' @param min_aki Minimum transition probability in units of 10^8 s^-1.
 #'   Missing rates are excluded only when this is positive.
-#' @param ionization Ionization states: 1 = neutral, 2 = singly ionized,
+#' @param ionization Ionisation states: 1 = neutral, 2 = singly ionised,
 #'   or `NULL` for all supplied positive integer stages.
 #' @param persistent_only Keep only rows explicitly marked `persistent`.
 #' @param path Local CSV/RDS file. Default `NULL` uses the configured path.

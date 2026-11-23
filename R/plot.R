@@ -71,11 +71,11 @@ ls_plot_spectrum <- function(x, show_peaks = FALSE, show_elements = NULL,
 
 #' Overlay Multiple Spectra
 #'
-#' Plots multiple spectra on the same axes, optionally colored by a grouping
+#' Plots multiple spectra on the same axes, optionally coloured by a grouping
 #' variable.
 #'
 #' @param dataset A [ls_dataset()] object.
-#' @param color_by Character. Column in `sample_info` for color mapping.
+#' @param color_by Character. Column in `sample_info` for colour mapping.
 #'   Default `NULL`.
 #' @param normalize Logical. Divide each spectrum by its positive maximum. Default `FALSE`.
 #' @param alpha Numeric. Line alpha. Default 0.5.

@@ -16,9 +16,9 @@ ls_plsda(dataset, grouping, n_components = 5, validation = "CV")
 \item{validation}{Character. \code{"CV"} (10-fold), \code{"LOO"}, or \code{"none"}.
 Default \code{"CV"}. Accuracy and predictions use held-out predictions for
 CV/LOO and fitted predictions only for \code{"none"}. Components are capped at
-the centered feature rank and training-sample bound of every fold.
+the centred feature rank and training-sample bound of every fold.
 Every training fold must retain at least two classes. These sample-level
-folds do not establish patient/site-level generalization.}
+folds do not establish patient/site-level generalisation.}
 }
 \value{
 An S3 object of class \code{libs_plsda} with elements \code{model},

@@ -21,7 +21,7 @@ ls_element_db(
 \item{min_aki}{Minimum transition probability in units of 10^8 s^-1.
 Missing rates are excluded only when this is positive.}
 
-\item{ionization}{Ionization states: 1 = neutral, 2 = singly ionized,
+\item{ionization}{Ionisation states: 1 = neutral, 2 = singly ionised,
 or \code{NULL} for all supplied positive integer stages.}
 
 \item{persistent_only}{Keep only rows explicitly marked \code{persistent}.}
@@ -43,7 +43,7 @@ takes precedence over the option, which takes precedence over the variable.
 \details{
 The table must contain \code{element}, \code{ionization}, \code{wavelength_nm}, \code{aki}
 (transition probability in units of 10^8 s^-1), \code{wavelength_medium}
-(\code{"air"} or \code{"vacuum"}) and a nonempty \code{source} attribution per row.
+(\code{"air"} or \code{"vacuum"}) and a non-empty \code{source} attribution per row.
 Missing transition rates remain missing. Optional \code{ei_ev}, \code{ek_ev} and
 \code{persistent} columns default to missing energies and \code{FALSE}; no persistent
 line designation is inferred. Other columns and provenance are retained.

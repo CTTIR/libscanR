@@ -5,12 +5,12 @@
 [![R-CMD-check](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CTTIR/libscanR/actions/workflows/R-CMD-check.yaml)
 [![pkgdown](https://github.com/CTTIR/libscanR/actions/workflows/pkgdown.yaml/badge.svg)](https://cttir.github.io/libscanR/)
 [![Codecov test coverage](https://codecov.io/gh/CTTIR/libscanR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/CTTIR/libscanR?branch=main)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Licence: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21889942.svg)](https://doi.org/10.5281/zenodo.21889942)
 <!-- badges: end -->
 
-Vendor-agnostic analysis and visualization of
+Vendor-agnostic analysis and visualisation of
 **Laser-Induced Breakdown Spectroscopy (LIBS)** data in R, with a focus on
 biomedical tissue research. This is experimental research software. Synthetic
 examples and heuristic tissue labels do not establish clinical performance.
@@ -19,9 +19,9 @@ examples and heuristic tissue labels do not establish clinical performance.
 
 - **Import**: Generic CSV/TSV/TXT, SciAps Z-series, Applied Spectra J200/Aurora,
   auto-detection.
-- **Preprocessing**: SNIP/ALS baseline correction, five normalization modes,
+- **Preprocessing**: SNIP/ALS baseline correction, five normalisation modes,
   Savitzky-Golay / Gaussian / moving-average / median smoothing, shot averaging
-  with outlier removal, wavelength cropping, gate delay optimization.
+  with outlier removal, wavelength cropping, gate delay optimisation.
 - **Peak analysis**: SNR+prominence peak detection; identification against
   a user-supplied local atomic reference. No NIST compilation is bundled. Missing transition rates and
   ambiguous candidates remain explicit; wavelength scores are not probabilities.
@@ -35,8 +35,8 @@ examples and heuristic tissue labels do not establish clinical performance.
   ratios; discriminating-line analysis with FDR correction.
 - **Spatial mapping**: Single-element and multi-element 2-D maps from
   raster-scan datasets.
-- **Visualization**: Publication-ready ggplot2 plots; custom
-  `theme_libs()` and wavelength color scale.
+- **Visualisation**: Publication-ready ggplot2 plots; custom
+  `theme_libs()` and wavelength colour scale.
 - **Shiny app**: Six-tab interactive explorer (`ls_run_app()`).
 - **Reproducible examples**: `ls_example_data()` provides synthetic
   tissue, calibration, and spatial datasets — no instrument data required.
@@ -80,7 +80,7 @@ spec <- ls_simulate_spectrum(
   seed = 1
 )
 
-# Preprocess: baseline, smooth, normalize
+# Preprocess: baseline, smooth, normalise
 spec_proc <- spec |>
   ls_baseline(method = "snip") |>
   ls_smooth(method = "moving_avg", window = 5) |>
@@ -199,12 +199,12 @@ Old results from the incomplete Saha-Boltzmann implementation must be recalculat
 citation("libscanR")
 ```
 
-## License
+## Licence
 
 Software: MIT © Raban Heller. No NIST reference compilation, selected source
 rows or legacy atomic table is distributed in this source tree or package.
 References downloaded by users retain their providers' terms; the software
-license grants no rights in those files. See `inst/NOTICE-NIST.md`.
+licence grants no rights in those files. See `inst/NOTICE-NIST.md`.
 
 ## Use of LLM tools
 

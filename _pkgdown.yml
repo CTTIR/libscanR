@@ -85,7 +85,7 @@ reference:
       - ls_tissue_classify
       - ls_tissue_discriminate
 
-  - title: "Visualization"
+  - title: "Visualisation"
     contents:
       - ls_plot_spectrum
       - ls_plot_overlay

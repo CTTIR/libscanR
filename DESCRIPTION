@@ -1,12 +1,12 @@
 Package: libscanR
 Type: Package
-Title: Analyze and Visualize Laser-Induced Breakdown Spectroscopy Data
+Title: Analyse and Visualise Laser-Induced Breakdown Spectroscopy Data
 Version: 0.2.0
 Authors@R:
     person("R.", "Heller", email = "raban.heller@uni-ulm.de",
            role = c("aut", "cre", "cph"), comment = c(ORCID = "0000-0001-8006-9742"))
 Description: Provides a vendor-agnostic pipeline for importing, preprocessing,
-    calibrating, and visualizing Laser-Induced Breakdown Spectroscopy (LIBS)
+    calibrating, and visualising Laser-Induced Breakdown Spectroscopy (LIBS)
     spectral data. Supports baseline correction, peak identification against
     user-supplied atomic emission line references, univariate and multivariate
     calibration, relative elemental amounts under an explicitly specified
@@ -16,13 +16,13 @@ Description: Provides a vendor-agnostic pipeline for importing, preprocessing,
     heuristic tissue classification, and spatial elemental mapping. Includes
     an interactive 'shiny' application for spectral exploration. Designed for
     biomedical tissue analysis, environmental monitoring, and materials
-    characterization workflows.
+    characterisation workflows.
 License: MIT + file LICENSE
 URL: https://github.com/CTTIR/libscanR,
     https://cttir.github.io/libscanR/
 BugReports: https://github.com/CTTIR/libscanR/issues
 Encoding: UTF-8
-Language: en-US
+Language: en-GB
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
 Depends:

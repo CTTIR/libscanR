@@ -124,7 +124,7 @@ ls_find_peaks <- function(x, snr_threshold = 3, min_prominence = 0.01,
 #' @param peaks A tibble from [ls_find_peaks()].
 #' @param elements Character vector. Restrict search. Default `NULL` = all.
 #' @param tolerance_nm Numeric. Maximum wavelength deviation. Default 0.2.
-#' @param ionization Integer vector of ionization states. Default `c(1L, 2L)`.
+#' @param ionization Integer vector of ionisation states. Default `c(1L, 2L)`.
 #'
 #' @return A tibble with all peak columns plus: `element`, `ionization`,
 #'   `nist_wavelength_nm`, `nist_aki`, `deviation_nm`, `confidence` (0-1),
@@ -216,7 +216,7 @@ ls_identify_peaks <- function(peaks, elements = NULL, tolerance_nm = 0.2,
 #' subtracted (linear interpolation between window edges).
 #'
 #' @param x A [ls_spectrum()] object.
-#' @param center_nm Numeric. Peak center wavelength (nm).
+#' @param center_nm Numeric. Peak centre wavelength (nm).
 #' @param window_nm Numeric. Integration window width. Default 1.
 #'   To support coarsely sampled input, the effective window is at least five
 #'   median channel spacings, with up to five nearest channels used at edges.

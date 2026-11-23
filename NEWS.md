@@ -1,10 +1,10 @@
 # libscanR 0.2.0
 
-* Discrete colors in `ls_plot_overlay()`, `ls_plot_pca()`,
+* Discrete colours in `ls_plot_overlay()`, `ls_plot_pca()`,
   `ls_plot_plsda(type = "scores")` and the element overlay of
-  `ls_plot_spectrum()` now use the color-blind-safe Okabe-Ito palette for up
+  `ls_plot_spectrum()` now use the colour-blind-safe Okabe-Ito palette for up
   to eight groups and a viridis scale beyond that. `ls_plot_overlay()` no
-  longer drops the color of groups beyond the ninth.
+  longer drops the colour of groups beyond the ninth.
 * `ls_plot_plsda(type = "confusion")` prints each count in black or white
   according to the lightness of the tile it sits on, so counts stay legible
   also when no cell is empty, and titles the legend "Count".
@@ -15,10 +15,10 @@
   `theme_libs()` adds right margin so the last axis label is not clipped.
 * The Shiny app renders its static calibration, scree, loading and PLS-DA
   plots at 96 dpi so their text matches the surrounding interface.
-* Reference-page example figures keep their true colors and full opacity in
+* Reference-page example figures keep their true colours and full opacity in
   the dark site theme; the spatial-mapping article states how faint its
   designed gradients and hotspot are relative to the simulated noise, and the
-  preprocessing article's baseline comparison uses color-blind-safe colors.
+  preprocessing article's baseline comparison uses colour-blind-safe colours.
 * `ls_find_peaks()` documents how its signal-to-noise ratio is defined and why
   noise maxima on a continuum or baseline-corrected noise floor can pass it.
 
@@ -35,11 +35,11 @@
 * Round-trip default CSV exports and preserve the first vendor/headerless data row.
   Validate all output filenames, stage exports, preserve existing bundles when
   overwrite is false, and restore previous files on ordinary write failures.
-* Correct integer spectrum subsetting, combined baseline summaries, normalized
+* Correct integer spectrum subsetting, combined baseline summaries, normalised
   peak markers, constant-shot averaging and seeded example reproducibility.
 * Correct SNIP traversal dependence and the local Savitzky-Golay intercept;
   use sparse ALS equations and retain preprocessing/baseline provenance.
-* Reject out-of-range peak centers and duplicate map coordinates. Calibrated maps
+* Reject out-of-range peak centres and duplicate map coordinates. Calibrated maps
   use the spectrum prediction path. Document coarse-channel integration expansion
   and the Gaussian demonstration model's limits.
 * Remove bundled atomic-reference tables. Load a user-supplied CSV/RDS through
@@ -75,7 +75,7 @@
   local spectral coverage unclassified. Replace ambiguous confidence values with
   labelled scores; remove the unit-dependent fold-change pseudocount.
 * Show actual linear prediction intervals and full-model PLS training predictions;
-  keep numeric PCA colors continuous and distinguish dispersion from uncertainty.
+  keep numeric PCA colours continuous and distinguish dispersion from uncertainty.
 * Preserve uploads and processing state on failures; invalidate stale analyses
   and exports after data or setting changes. Export every shot with metadata in
   ZIP bundles and label mean-spectrum and calibration-summary CSV files clearly.
@@ -84,7 +84,7 @@
 
 # libscanR 0.1.0
 
-* Standardize the named v5 package logo across README, documentation pages
+* Standardise the named v5 package logo across README, documentation pages
   and available application headers, with matching light and dark artwork.
 
 
@@ -110,7 +110,7 @@
 * `ls_smooth()`: Savitzky-Golay, moving average, Gaussian, median.
 * `ls_average_shots()`: Shot averaging with outlier removal.
 * `ls_crop()`: Spectral range subsetting.
-* `ls_gate_optimize()`: Optimize acquisition gate delay.
+* `ls_gate_optimize()`: Optimise acquisition gate delay.
 
 ### Peak Analysis
 * `ls_find_peaks()`: Peak detection with SNR, prominence, distance filters.
@@ -139,7 +139,7 @@
 * `ls_tissue_classify()`: Ratio-based and model-based tissue classification.
 * `ls_tissue_discriminate()`: Identify discriminating emission lines.
 
-### Visualization
+### Visualisation
 * `ls_plot_spectrum()`, `ls_plot_overlay()`, `ls_plot_region()`: Spectrum plots.
 * `ls_plot_calibration()`, `ls_plot_residuals()`: Calibration diagnostics.
 * `ls_plot_map()`, `ls_plot_map_panel()`, `ls_plot_element_map()`: Elemental maps.

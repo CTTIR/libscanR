@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-utils.R
 \name{scale_color_wavelength}
 \alias{scale_color_wavelength}
-\title{Wavelength-Based Color Scale}
+\title{Wavelength-Based Colour Scale}
 \usage{
 scale_color_wavelength(name = "Wavelength (nm)", ...)
 }
@@ -16,8 +16,8 @@ scale_color_wavelength(name = "Wavelength (nm)", ...)
 A ggplot2 scale object.
 }
 \description{
-Maps wavelength values (nm) to approximate visible-light colors for
-intuitive spectral visualization. Below 380 nm: UV purple; above 780 nm:
+Maps wavelength values (nm) to approximate visible-light colours for
+intuitive spectral visualisation. Below 380 nm: UV purple; above 780 nm:
 deep red.
 }
 \examples{

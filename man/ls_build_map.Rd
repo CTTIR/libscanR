@@ -21,7 +21,7 @@ fitted window, or 1 nm for an uncalibrated map.}
 }
 \value{
 A list with S3 class \code{libs_map} containing \code{x}, \code{y}, \code{values},
-\code{element}, \code{line_nm}, \code{unit}, and a rasterized \code{grid} matrix when the
+\code{element}, \code{line_nm}, \code{unit}, and a rasterised \code{grid} matrix when the
 points form a regular grid.
 }
 \description{

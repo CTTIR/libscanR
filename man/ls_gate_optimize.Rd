@@ -2,7 +2,7 @@
 % Please edit documentation in R/preprocess.R
 \name{ls_gate_optimize}
 \alias{ls_gate_optimize}
-\title{Gate Delay Optimization}
+\title{Gate Delay Optimisation}
 \usage{
 ls_gate_optimize(spectra, element, line_nm, window_nm = 1)
 }
@@ -22,7 +22,7 @@ A \code{\link[tibble:tibble]{tibble::tibble()}} with columns \code{gate_delay_us
 of the highest SNR.
 }
 \description{
-Analyzes SNR and signal-to-background ratios across spectra acquired at
+Analyses SNR and signal-to-background ratios across spectra acquired at
 different gate delays to recommend optimal timing for a target line.
 }
 \examples{

@@ -5,7 +5,7 @@
 #'
 #' @param spectra List of `libs_spectrum` objects. All must share the same
 #'   wavelength axis (exact channel values). Resample deliberately before
-#'   combining measurements on different axes; no channels are relabeled.
+#'   combining measurements on different axes; no channels are relabelled.
 #' @param sample_info Optional data.frame or tibble with one row per spectrum.
 #'   Must contain column `sample_id` matching `metadata$sample_id` in each
 #'   spectrum. Additional columns (e.g. `material`, `group`, `concentration`,

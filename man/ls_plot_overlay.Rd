@@ -9,7 +9,7 @@ ls_plot_overlay(dataset, color_by = NULL, normalize = FALSE, alpha = 0.5)
 \arguments{
 \item{dataset}{A \code{\link[=ls_dataset]{ls_dataset()}} object.}
 
-\item{color_by}{Character. Column in \code{sample_info} for color mapping.
+\item{color_by}{Character. Column in \code{sample_info} for colour mapping.
 Default \code{NULL}.}
 
 \item{normalize}{Logical. Divide each spectrum by its positive maximum. Default \code{FALSE}.}
@@ -20,7 +20,7 @@ Default \code{NULL}.}
 A ggplot2 object.
 }
 \description{
-Plots multiple spectra on the same axes, optionally colored by a grouping
+Plots multiple spectra on the same axes, optionally coloured by a grouping
 variable.
 }
 \examples{

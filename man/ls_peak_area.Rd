@@ -9,7 +9,7 @@ ls_peak_area(x, center_nm, window_nm = 1, method = "trapezoidal")
 \arguments{
 \item{x}{A \code{\link[=ls_spectrum]{ls_spectrum()}} object.}
 
-\item{center_nm}{Numeric. Peak center wavelength (nm).}
+\item{center_nm}{Numeric. Peak centre wavelength (nm).}
 
 \item{window_nm}{Numeric. Integration window width. Default 1.
 To support coarsely sampled input, the effective window is at least five

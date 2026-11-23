@@ -1,7 +1,7 @@
-#' libscanR: Analysis and Visualization of LIBS Spectra
+#' libscanR: Analysis and Visualisation of LIBS Spectra
 #'
 #' A vendor-agnostic pipeline for importing, preprocessing, calibrating, and
-#' visualizing Laser-Induced Breakdown Spectroscopy (LIBS) spectral data with
+#' visualising Laser-Induced Breakdown Spectroscopy (LIBS) spectral data with
 #' a focus on biomedical tissue analysis.
 #'
 #' @section Main functions:

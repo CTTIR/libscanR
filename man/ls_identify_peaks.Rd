@@ -18,7 +18,7 @@ ls_identify_peaks(
 
 \item{tolerance_nm}{Numeric. Maximum wavelength deviation. Default 0.2.}
 
-\item{ionization}{Integer vector of ionization states. Default \code{c(1L, 2L)}.}
+\item{ionization}{Integer vector of ionisation states. Default \code{c(1L, 2L)}.}
 }
 \value{
 A tibble with all peak columns plus: \code{element}, \code{ionization},

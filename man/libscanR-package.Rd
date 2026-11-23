@@ -4,10 +4,10 @@
 \name{libscanR-package}
 \alias{libscanR}
 \alias{libscanR-package}
-\title{libscanR: Analysis and Visualization of LIBS Spectra}
+\title{libscanR: Analysis and Visualisation of LIBS Spectra}
 \description{
 A vendor-agnostic pipeline for importing, preprocessing, calibrating, and
-visualizing Laser-Induced Breakdown Spectroscopy (LIBS) spectral data with
+visualising Laser-Induced Breakdown Spectroscopy (LIBS) spectral data with
 a focus on biomedical tissue analysis.
 }
 \section{Main functions}{

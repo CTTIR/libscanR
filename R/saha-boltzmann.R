@@ -2,7 +2,7 @@
 #'
 #' Estimates a common Boltzmann temperature and relative elemental number
 #' fractions using explicit atomic and instrumental inputs. The Saha equation
-#' accounts for the neutral/singly-ionized balance. This research calculation
+#' accounts for the neutral/singly-ionised balance. This research calculation
 #' requires optically thin emission, local thermodynamic equilibrium (LTE), a
 #' common sampled plasma, stoichiometric ablation and corrected spectral response.
 #' It does not establish those assumptions from an observed spectrum.
@@ -18,7 +18,7 @@
 #'   least three measured channels each.
 #' @param verbose Logical. Report the temperature and scope of the result.
 #' @param atomic_data A data.frame with one unambiguous record per selected
-#'   transition: `element`, `ionization` (1 = neutral, 2 = singly ionized),
+#'   transition: `element`, `ionization` (1 = neutral, 2 = singly ionised),
 #'   `wavelength_nm`, `wavelength_medium` (`"air"` or `"vacuum"`),
 #'   `wavelength_vacuum_nm`, `A_s` (transition rate in s^-1), `g_upper`
 #'   (statistical weight), `energy_upper_ev` (relative to that ion's ground
@@ -32,7 +32,7 @@
 #'   in kelvin returning the partition function, or an explicitly chosen positive
 #'   constant approximation. Use the same statistical-weight convention as
 #'   `g_upper` and include the relevant energy levels.
-#' @param ionization_energies_ev Named positive numeric vector of first ionization
+#' @param ionization_energies_ev Named positive numeric vector of first ionisation
 #'   energies in eV, one per element.
 #' @param temperature_k Optional independently estimated common temperature in
 #'   kelvin. If NULL, estimate it from a shared slope with a separate intercept
@@ -48,7 +48,7 @@
 #'
 #' @return A tibble with `element`, `temperature_k`, `concentration_rel`,
 #'   `electron_density`, `n_lines`, `r_squared` and `log_population_sd`.
-#'   Fractions are normalized only over the supplied elements, under a model
+#'   Fractions are normalised only over the supplied elements, under a model
 #'   that excludes molecules and charge states above +1; they are neither mass
 #'   fractions nor absolute sample concentrations. `log_population_sd` measures
 #'   line/stage disagreement on the log population scale, not calibrated

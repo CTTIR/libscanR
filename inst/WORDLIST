@@ -18,6 +18,7 @@ CMD
 CRAN's
 Corrected
 CSV
+CSVs
 CTF
 DBSCAN
 Doi
@@ -50,6 +51,7 @@ PLS-DA
 Partsch
 Pbvi
 Poisson
+PyTorch
 Raban
 RSD
 RSpkg
@@ -72,10 +74,8 @@ kmeans
 labelled
 libs
 modelled
-nanometers
 parsers
 preload
-rasterized
 runnable
 sortable
 σ
@@ -127,8 +127,6 @@ internal
 interpolate
 interpolates
 interpolation
-ionization
-ionized
 isomorph
 kinetic
 ki
@@ -139,7 +137,6 @@ mapbuilding
 metadata
 microstructure
 midsection
-mineralized
 multi
 multivariate
 ncomp
@@ -162,6 +159,7 @@ preprocessor
 publishable
 quantile
 quantitation
+regex
 reimport
 reproducibility
 rescale
@@ -181,7 +179,6 @@ transitional
 tuner
 uncorrected
 univariate
-unnormalized
 unsorted
 vendor
 vendor-agnostic

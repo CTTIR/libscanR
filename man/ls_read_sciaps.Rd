@@ -15,7 +15,7 @@ ls_read_sciaps(path, verbose = TRUE)
 A \code{libs_spectrum} object with SciAps-specific metadata.
 }
 \description{
-Parses output files from SciAps handheld LIBS analyzers (Z-series).
+Parses output files from SciAps handheld LIBS analysers (Z-series).
 The SciAps export format typically includes metadata lines preceded by
 \verb{#} or a keyword header, followed by a wavelength/intensity table.
 }

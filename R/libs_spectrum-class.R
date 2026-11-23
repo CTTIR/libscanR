@@ -3,7 +3,7 @@
 #' Constructs a `libs_spectrum` S3 object from a wavelength axis and one or
 #' more intensity vectors (shots).
 #'
-#' @param wavelength Numeric vector of wavelengths in nanometers. Must be
+#' @param wavelength Numeric vector of wavelengths in nanometres. Must be
 #'   contain at least two distinct, finite, positive values. Channels and the
 #'   optional baseline are sorted together in ascending wavelength order.
 #' @param intensity Numeric vector (single shot) or matrix (multiple shots)
