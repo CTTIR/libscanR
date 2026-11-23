@@ -11,7 +11,9 @@ ls_plot_loadings(pca, pc = 1, n_top = 10)
 
 \item{pc}{Integer. Which PC's loadings to show. Default 1.}
 
-\item{n_top}{Integer. Number of top-absolute contributors to annotate.
+\item{n_top}{Integer. Number of top-absolute contributors to mark with a
+point. Each is labelled with its wavelength unless that label would
+overlap the label of a stronger contributor, in which case it is omitted.
 Default 10.}
 }
 \value{

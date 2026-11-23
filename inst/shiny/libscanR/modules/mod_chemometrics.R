@@ -120,7 +120,7 @@ mod_chemometrics_server <- function(id, rv) {
     output$pca_loadings <- shiny::renderPlot({
       shiny::req(rv$pca_result)
       libscanR::ls_plot_loadings(rv$pca_result, pc = 1, n_top = 5)
-    }, res = 96, alt = "First principal-component loadings against wavelength, with the five strongest loadings labelled.")
+    }, res = 96, alt = "First principal-component loadings against wavelength, with the five strongest loadings marked.")
 
     shiny::observeEvent(input$run_plsda, {
       rv$plsda_result <- NULL

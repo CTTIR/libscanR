@@ -78,7 +78,9 @@ ls_plot_pca <- function(pca, pc_x = 1, pc_y = 2, color_by = NULL,
 #'
 #' @param pca A `libs_pca` object.
 #' @param pc Integer. Which PC's loadings to show. Default 1.
-#' @param n_top Integer. Number of top-absolute contributors to annotate.
+#' @param n_top Integer. Number of top-absolute contributors to mark with a
+#'   point. Each is labelled with its wavelength unless that label would
+#'   overlap the label of a stronger contributor, in which case it is omitted.
 #'   Default 10.
 #'
 #' @return A ggplot2 object.

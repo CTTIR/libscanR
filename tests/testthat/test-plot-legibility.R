@@ -103,3 +103,12 @@ test_that("peak SNR follows the documented median-referenced definition", {
   noise <- stats::mad(diff(y)) / sqrt(2)
   expect_equal(pk$snr, (pk$intensity - stats::median(y)) / noise)
 })
+
+test_that("peak SNR falls back to unit noise when the noise estimate is zero", {
+  y <- rep(2, 40)
+  y[20] <- 12
+  spec <- ls_spectrum(seq(400, 439), y)
+  pk <- ls_find_peaks(spec, snr_threshold = 0)
+  expect_identical(nrow(pk), 1L)
+  expect_equal(pk$snr, 12 - 2)
+})
