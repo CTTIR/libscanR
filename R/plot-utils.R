@@ -87,3 +87,24 @@ scales_rescale <- function(x) {
     ggplot2::scale_colour_viridis_d(name = name, end = 0.9, ...)
   }
 }
+
+# Black or white text for labels drawn on tiles filled by `fill_scale`.
+# The tile colour is taken from the scale's own palette after the default
+# continuous rescaling (range of `values` to 0-1; a single distinct value maps
+# to the midpoint), so the choice follows the colour the tile actually gets
+# rather than the raw count. Tiles lighter than the middle of the CIELAB
+# lightness scale (L* > 50) get black text, darker tiles white text.
+#' @keywords internal
+#' @noRd
+.contrasting_label_colour <- function(values, fill_scale) {
+  rng <- range(values, na.rm = TRUE)
+  pos <- if (all(is.finite(rng)) && diff(rng) > 0) {
+    (values - rng[1L]) / diff(rng)
+  } else {
+    rep(0.5, length(values))
+  }
+  fill <- fill_scale$palette(pos)
+  lightness <- grDevices::convertColor(t(grDevices::col2rgb(fill)) / 255,
+                                       from = "sRGB", to = "Lab")[, "L"]
+  ifelse(lightness > 50, "black", "white")
+}

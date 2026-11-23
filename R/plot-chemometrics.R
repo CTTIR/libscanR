@@ -209,10 +209,10 @@ ls_plot_plsda <- function(plsda, type = "scores") {
     cm <- plsda$confusion_matrix
     df <- as.data.frame(cm)
     names(df) <- c("observed", "predicted", "count")
-    # Dark labels on the light (upper) half of the viridis scale keep counts legible.
-    max_count <- max(df$count, 0)
-    df$label_colour <- ifelse(max_count > 0 & df$count > max_count / 2,
-                              "black", "white")
+    # Label colour follows the tile colour the fill scale assigns, so counts
+    # stay legible whatever the smallest count is.
+    fill_scale <- ggplot2::scale_fill_viridis_c(option = "viridis", name = "Count")
+    df$label_colour <- .contrasting_label_colour(df$count, fill_scale)
     return(ggplot2::ggplot(df, ggplot2::aes(x = .data$predicted,
                                             y = .data$observed,
                                             fill = .data$count)) +
@@ -220,7 +220,7 @@ ls_plot_plsda <- function(plsda, type = "scores") {
              ggplot2::geom_text(ggplot2::aes(label = .data$count,
                                              colour = .data$label_colour)) +
              ggplot2::scale_colour_identity() +
-             ggplot2::scale_fill_viridis_c(option = "viridis", name = "Count") +
+             fill_scale +
              ggplot2::labs(x = "Predicted", y = "Observed",
                            title = "Confusion matrix",
                            subtitle = sprintf("%s accuracy: %.1f%%", basis, plsda$accuracy * 100)) +

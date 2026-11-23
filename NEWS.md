@@ -5,8 +5,9 @@
   `ls_plot_spectrum()` now use the color-blind-safe Okabe-Ito palette for up
   to eight groups and a viridis scale beyond that. `ls_plot_overlay()` no
   longer drops the color of groups beyond the ninth.
-* `ls_plot_plsda(type = "confusion")` prints counts in black on light tiles so
-  they stay legible, and titles the legend "Count".
+* `ls_plot_plsda(type = "confusion")` prints each count in black or white
+  according to the lightness of the tile it sits on, so counts stay legible
+  also when no cell is empty, and titles the legend "Count".
 * `ls_plot_residuals()` labels both axes with the concentration unit;
   `ls_plot_loadings()` skips overlapping wavelength labels and leaves room
   for them above the largest loadings;
