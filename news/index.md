@@ -2,6 +2,43 @@
 
 ## libscanR 0.2.0
 
+- Discrete colors in
+  [`ls_plot_overlay()`](https://cttir.github.io/libscanR/reference/ls_plot_overlay.md),
+  [`ls_plot_pca()`](https://cttir.github.io/libscanR/reference/ls_plot_pca.md),
+  `ls_plot_plsda(type = "scores")` and the element overlay of
+  [`ls_plot_spectrum()`](https://cttir.github.io/libscanR/reference/ls_plot_spectrum.md)
+  now use the color-blind-safe Okabe-Ito palette for up to eight groups
+  and a viridis scale beyond that.
+  [`ls_plot_overlay()`](https://cttir.github.io/libscanR/reference/ls_plot_overlay.md)
+  no longer drops the color of groups beyond the ninth.
+
+- `ls_plot_plsda(type = "confusion")` prints counts in black on light
+  tiles so they stay legible, and titles the legend “Count”.
+
+- [`ls_plot_residuals()`](https://cttir.github.io/libscanR/reference/ls_plot_residuals.md)
+  labels both axes with the concentration unit;
+  [`ls_plot_loadings()`](https://cttir.github.io/libscanR/reference/ls_plot_loadings.md)
+  skips overlapping wavelength labels and leaves room for them above the
+  largest loadings;
+  [`ls_plot_map_panel()`](https://cttir.github.io/libscanR/reference/ls_plot_map_panel.md)
+  names its axes and explains its per-map scaling;
+  [`theme_libs()`](https://cttir.github.io/libscanR/reference/theme_libs.md)
+  adds right margin so the last axis label is not clipped.
+
+- The Shiny app renders its static calibration, scree, loading and
+  PLS-DA plots at 96 dpi so their text matches the surrounding
+  interface.
+
+- Reference-page example figures keep their true colors and full opacity
+  in the dark site theme; the spatial-mapping article states how faint
+  its designed gradients and hotspot are relative to the simulated
+  noise, and the preprocessing article’s baseline comparison uses
+  color-blind-safe colors.
+
+- [`ls_find_peaks()`](https://cttir.github.io/libscanR/reference/ls_find_peaks.md)
+  documents how its signal-to-noise ratio is defined and why noise
+  maxima on a continuum or baseline-corrected noise floor can pass it.
+
 - Preserve large irregular spatial maps when the cross-product of
   distinct coordinates exceeds the integer range; avoid an overflow
   error while deciding whether a raster grid exists.

@@ -38,5 +38,8 @@ A ggplot2 object.
 
 ``` r
 ds <- ls_example_data("tissue")
-ls_plot_overlay(ds[1:10], color_by = "tissue")
+# Three spectra from each of the five fictional tissue labels
+keep <- unlist(lapply(split(seq_len(length(ds)), ds$sample_info$tissue),
+                      utils::head, 3))
+ls_plot_overlay(ds[keep], color_by = "tissue")
 ```

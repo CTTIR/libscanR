@@ -67,7 +67,8 @@ prominence and signal-to-noise filtering.</p>
 
 
 <dt id="arg-snr-threshold">snr_threshold<a class="anchor" aria-label="anchor" href="#arg-snr-threshold"></a></dt>
-<dd><p>Numeric. Minimum signal-to-noise ratio. Default 3.</p></dd>
+<dd><p>Numeric. Minimum signal-to-noise ratio, as defined in
+Details. Default 3.</p></dd>
 
 
 <dt id="arg-min-prominence">min_prominence<a class="anchor" aria-label="anchor" href="#arg-min-prominence"></a></dt>
@@ -84,6 +85,17 @@ Default 0.5.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble::tibble()</a></code> with columns <code>wavelength_nm</code>, <code>intensity</code>,
 <code>snr</code>, <code>prominence</code>, <code>fwhm_nm</code>, <code>area</code>, sorted by intensity descending.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The signal-to-noise ratio is the height of a local maximum above the median
+intensity of the whole spectrum, divided by a robust noise estimate (the
+median absolute deviation of first differences divided by <code>sqrt(2)</code>).
+Because the reference level is the spectrum median rather than the local
+background, noise maxima on the high side of a sloping plasma continuum, and
+on the positive noise floor left by <code><a href="ls_baseline.html">ls_baseline()</a></code>, can pass the SNR
+threshold. Use <code>min_prominence</code>, a higher <code>snr_threshold</code> or the <code>prominence</code>
+column to separate emission lines from such noise maxima.</p>
     </div>
 
     <div class="section level2">

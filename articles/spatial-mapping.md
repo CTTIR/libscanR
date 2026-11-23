@@ -18,9 +18,17 @@ ds
 
 The simulated tissue section has:
 
-- A left-to-right **Ca** gradient (decreasing)
-- A top-to-bottom **Fe** gradient (increasing)
+- A left-to-right **Ca** gradient (decreasing with `x_pos`)
+- A bottom-to-top **Fe** gradient (increasing with `y_pos`, plotted
+  upwards)
 - A **Zn**-enriched hotspot simulating a tumor region
+
+These designed patterns are small relative to the simulated shot noise
+at the weak teaching line strengths, so single-pixel maps look noisy:
+the Ca gradient is visible, while the Fe gradient and the Zn hotspot are
+faint. The hotspot summary at the end of this article lists the
+highest-response Zn pixels; at this noise level they need not cluster at
+the designed center (8, 8).
 
 ## Build a single elemental map
 
@@ -45,8 +53,9 @@ ls_plot_map_panel(maps)
 ```
 
 ![Three fictional raster maps labelled Ca, Fe and Zn, each showing
-integrated response at its specified teaching wavelength and its own
-colour scale.](spatial-mapping_files/figure-html/panel-1.png)
+integrated response at its specified teaching wavelength, min-max scaled
+within each map to a shared 0 to 1 viridis colour
+scale.](spatial-mapping_files/figure-html/panel-1.png)
 
 ## Applying a calibration to the map
 

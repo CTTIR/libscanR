@@ -24,7 +24,8 @@ ls_find_peaks(
 
 - snr_threshold:
 
-  Numeric. Minimum signal-to-noise ratio. Default 3.
+  Numeric. Minimum signal-to-noise ratio, as defined in Details. Default
+  3.
 
 - min_prominence:
 
@@ -41,6 +42,19 @@ A
 [`tibble::tibble()`](https://tibble.tidyverse.org/reference/tibble.html)
 with columns `wavelength_nm`, `intensity`, `snr`, `prominence`,
 `fwhm_nm`, `area`, sorted by intensity descending.
+
+## Details
+
+The signal-to-noise ratio is the height of a local maximum above the
+median intensity of the whole spectrum, divided by a robust noise
+estimate (the median absolute deviation of first differences divided by
+`sqrt(2)`). Because the reference level is the spectrum median rather
+than the local background, noise maxima on the high side of a sloping
+plasma continuum, and on the positive noise floor left by
+[`ls_baseline()`](https://cttir.github.io/libscanR/reference/ls_baseline.md),
+can pass the SNR threshold. Use `min_prominence`, a higher
+`snr_threshold` or the `prominence` column to separate emission lines
+from such noise maxima.
 
 ## Examples
 

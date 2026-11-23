@@ -39,13 +39,21 @@ df <- rbind(
              y = libscanR:::.mean_intensity(als),
              method = "ALS")
 )
+# Okabe-Ito colors from grDevices keep the three curves distinguishable
+# for readers with color-vision deficiencies.
+okabe_ito <- unname(grDevices::palette.colors(9, palette = "Okabe-Ito"))
 ggplot2::ggplot(df, ggplot2::aes(w, y, colour = method)) +
   ggplot2::geom_line() + theme_libs() +
+  ggplot2::scale_colour_manual(
+    values = c(raw = okabe_ito[9], SNIP = okabe_ito[6], ALS = okabe_ito[7]),
+    name = "Spectrum"
+  ) +
   ggplot2::labs(x = "Wavelength (nm)", y = "Intensity (a.u.)")
 ```
 
-![Three curves compare the raw fictional spectrum with SNIP and ALS
-baseline-corrected intensities on the same wavelength
+![Three curves compare the raw fictional spectrum (gray) with SNIP
+(blue) and ALS (vermillion) baseline-corrected intensities on the same
+wavelength
 axis.](preprocessing-workflow_files/figure-html/baseline-1.png)
 
 ## Normalization

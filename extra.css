@@ -1,6 +1,8 @@
 /* Preserve scientific colour scales and readable labels in both site themes. */
-html[data-bs-theme] img.r-plt {
+html[data-bs-theme] img.r-plt,
+html[data-bs-theme] pre .r-plt.img img {
   filter: none !important;
+  opacity: 1 !important;
   background-color: #fff;
 }
 

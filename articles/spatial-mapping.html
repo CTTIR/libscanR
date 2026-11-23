@@ -106,11 +106,19 @@
 <span><span class="va">ds</span></span></code></pre></div>
 <p>The simulated tissue section has:</p>
 <ul>
-<li>A left-to-right <strong>Ca</strong> gradient (decreasing)</li>
-<li>A top-to-bottom <strong>Fe</strong> gradient (increasing)</li>
+<li>A left-to-right <strong>Ca</strong> gradient (decreasing with
+<code>x_pos</code>)</li>
+<li>A bottom-to-top <strong>Fe</strong> gradient (increasing with
+<code>y_pos</code>, plotted upwards)</li>
 <li>A <strong>Zn</strong>-enriched hotspot simulating a tumor
 region</li>
 </ul>
+<p>These designed patterns are small relative to the simulated shot
+noise at the weak teaching line strengths, so single-pixel maps look
+noisy: the Ca gradient is visible, while the Fe gradient and the Zn
+hotspot are faint. The hotspot summary at the end of this article lists
+the highest-response Zn pixels; at this noise level they need not
+cluster at the designed center (8, 8).</p>
 </div>
 <div class="section level2">
 <h2 id="build-a-single-elemental-map">Build a single elemental map<a class="anchor" aria-label="anchor" href="#build-a-single-elemental-map"></a>
@@ -127,7 +135,7 @@ region</li>
 <code class="sourceCode R"><span><span class="va">maps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ls_map_elements.html">ls_map_elements</a></span><span class="op">(</span><span class="va">ds</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ca"</span>, <span class="st">"Fe"</span>, <span class="st">"Zn"</span><span class="op">)</span>,</span>
 <span>                        <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Ca <span class="op">=</span> <span class="fl">393.37</span>, Fe <span class="op">=</span> <span class="fl">371.99</span>, Zn <span class="op">=</span> <span class="fl">213.86</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/ls_plot_map_panel.html">ls_plot_map_panel</a></span><span class="op">(</span><span class="va">maps</span><span class="op">)</span></span></code></pre></div>
-<p><img src="spatial-mapping_files/figure-html/panel-1.png" class="r-plt" alt="Three fictional raster maps labelled Ca, Fe and Zn, each showing integrated response at its specified teaching wavelength and its own colour scale." width="672"></p>
+<p><img src="spatial-mapping_files/figure-html/panel-1.png" class="r-plt" alt="Three fictional raster maps labelled Ca, Fe and Zn, each showing integrated response at its specified teaching wavelength, min-max scaled within each map to a shared 0 to 1 viridis colour scale." width="672"></p>
 </div>
 <div class="section level2">
 <h2 id="applying-a-calibration-to-the-map">Applying a calibration to the map<a class="anchor" aria-label="anchor" href="#applying-a-calibration-to-the-map"></a>

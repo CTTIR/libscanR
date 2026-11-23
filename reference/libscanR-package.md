@@ -56,9 +56,9 @@ Useful links:
 ## Author
 
 **Maintainer**: R. Heller <raban.heller@uni-ulm.de>
-([ORCID](https://orcid.org/0000-0001-8006-9742))
+([ORCID](https://orcid.org/0000-0001-8006-9742)) \[copyright holder\]
 
 Authors:
 
 - R. Heller <raban.heller@uni-ulm.de>
-  ([ORCID](https://orcid.org/0000-0001-8006-9742))
+  ([ORCID](https://orcid.org/0000-0001-8006-9742)) \[copyright holder\]
