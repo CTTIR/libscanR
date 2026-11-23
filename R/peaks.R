@@ -6,8 +6,18 @@
 #' Detects peaks in a LIBS spectrum using local maxima detection with
 #' prominence and signal-to-noise filtering.
 #'
+#' The signal-to-noise ratio is the height of a local maximum above the median
+#' intensity of the whole spectrum, divided by a robust noise estimate (the
+#' median absolute deviation of first differences divided by `sqrt(2)`).
+#' Because the reference level is the spectrum median rather than the local
+#' background, noise maxima on the high side of a sloping plasma continuum, and
+#' on the positive noise floor left by [ls_baseline()], can pass the SNR
+#' threshold. Use `min_prominence`, a higher `snr_threshold` or the `prominence`
+#' column to separate emission lines from such noise maxima.
+#'
 #' @param x A [ls_spectrum()] object.
-#' @param snr_threshold Numeric. Minimum signal-to-noise ratio. Default 3.
+#' @param snr_threshold Numeric. Minimum signal-to-noise ratio, as defined in
+#'   Details. Default 3.
 #' @param min_prominence Numeric. Minimum peak prominence as a fraction of
 #'   maximum intensity (0-1). Default 0.01.
 #' @param min_distance_nm Numeric. Minimum distance between peaks (nm).

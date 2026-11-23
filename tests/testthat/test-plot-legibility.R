@@ -46,3 +46,11 @@ test_that("loading labels skip overlapping text", {
   text_layer <- p$layers[[length(p$layers)]]
   expect_true(isTRUE(text_layer$geom_params$check_overlap))
 })
+
+test_that("peak SNR follows the documented median-referenced definition", {
+  spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(), seed = 1)
+  pk <- ls_find_peaks(spec, snr_threshold = 5)
+  y <- libscanR:::.mean_intensity(spec)
+  noise <- stats::mad(diff(y)) / sqrt(2)
+  expect_equal(pk$snr, (pk$intensity - stats::median(y)) / noise)
+})

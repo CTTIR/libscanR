@@ -14,7 +14,8 @@ ls_find_peaks(
 \arguments{
 \item{x}{A \code{\link[=ls_spectrum]{ls_spectrum()}} object.}
 
-\item{snr_threshold}{Numeric. Minimum signal-to-noise ratio. Default 3.}
+\item{snr_threshold}{Numeric. Minimum signal-to-noise ratio, as defined in
+Details. Default 3.}
 
 \item{min_prominence}{Numeric. Minimum peak prominence as a fraction of
 maximum intensity (0-1). Default 0.01.}
@@ -29,6 +30,16 @@ A \code{\link[tibble:tibble]{tibble::tibble()}} with columns \code{wavelength_nm
 \description{
 Detects peaks in a LIBS spectrum using local maxima detection with
 prominence and signal-to-noise filtering.
+}
+\details{
+The signal-to-noise ratio is the height of a local maximum above the median
+intensity of the whole spectrum, divided by a robust noise estimate (the
+median absolute deviation of first differences divided by \code{sqrt(2)}).
+Because the reference level is the spectrum median rather than the local
+background, noise maxima on the high side of a sloping plasma continuum, and
+on the positive noise floor left by \code{\link[=ls_baseline]{ls_baseline()}}, can pass the SNR
+threshold. Use \code{min_prominence}, a higher \code{snr_threshold} or the \code{prominence}
+column to separate emission lines from such noise maxima.
 }
 \examples{
 spec <- ls_simulate_spectrum(line_data = ls_demo_peaks(),

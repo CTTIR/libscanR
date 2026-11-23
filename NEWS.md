@@ -1,16 +1,20 @@
 # libscanR 0.2.0
 
-* Discrete colours in `ls_plot_overlay()`, `ls_plot_pca()`,
+* Discrete colors in `ls_plot_overlay()`, `ls_plot_pca()`,
   `ls_plot_plsda(type = "scores")` and the element overlay of
-  `ls_plot_spectrum()` now use the colour-blind-safe Okabe-Ito palette for up
+  `ls_plot_spectrum()` now use the color-blind-safe Okabe-Ito palette for up
   to eight groups and a viridis scale beyond that. `ls_plot_overlay()` no
-  longer drops the colour of groups beyond the ninth.
+  longer drops the color of groups beyond the ninth.
 * `ls_plot_plsda(type = "confusion")` prints counts in black on light tiles so
   they stay legible, and titles the legend "Count".
 * `ls_plot_residuals()` labels both axes with the concentration unit;
   `ls_plot_loadings()` skips overlapping wavelength labels;
   `ls_plot_map_panel()` names its axes and explains its per-map scaling;
   `theme_libs()` adds right margin so the last axis label is not clipped.
+* The Shiny app renders its static calibration, scree, loading and PLS-DA
+  plots at 96 dpi so their text matches the surrounding interface.
+* `ls_find_peaks()` documents how its signal-to-noise ratio is defined and why
+  noise maxima on a continuum or baseline-corrected noise floor can pass it.
 
 * Preserve large irregular spatial maps when the cross-product of distinct
   coordinates exceeds the integer range; avoid an overflow error while
