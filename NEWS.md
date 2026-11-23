@@ -14,6 +14,9 @@
   `theme_libs()` adds right margin so the last axis label is not clipped.
 * The Shiny app renders its static calibration, scree, loading and PLS-DA
   plots at 96 dpi so their text matches the surrounding interface.
+* Reference-page example figures keep their true colors and full opacity in
+  the dark site theme; the spatial-mapping article states how faint its
+  designed gradients and hotspot are relative to the simulated noise.
 * `ls_find_peaks()` documents how its signal-to-noise ratio is defined and why
   noise maxima on a continuum or baseline-corrected noise floor can pass it.
 
