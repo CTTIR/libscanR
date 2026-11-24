@@ -1,5 +1,8 @@
 # libscanR ![libscanR logo](reference/figures/logo-with-name.png)
 
+Zenodo DOI reserved for the release: `10.5281/zenodo.21889942` (not yet
+published).
+
 Vendor-agnostic analysis and visualisation of **Laser-Induced Breakdown
 Spectroscopy (LIBS)** data in R, with a focus on biomedical tissue
 research. This is experimental research software. Synthetic examples and
